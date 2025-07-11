@@ -1,28 +1,23 @@
-import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import react from 'eslint-plugin-react';
-import { globalIgnores } from 'eslint/config';
+import reactPlugin from 'eslint-plugin-react';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
+import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
+import prettierPlugin from 'eslint-plugin-prettier';
+import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config([
   globalIgnores(['dist']),
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-      'plugin:react/recommended',
-      'plugin:prettier/recommended',
-    ],
+    files: ['**/*.{js,mjs,cjs,ts,tsx}'],
+    extends: [...tseslint.configs.recommended],
     plugins: {
-      react,
+      react: reactPlugin,
       'jsx-a11y': jsxA11y,
       import: importPlugin,
-      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      '@typescript-eslint': tsEslintPlugin,
+      prettier: prettierPlugin,
     },
     settings: {
       react: {
@@ -31,18 +26,32 @@ export default tseslint.config([
     },
     languageOptions: {
       ecmaVersion: 2020,
+      sourceType: 'module',
       globals: globals.browser,
+      parser: tseslint.parser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
     },
     rules: {
+      'prettier/prettier': 'error',
       '@typescript-eslint/explicit-function-return-type': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-explicit-any': [
+        'error',
+        { ignoreRestArgs: false },
+      ],
+      'no-warning-comments': [
+        'warn',
+        {
+          terms: ['todo', 'fixme', 'xxx', 'hack', 'bug'],
+          location: 'anywhere',
+        },
+      ],
     },
   },
 ]);
