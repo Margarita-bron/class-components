@@ -36,8 +36,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "npm run lint",
-      "git add"
+      "eslint",
+      "prettier --write"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
