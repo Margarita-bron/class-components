@@ -30,6 +30,7 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
     return (
       <>
         <input
+          name="Search Books Input"
           type="text"
           placeholder="Search..."
           value={this.state.query}
