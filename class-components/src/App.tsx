@@ -2,7 +2,8 @@ import './App.css';
 import { Component, type ReactNode } from 'react';
 import { SearchBar } from './components/searchBar/SearchBar';
 import { fetchBooks } from './service/books-api';
-import type { AppState, Book } from './types/books-app-types';
+import type { AppState } from './types/books-app-types';
+import { Catalog } from './components/catalog/Catalog';
 
 class App extends Component<object, AppState> {
   state = {
@@ -11,6 +12,13 @@ class App extends Component<object, AppState> {
     loading: false,
     error: null,
   };
+
+  componentDidMount(): void {
+    const lastQuery = localStorage.getItem('searchQuery') || '';
+    this.setState({ currentQuery: lastQuery }, () => {
+      this.handleFetchBooks(lastQuery);
+    });
+  }
 
   handleChangeSearchQuery = async (query: string): Promise<void> => {
     localStorage.setItem('searchQuery', query);
@@ -21,7 +29,7 @@ class App extends Component<object, AppState> {
   handleFetchBooks = async (query?: string): Promise<void> => {
     this.setState({ loading: true, error: null });
     try {
-      const response = await fetchBooks(query ?? this.state.currentQuery);
+      const response = await fetchBooks(query ?? '');
       this.setState({
         resultData: response.resultData,
         loading: false,
@@ -39,30 +47,16 @@ class App extends Component<object, AppState> {
   render(): ReactNode {
     return (
       <>
-        <h1>Hello!</h1>
         <SearchBar
           currentQuery={this.state.currentQuery}
           handleChangeSearchQuery={this.handleChangeSearchQuery}
         />
-        <div>
-          <ul>
-            {this.state.resultData.map((book: Book) => (
-              <li key={book.key}>
-                <strong>{book.title}</strong>
-                {book.author_name && (
-                  <p>Автор(ы): {book.author_name.join(', ')}</p>
-                )}
-                {book.first_sentence && (
-                  <p>
-                    {Array.isArray(book.first_sentence)
-                      ? book.first_sentence[0]
-                      : book.first_sentence}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+
+        <Catalog
+          resultData={this.state.resultData}
+          loading={this.state.loading}
+          error={this.state.error}
+        />
       </>
     );
   }

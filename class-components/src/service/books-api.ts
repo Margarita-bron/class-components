@@ -2,6 +2,7 @@ import type { Book, FetchBooksResponse } from '../types/books-app-types.ts';
 
 export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
   try {
+    console.log(query.length);
     const url =
       query.length > 0
         ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
