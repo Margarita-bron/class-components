@@ -8,6 +8,7 @@ export class Catalog extends Component<CatalogProps> {
   }
   render(): ReactNode {
     const { resultData, loading, error } = this.props;
+
     return (
       <div className="catalog">
         {loading && (
@@ -15,7 +16,7 @@ export class Catalog extends Component<CatalogProps> {
             <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"></div>
           </div>
         )}
-        {resultData.length > 0 ? (
+        {resultData.length > 0 && loading === false && (
           <div className="catalog">
             <ul>
               {resultData.map((book: Book) => (
@@ -35,9 +36,8 @@ export class Catalog extends Component<CatalogProps> {
               ))}
             </ul>
           </div>
-        ) : (
-          <h1>data is empty</h1>
         )}
+        {resultData.length === 0 && loading === false && <h1>data is empty</h1>}
         {error && <h1>error</h1>}
       </div>
     );
