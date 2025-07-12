@@ -1,13 +1,8 @@
 import { Component, type ChangeEvent, type ReactNode } from 'react';
-
-type SearchBarProps = {
-  currentQuery: string;
-  handleChangeSearchQuery: (query: string) => void;
-};
-
-type SearchBarState = {
-  query: string;
-};
+import type {
+  SearchBarProps,
+  SearchBarState,
+} from '../../types/search-bar-types.ts';
 
 export class SearchBar extends Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {

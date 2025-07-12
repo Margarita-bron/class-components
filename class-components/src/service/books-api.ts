@@ -1,14 +1,4 @@
-type FetchBooksResponse = {
-  resultData: Book[];
-  error: string | null;
-};
-
-export interface Book {
-  key: string;
-  title: string;
-  author_name?: string[];
-  first_sentence?: string | string[];
-}
+import type { Book, FetchBooksResponse } from '../types/books-app-types.ts';
 
 export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
   try {

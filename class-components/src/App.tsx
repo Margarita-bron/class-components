@@ -1,14 +1,8 @@
 import './App.css';
 import { Component, type ReactNode } from 'react';
 import { SearchBar } from './components/searchBar/SearchBar';
-import { fetchBooks, type Book } from './service/books-api';
-
-type AppState = {
-  currentQuery: string;
-  resultData: Book[];
-  loading: boolean;
-  error: string | null;
-};
+import { fetchBooks } from './service/books-api';
+import type { AppState, Book } from './types/books-app-types';
 
 class App extends Component<object, AppState> {
   state = {
