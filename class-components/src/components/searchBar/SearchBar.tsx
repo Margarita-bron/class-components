@@ -12,6 +12,12 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
     };
   }
 
+  componentDidUpdate(prevProps: SearchBarProps): void {
+    if (prevProps.currentQuery !== this.props.currentQuery) {
+      this.setState({ query: this.props.currentQuery });
+    }
+  }
+
   handleQuery = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ query: e.target.value });
   };
