@@ -1,4 +1,5 @@
 import { Component, type ChangeEvent, type ReactNode } from 'react';
+import './search-bar.css';
 import type {
   SearchBarProps,
   SearchBarState,
@@ -29,16 +30,19 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
 
   render(): ReactNode {
     return (
-      <>
+      <div className="search-wrapper">
         <input
+          className="search-input"
           name="Search Books Input"
           type="text"
           placeholder="Search..."
           value={this.state.query}
           onChange={this.handleQuery}
         />
-        <button onClick={this.handleSearchButton}>Search</button>
-      </>
+        <button className="search-button" onClick={this.handleSearchButton}>
+          Search
+        </button>
+      </div>
     );
   }
 }

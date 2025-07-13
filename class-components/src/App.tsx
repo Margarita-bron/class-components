@@ -4,6 +4,7 @@ import { SearchBar } from './components/searchBar/SearchBar';
 import { fetchBooks } from './service/books-api';
 import type { AppState } from './types/books-app-types';
 import { Catalog } from './components/catalog/Catalog';
+import { ErrorButton } from './components/errorButton/ErrorButton';
 
 class App extends Component<object, AppState> {
   state = {
@@ -46,7 +47,7 @@ class App extends Component<object, AppState> {
 
   render(): ReactNode {
     return (
-      <>
+      <div className="app-wrapper">
         <SearchBar
           currentQuery={this.state.currentQuery}
           handleChangeSearchQuery={this.handleChangeSearchQuery}
@@ -57,7 +58,9 @@ class App extends Component<object, AppState> {
           loading={this.state.loading}
           error={this.state.error}
         />
-      </>
+
+        <ErrorButton />
+      </div>
     );
   }
 }

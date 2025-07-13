@@ -7,6 +7,12 @@
   text-align: center;
 }
 
+.app-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 7vh;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

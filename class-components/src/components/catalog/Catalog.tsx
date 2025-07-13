@@ -25,11 +25,9 @@ export class Catalog extends Component<CatalogProps> {
                   {book.author_name && (
                     <p>Author(s): {book.author_name.join(', ')}</p>
                   )}
-                  {book.first_sentence && (
+                  {book.description && (
                     <p>
-                      {Array.isArray(book.first_sentence)
-                        ? book.first_sentence[0]
-                        : book.first_sentence}
+                      <em>Description:</em> {book.description}
                     </p>
                   )}
                 </li>
