@@ -7,7 +7,6 @@ export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
       query.length > 0
         ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&page=1`
         : 'https://openlibrary.org/search.json?q=book&limit=10&page=1';
-    //doesn`t have a request for all elements
     const response = await fetch(url);
 
     if (!response.ok) {
