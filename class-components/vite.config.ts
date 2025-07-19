@@ -5,4 +5,27 @@ import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
+    clearMocks: true,
+    coverage: {
+      provider: 'v8',
+      enabled: true,
+      reporter: ['text', 'lcov'],
+      all: true,
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: [
+        '**/*.test.{js,jsx,ts,tsx}',
+        '**/*.spec.{js,jsx,ts,tsx}',
+        'src/setupTests.ts',
+        '**/*.d.ts',
+      ],
+      clean: true,
+      reportsDirectory: 'coverage',
+    },
+    include: ['src/**/*.{test,spec}.{js,ts,tsx}'],
+    exclude: ['node_modules', 'dist'],
+  },
 });

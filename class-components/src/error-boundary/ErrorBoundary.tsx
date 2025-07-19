@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: 20, backgroundColor: '#fdd', color: '#900' }}>
+        <div>
           <h2>OOps</h2>
           <p>{this.state.errorMessage}</p>
           <button onClick={this.resetError}>Try again</button>
