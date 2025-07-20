@@ -3,7 +3,7 @@ import { Catalog } from '../Catalog';
 import { incompleteMockData, mockData } from '../__mocks__/mockData';
 
 describe('Card/Item Component Tests', () => {
-  it('Displays item name, authors and description correctly, Correctly displays item names and descriptions', async () => {
+  it('displays item name, authors and description correctly, Correctly displays item names and descriptions', async () => {
     render(<Catalog resultData={mockData} loading={false} error={null} />);
     for (const book of mockData) {
       const listItem = screen.getByText(book.title).closest('li');
@@ -15,11 +15,7 @@ describe('Card/Item Component Tests', () => {
       }
     }
   });
-  it('Displays error correctly, Displays error message when API call fails', async () => {
-    render(<Catalog resultData={[]} loading={false} error="error" />);
-    expect(screen.getByText(/error/i)).toBeInTheDocument();
-  });
-  it('Handles missing props gracefully, Handles missing or undefined data gracefully', () => {
+  it('handles missing props gracefully, Handles missing or undefined data gracefully', () => {
     render(
       <Catalog resultData={incompleteMockData} loading={false} error={null} />
     );

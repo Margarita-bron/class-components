@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { Catalog } from '../Catalog';
 
 describe('Loading component tests', () => {
-  it('Renders loading indicator', () => {
+  it('renders loading indicator', () => {
     render(<Catalog resultData={[]} loading={true} error={null} />);
     const spinner = screen.getByRole('status');
     expect(spinner).toBeInTheDocument();
   });
-  it('Shows/hides based on loading prop', () => {
+  it('shows/hides based on loading prop', () => {
     render(<Catalog resultData={[]} loading={false} error={null} />);
     const spinner = screen.queryByRole('status', { hidden: true });
     expect(spinner).not.toBeInTheDocument();

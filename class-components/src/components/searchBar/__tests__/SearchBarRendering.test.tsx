@@ -3,13 +3,13 @@ import { describe, it, expect } from 'vitest';
 import { SearchBar } from '../SearchBar';
 
 describe('SearchBar', () => {
-  it('Renders search input and search button', () => {
+  it('renders search input and search button', () => {
     render(<SearchBar currentQuery="" handleChangeSearchQuery={() => {}} />);
     expect(screen.getByPlaceholderText(/Search.../i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
-  it('Displays previously saved search term from localStorage (props.currentQuery) on mount', () => {
+  it('displays previously saved search term from localStorage (props.currentQuery) on mount', () => {
     render(
       <SearchBar currentQuery="React" handleChangeSearchQuery={() => {}} />
     );
@@ -17,7 +17,7 @@ describe('SearchBar', () => {
     expect(input.value).toBe('React');
   });
 
-  it('Shows empty input when no saved term exists', () => {
+  it('shows empty input when no saved term exists', () => {
     render(<SearchBar currentQuery="" handleChangeSearchQuery={() => {}} />);
     const input = screen.getByPlaceholderText(/Search.../i) as HTMLInputElement;
     expect(input.value).toBe('');

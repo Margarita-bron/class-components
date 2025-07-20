@@ -8,7 +8,7 @@ describe('Results/CardList Component Tests: Rendering Tests', () => {
     const items = screen.getAllByRole('listitem');
     expect(items.length).toBe(mockData.length);
   });
-  it('Displays "no results" message when data array is empty', async () => {
+  it('displays "no results" message when data array is empty', async () => {
     render(<Catalog resultData={[]} loading={false} error={null} />);
     expect(screen.getByText(/data is empty/i)).toBeInTheDocument();
   });
@@ -21,7 +21,7 @@ describe('Results/CardList Component Tests: Rendering Tests', () => {
 });
 
 describe('Results/CardList Component Tests:Error Handling Tests', () => {
-  it('Displays error correctly, Displays error message when API call fails', async () => {
+  it('displays error message when API call fails', async () => {
     render(<Catalog resultData={[]} loading={false} error="error" />);
     expect(screen.getByText(/error/i)).toBeInTheDocument();
   });

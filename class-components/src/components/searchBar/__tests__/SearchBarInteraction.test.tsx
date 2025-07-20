@@ -13,14 +13,14 @@ describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
     vi.clearAllMocks();
   });
 
-  it('Updates input value when user types', () => {
+  it('updates input value when user types', () => {
     render(<SearchBar currentQuery="" handleChangeSearchQuery={() => {}} />);
     const input = screen.getByPlaceholderText(/Search.../i) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'ehtrhsthet' } });
     expect(input.value).toBe('ehtrhsthet');
   });
 
-  it('Saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
+  it('saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
     const mockHandle = vi.fn();
     render(<SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />);
 
@@ -32,14 +32,14 @@ describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
 
     expect(mockHandle).toHaveBeenCalledWith('books');
   });
-  it('Updates input value when user types', async () => {
+  it('updates input value when user types', async () => {
     render(<App />);
     const input = await screen.findByPlaceholderText(/Search.../i);
     await userEvent.type(input, 'test input');
     expect(input).toHaveValue('test input');
   });
 
-  it('Saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', async () => {
+  it('saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', async () => {
     render(<App />);
     const input = await screen.findByPlaceholderText(/Search.../i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -51,7 +51,7 @@ describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
     expect(localStorage.getItem('searchQuery')).toBe('test query');
   });
 
-  it('Triggers search callback with correct parameters (trims whitespace from search input before saving)', async () => {
+  it('triggers search callback with correct parameters (trims whitespace from search input before saving)', async () => {
     render(<App />);
     const input = await screen.findByPlaceholderText(/Search.../i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -65,7 +65,7 @@ describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
     });
   });
 
-  it('Retrieves saved search term on component mount from localStorage', async () => {
+  it('retrieves saved search term on component mount from localStorage', async () => {
     localStorage.setItem('searchQuery', 'saved query');
     render(<App />);
 
@@ -77,7 +77,7 @@ describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
     });
   });
 
-  it('Overwrites existing localStorage value when new search is performed', async () => {
+  it('overwrites existing localStorage value when new search is performed', async () => {
     localStorage.setItem('searchQuery', 'old query');
 
     render(<App />);
