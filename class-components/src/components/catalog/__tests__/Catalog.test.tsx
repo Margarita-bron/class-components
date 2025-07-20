@@ -1,0 +1,88 @@
+import { render, screen } from '@testing-library/react';
+import { Catalog } from '../Catalog';
+
+describe('Catalog: Rendering tests', () => {
+  it('Displays item name, authors and description correctly', async () => {
+    const mockData = [
+      {
+        author_key: ['OL18053A'],
+        author_name: ['Edith Nesbit'],
+        first_publish_year: 1973,
+        key: '/works/OL99529W',
+        language: ['spa', 'fre', 'eng'],
+        title: 'The Book of Dragons',
+        description: 'dtyghujkhgtfdedrtgyhuj',
+      },
+      {
+        author_key: ['OL1425869A'],
+        author_name: ['Markus Zusak', 'ftgnjxfh'],
+        first_publish_year: 1998,
+        key: '/works/OL5819456W',
+        language: [
+          'kor',
+          'spa',
+          'rum',
+          'rus',
+          'eng',
+          'ger',
+          'nor',
+          'dan',
+          'fre',
+          'pol',
+          'vie',
+          'ice',
+          'dut',
+          'ita',
+          'por',
+          'chi',
+        ],
+        title: 'The Book Thief',
+      },
+      {
+        author_key: ['OL24461A'],
+        author_name: ['Rudyard Kipling'],
+        first_publish_year: 1893,
+        key: '/works/OL19870W',
+        language: ['rus', 'ger', 'fre', 'eng', 'chi', 'ita', 'spa', 'urd'],
+        title: 'The Jungle Book',
+      },
+      {
+        author_key: ['OL840964A'],
+        author_name: ['Okakura Kakuzo'],
+        first_publish_year: 1900,
+        key: '/works/OL7095112W',
+        language: [
+          'jpn',
+          'vie',
+          'chi',
+          'fre',
+          'ger',
+          'epo',
+          'spa',
+          'gre',
+          'eng',
+        ],
+        title: 'The book of tea',
+        description: 'dtyghujkhgtfdeegrdrtgyhuj',
+      },
+    ];
+    render(<Catalog resultData={mockData} loading={false} error={null} />);
+    for (const book of mockData) {
+      const listItem = screen.getByText(book.title).closest('li');
+      expect(listItem).toBeInTheDocument();
+      const authorsString = book.author_name.join(', ');
+      expect(listItem).toHaveTextContent(authorsString);
+      if (book.description) {
+        expect(listItem).toHaveTextContent(book.description);
+      }
+    }
+  });
+  it('Displays error correctly', async () => {
+    render(<Catalog resultData={[]} loading={false} error="error" />);
+    expect(screen.getByText(/error/i)).toBeInTheDocument();
+  });
+  it('Handles missing props gracefully', async () => {
+    render(<Catalog resultData={[]} loading={false} error={null} />);
+    expect(screen.getByText(/data is empty/i)).toBeInTheDocument();
+  });
+});
