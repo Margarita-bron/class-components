@@ -1,6 +1,6 @@
 export type SearchBarProps = {
   currentQuery: string;
-  handleChangeSearchQuery: (query: string) => void;
+  handleChangeSearchQuery: (_query: string) => void;
 };
 
 export type SearchBarState = {

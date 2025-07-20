@@ -8,7 +8,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import { globalIgnores } from 'eslint/config';
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'node_modules/**', 'build/**']),
   {
     files: ['**/*.{js,mjs,cjs,ts,tsx}'],
     extends: [...tseslint.configs.recommended],
@@ -27,13 +27,17 @@ export default tseslint.config([
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
       parser: tseslint.parser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
     },
     rules: {
+      'no-undef': 'warn',
       'prettier/prettier': 'error',
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/no-unused-vars': [
