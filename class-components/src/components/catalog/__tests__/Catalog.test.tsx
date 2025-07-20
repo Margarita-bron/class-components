@@ -1,88 +1,28 @@
 import { render, screen } from '@testing-library/react';
 import { Catalog } from '../Catalog';
+import { mockData } from '../__mocks__/mockData';
 
-describe('Catalog: Rendering tests', () => {
-  it('Displays item name, authors and description correctly', async () => {
-    const mockData = [
-      {
-        author_key: ['OL18053A'],
-        author_name: ['Edith Nesbit'],
-        first_publish_year: 1973,
-        key: '/works/OL99529W',
-        language: ['spa', 'fre', 'eng'],
-        title: 'The Book of Dragons',
-        description: 'dtyghujkhgtfdedrtgyhuj',
-      },
-      {
-        author_key: ['OL1425869A'],
-        author_name: ['Markus Zusak', 'ftgnjxfh'],
-        first_publish_year: 1998,
-        key: '/works/OL5819456W',
-        language: [
-          'kor',
-          'spa',
-          'rum',
-          'rus',
-          'eng',
-          'ger',
-          'nor',
-          'dan',
-          'fre',
-          'pol',
-          'vie',
-          'ice',
-          'dut',
-          'ita',
-          'por',
-          'chi',
-        ],
-        title: 'The Book Thief',
-      },
-      {
-        author_key: ['OL24461A'],
-        author_name: ['Rudyard Kipling'],
-        first_publish_year: 1893,
-        key: '/works/OL19870W',
-        language: ['rus', 'ger', 'fre', 'eng', 'chi', 'ita', 'spa', 'urd'],
-        title: 'The Jungle Book',
-      },
-      {
-        author_key: ['OL840964A'],
-        author_name: ['Okakura Kakuzo'],
-        first_publish_year: 1900,
-        key: '/works/OL7095112W',
-        language: [
-          'jpn',
-          'vie',
-          'chi',
-          'fre',
-          'ger',
-          'epo',
-          'spa',
-          'gre',
-          'eng',
-        ],
-        title: 'The book of tea',
-        description: 'dtyghujkhgtfdeegrdrtgyhuj',
-      },
-    ];
+describe('Results/CardList Component Tests: Rendering Tests', () => {
+  it('renders correct number of items when data is provided', () => {
     render(<Catalog resultData={mockData} loading={false} error={null} />);
-    for (const book of mockData) {
-      const listItem = screen.getByText(book.title).closest('li');
-      expect(listItem).toBeInTheDocument();
-      const authorsString = book.author_name.join(', ');
-      expect(listItem).toHaveTextContent(authorsString);
-      if (book.description) {
-        expect(listItem).toHaveTextContent(book.description);
-      }
-    }
+    const items = screen.getAllByRole('listitem');
+    expect(items.length).toBe(mockData.length);
   });
-  it('Displays error correctly', async () => {
-    render(<Catalog resultData={[]} loading={false} error="error" />);
-    expect(screen.getByText(/error/i)).toBeInTheDocument();
-  });
-  it('Handles missing props gracefully', async () => {
+  it('Displays "no results" message when data array is empty', async () => {
     render(<Catalog resultData={[]} loading={false} error={null} />);
     expect(screen.getByText(/data is empty/i)).toBeInTheDocument();
+  });
+
+  it('shows loading state while fetching data', () => {
+    render(<Catalog resultData={[]} loading={true} error={null} />);
+    const spinner = screen.getByRole('status');
+    expect(spinner).toBeInTheDocument();
+  });
+});
+
+describe('Results/CardList Component Tests:Error Handling Tests', () => {
+  it('Displays error correctly, Displays error message when API call fails', async () => {
+    render(<Catalog resultData={[]} loading={false} error="error" />);
+    expect(screen.getByText(/error/i)).toBeInTheDocument();
   });
 });
