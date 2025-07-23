@@ -1,9 +1,34 @@
 import { render, screen } from '@testing-library/react';
 import { Catalog } from '../Catalog';
-import { incompleteMockData, mockData } from '../__mocks__/mockData';
+import {
+  mockData,
+  mockDataWithDescription,
+  mockDataWithoutDescription,
+} from '../__mocks__/mockData';
+
+type mockTypeWithoutDescription = {
+  key: string;
+  author_name: string[];
+  title: string;
+};
+type mockTypeWithDescription = {
+  key: string;
+  title: string;
+  description: string;
+};
+function testBooks<T extends { title: string }>(
+  data: T[],
+  checkFn: (book: T, listItem: HTMLElement) => void
+): void {
+  for (const book of data) {
+    const listItem = screen.getByText(book.title).closest('li');
+    expect(listItem).toBeInTheDocument();
+    checkFn(book, listItem!);
+  }
+}
 
 describe('Card/Item Component Tests', () => {
-  it('displays item name, authors and description correctly, Correctly displays item names and descriptions', async () => {
+  it('should display item name, authors and description correctly', async () => {
     render(<Catalog resultData={mockData} loading={false} error={null} />);
     for (const book of mockData) {
       const listItem = screen.getByText(book.title).closest('li');
@@ -15,27 +40,70 @@ describe('Card/Item Component Tests', () => {
       }
     }
   });
-  it('handles missing props gracefully, Handles missing or undefined data gracefully', () => {
+  it('should render books with description', () => {
     render(
-      <Catalog resultData={incompleteMockData} loading={false} error={null} />
+      <Catalog
+        resultData={mockDataWithDescription}
+        loading={false}
+        error={null}
+      />
     );
 
-    for (const book of incompleteMockData) {
-      const listItem = screen.getByText(book.title).closest('li');
-      expect(listItem).toBeInTheDocument();
-
-      if (book.author_name) {
-        const authorsString = book.author_name.join(', ');
-        expect(listItem).toHaveTextContent(authorsString);
-      } else {
-        expect(listItem).not.toHaveTextContent(/Author\(s\):/i);
-      }
-
-      if (book.description) {
+    testBooks<mockTypeWithDescription>(
+      mockDataWithDescription,
+      (book, listItem) => {
         expect(listItem).toHaveTextContent(book.description);
-      } else {
+      }
+    );
+  });
+
+  it('must render books without description', () => {
+    render(
+      <Catalog
+        resultData={mockDataWithoutDescription}
+        loading={false}
+        error={null}
+      />
+    );
+
+    testBooks<mockTypeWithoutDescription>(
+      mockDataWithoutDescription,
+      (_, listItem) => {
         expect(listItem).not.toHaveTextContent(/Description:/i);
       }
-    }
+    );
+  });
+
+  it('should render books with authors', () => {
+    render(
+      <Catalog
+        resultData={mockDataWithoutDescription}
+        loading={false}
+        error={null}
+      />
+    );
+
+    testBooks<mockTypeWithoutDescription>(
+      mockDataWithoutDescription,
+      (book, listItem) => {
+        expect(listItem).toHaveTextContent(book.author_name.join(', '));
+      }
+    );
+  });
+  it('must renders books without authors', () => {
+    render(
+      <Catalog
+        resultData={mockDataWithDescription}
+        loading={false}
+        error={null}
+      />
+    );
+
+    testBooks<mockTypeWithDescription>(
+      mockDataWithDescription,
+      (_, listItem) => {
+        expect(listItem).not.toHaveTextContent(/Author\(s\):/i);
+      }
+    );
   });
 });

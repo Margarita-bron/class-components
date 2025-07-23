@@ -1,96 +1,148 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SearchBar } from '../SearchBar';
 import App from '../../../App';
 import { fetchBooks } from '../../../service/books-api';
+import type { MockInstance } from 'vitest';
 
 vi.mock('../../../service/books-api');
 
-describe('SearchBar: User Interaction Tests&LocalStorage Integration', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    vi.clearAllMocks();
+describe('SearchBar Tests', () => {
+  describe('SearchBar Tests: User Interaction Tests', () => {
+    let input: HTMLInputElement;
+    let button: HTMLButtonElement;
+    let setItemMock: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(async () => {
+      setItemMock = vi
+        .spyOn(Storage.prototype, 'setItem')
+        .mockImplementation(() => {});
+      render(<App />);
+      input = (await screen.findByPlaceholderText(
+        /Search.../i
+      )) as HTMLInputElement;
+      button = screen.getByRole('button', { name: /search/i });
+    });
+
+    it('should update input value during user types', () => {
+      const newValue = 'smth';
+      fireEvent.change(input, { target: { value: newValue } });
+      expect(input.value).toBe(newValue);
+    });
+
+    it('should update input value after user types', async () => {
+      const newValue = 'test input';
+      await userEvent.type(input, newValue);
+      expect(input).toHaveValue(newValue);
+    });
+
+    it('should save search term to localStorage when search button is clicked (handleChangeSearchQuery)', async () => {
+      const newValue = 'test query';
+      await userEvent.clear(input);
+      await userEvent.type(input, newValue);
+      await userEvent.click(button);
+
+      expect(setItemMock).toHaveBeenCalledWith('searchQuery', newValue);
+    });
+
+    it('should trigger search callback with correct parameters (trims whitespace from search input before saving)', async () => {
+      await userEvent.clear(input);
+      await userEvent.type(input, '  query with whitespace ');
+      await userEvent.click(button);
+
+      await waitFor(() => {
+        expect(fetchBooks).toHaveBeenCalledWith('query with whitespace');
+      });
+    });
+
+    afterEach(() => {
+      cleanup();
+      vi.clearAllMocks();
+      vi.restoreAllMocks();
+    });
   });
+  describe('SearchBar Tests: LocalStorage Integration', () => {
+    let getItemMock: MockInstance<(key: string) => string | null>;
+    let setItemMock: ReturnType<typeof vi.spyOn>;
 
-  it('updates input value when user types', () => {
-    render(<SearchBar currentQuery="" handleChangeSearchQuery={() => {}} />);
-    const input = screen.getByPlaceholderText(/Search.../i) as HTMLInputElement;
-    fireEvent.change(input, { target: { value: 'ehtrhsthet' } });
-    expect(input.value).toBe('ehtrhsthet');
-  });
+    beforeEach(async () => {
+      getItemMock = vi
+        .spyOn(Storage.prototype, 'getItem')
+        .mockImplementation(() => null);
+      setItemMock = vi
+        .spyOn(Storage.prototype, 'setItem')
+        .mockImplementation(() => {});
+    });
 
-  it('saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
-    const mockHandle = vi.fn();
-    render(<SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />);
+    it('should retrieve saved search term on component mount from localStorage', async () => {
+      const newValue = 'saved query';
+      getItemMock.mockReturnValueOnce(newValue);
 
-    const input = screen.getByPlaceholderText('Search...') as HTMLInputElement;
-    const button = screen.getByRole('button', { name: /search/i });
+      render(<App />);
+      expect(await screen.findByPlaceholderText(/Search.../i)).toHaveValue(
+        newValue
+      );
 
-    fireEvent.change(input, { target: { value: '  books  ' } });
-    fireEvent.click(button);
+      await waitFor(() => {
+        expect(fetchBooks).toHaveBeenCalledWith(newValue);
+      });
+    });
 
-    expect(mockHandle).toHaveBeenCalledWith('books');
-  });
-  it('updates input value when user types', async () => {
-    render(<App />);
-    const input = await screen.findByPlaceholderText(/Search.../i);
-    await userEvent.type(input, 'test input');
-    expect(input).toHaveValue('test input');
-  });
+    it('should overwrite existing localStorage value when new search is performed', async () => {
+      getItemMock.mockReturnValueOnce('old query');
 
-  it('saves search term to localStorage when search button is clicked (handleChangeSearchQuery)', async () => {
-    render(<App />);
-    const input = await screen.findByPlaceholderText(/Search.../i);
-    const button = screen.getByRole('button', { name: /search/i });
+      render(<App />);
+      const inputAfterMock = (await screen.findByPlaceholderText(
+        /Search.../i
+      )) as HTMLInputElement;
+      const buttonAfterMock = screen.getByRole('button', { name: /search/i });
 
-    await userEvent.clear(input);
-    await userEvent.type(input, 'test query');
-    await userEvent.click(button);
+      const newValue = 'overwrited query';
+      await userEvent.clear(inputAfterMock);
+      await userEvent.type(inputAfterMock, newValue);
+      await userEvent.click(buttonAfterMock);
 
-    expect(localStorage.getItem('searchQuery')).toBe('test query');
-  });
+      expect(setItemMock).toHaveBeenCalledWith('searchQuery', newValue);
+      await waitFor(() => {
+        expect(fetchBooks).toHaveBeenCalledWith(newValue);
+      });
+    });
 
-  it('triggers search callback with correct parameters (trims whitespace from search input before saving)', async () => {
-    render(<App />);
-    const input = await screen.findByPlaceholderText(/Search.../i);
-    const button = screen.getByRole('button', { name: /search/i });
-
-    await userEvent.clear(input);
-    await userEvent.type(input, '  query with whitespace ');
-    await userEvent.click(button);
-
-    await waitFor(() => {
-      expect(fetchBooks).toHaveBeenCalledWith('query with whitespace');
+    afterEach(() => {
+      cleanup();
+      vi.clearAllMocks();
+      vi.restoreAllMocks();
     });
   });
 
-  it('retrieves saved search term on component mount from localStorage', async () => {
-    localStorage.setItem('searchQuery', 'saved query');
-    render(<App />);
+  describe('SearchBar Tests: LocalStorage Integration', () => {
+    it('should save search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
+      const mockHandle = vi.fn();
+      render(
+        <SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />
+      );
 
-    const input = await screen.findByPlaceholderText(/Search.../i);
-    expect(input).toHaveValue('saved query');
+      const input = screen.getByPlaceholderText(
+        'Search...'
+      ) as HTMLInputElement;
+      const button = screen.getByRole('button', { name: /search/i });
 
-    await waitFor(() => {
-      expect(fetchBooks).toHaveBeenCalledWith('saved query');
+      fireEvent.change(input, { target: { value: '  books  ' } });
+      fireEvent.click(button);
+
+      expect(mockHandle).toHaveBeenCalledWith('books');
     });
-  });
 
-  it('overwrites existing localStorage value when new search is performed', async () => {
-    localStorage.setItem('searchQuery', 'old query');
-
-    render(<App />);
-    const input = await screen.findByPlaceholderText(/Search.../i);
-    const button = screen.getByRole('button', { name: /search/i });
-
-    await userEvent.clear(input);
-    await userEvent.type(input, 'overwrited query');
-    await userEvent.click(button);
-
-    expect(localStorage.getItem('searchQuery')).toBe('overwrited query');
-    await waitFor(() => {
-      expect(fetchBooks).toHaveBeenCalledWith('overwrited query');
+    afterEach(() => {
+      vi.clearAllMocks();
+      vi.restoreAllMocks();
     });
   });
 });

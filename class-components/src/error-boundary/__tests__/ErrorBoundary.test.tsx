@@ -1,3 +1,4 @@
+/* global vi, describe, it, expect */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ErrorBoundary } from '../ErrorBoundary';
 import { ErrorButton } from '../../components/errorButton/ErrorButton';
@@ -11,7 +12,7 @@ describe('ErrorBoundary tests', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('throws error when test button is clicked', () => {
+  it('should throw error when test button is clicked', () => {
     render(
       <ErrorBoundary>
         <ErrorButton />
@@ -27,7 +28,7 @@ describe('ErrorBoundary tests', () => {
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
-  it('logs error to console on error caught', () => {
+  it('must log error to console on error caught', () => {
     render(
       <ErrorBoundary>
         <ErrorButton />
@@ -40,7 +41,7 @@ describe('ErrorBoundary tests', () => {
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
-  it('allows retry when "Try again" button clicked', () => {
+  it('should allow retry when "Try again" button clicked', () => {
     render(
       <ErrorBoundary>
         <ErrorButton />
