@@ -1,68 +1,60 @@
 import './App.css';
-import { Component, type ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from './components/searchBar/SearchBar';
 import { fetchBooks } from './service/books-api';
-import type { AppState } from './types/books-app-types';
+import type { Book } from './types/books-app-types';
 import Catalog from './components/catalog/Catalog';
 import ErrorButton from './components/errorButton/ErrorButton';
 
-class App extends Component<object, AppState> {
-  state = {
-    currentQuery: '',
-    resultData: [],
-    loading: false,
-    error: null,
-  };
+const App: React.FC = () => {
+  const [currentQuery, setCurrentQuery] = useState<string>('');
+  const [resultData, setResultData] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  componentDidMount(): void {
-    const lastQuery = localStorage.getItem('searchQuery') || '';
-    this.setState({ currentQuery: lastQuery }, () => {
-      this.handleFetchBooks(lastQuery);
-    });
-  }
+  useEffect(() => {
+    setCurrentQuery(localStorage.getItem('searchQuery') || '');
+    if (currentQuery) {
+      handleFetchBooks(currentQuery);
+    }
+  }, []);
 
-  handleChangeSearchQuery = async (query: string): Promise<void> => {
+  const handleChangeSearchQuery = async (query: string): Promise<void> => {
     localStorage.setItem('searchQuery', query);
-    this.setState({ currentQuery: query });
-    this.handleFetchBooks(query);
+    setCurrentQuery(query);
+    handleFetchBooks(query);
   };
 
-  handleFetchBooks = async (query?: string): Promise<void> => {
-    this.setState({ loading: true, error: null });
+  const handleFetchBooks = async (query?: string): Promise<void> => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await fetchBooks(query ?? '');
-      this.setState({
-        resultData: response.resultData,
-        loading: false,
-        error: null,
-      });
+      setResultData(response.resultData);
+      setLoading(false);
+      setError(null);
     } catch (error) {
       if (error instanceof Error) {
-        this.setState({ loading: false, error: error.message });
+        setLoading(false);
+        setError(error.message);
       } else {
-        this.setState({ loading: false, error: String(error) });
+        setLoading(false);
+        setError(String(error));
       }
     }
   };
+  return (
+    <div className="app-wrapper">
+      <SearchBar
+        currentQuery={currentQuery}
+        handleChangeSearchQuery={handleChangeSearchQuery}
+      />
 
-  render(): ReactNode {
-    return (
-      <div className="app-wrapper">
-        <SearchBar
-          currentQuery={this.state.currentQuery}
-          handleChangeSearchQuery={this.handleChangeSearchQuery}
-        />
+      <Catalog resultData={resultData} loading={loading} error={error} />
 
-        <Catalog
-          resultData={this.state.resultData}
-          loading={this.state.loading}
-          error={this.state.error}
-        />
-
-        <ErrorButton />
-      </div>
-    );
-  }
-}
+      <ErrorButton />
+    </div>
+  );
+};
 
 export default App;

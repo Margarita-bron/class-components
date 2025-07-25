@@ -1,2 +1,0 @@
-#!/bin/sh\n. \
-/_/husky.sh\\nnpm test
