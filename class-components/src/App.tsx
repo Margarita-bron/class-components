@@ -1,10 +1,10 @@
 import './App.css';
 import { Component, type ReactNode } from 'react';
-import { SearchBar } from './components/searchBar/SearchBar';
+import SearchBar from './components/searchBar/SearchBar';
 import { fetchBooks } from './service/books-api';
 import type { AppState } from './types/books-app-types';
-import { Catalog } from './components/catalog/Catalog';
-import { ErrorButton } from './components/errorButton/ErrorButton';
+import Catalog from './components/catalog/Catalog';
+import ErrorButton from './components/errorButton/ErrorButton';
 
 class App extends Component<object, AppState> {
   state = {
