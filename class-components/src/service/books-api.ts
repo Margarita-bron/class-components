@@ -1,13 +1,15 @@
 import type { Book, FetchBooksResponse } from '../types/books-app-types.ts';
 
-export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
+export async function fetchBooks(
+  query: string,
+  page: number
+): Promise<FetchBooksResponse> {
   try {
-    console.log(query.length);
+    const limit = 10;
     const url =
       query.length > 0
-        ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&page=1`
-        : 'https://openlibrary.org/search.json?q=book&limit=10&page=1';
-    //doesn`t have a request for all elements
+        ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page=${page}`
+        : `https://openlibrary.org/search.json?q=book&limit=${limit}&page=${page}`;
     const response = await fetch(url);
 
     if (!response.ok) {

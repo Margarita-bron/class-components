@@ -1,5 +1,4 @@
 import React, { useEffect, useState, type ChangeEvent } from 'react';
-import './search-bar.css';
 import type { SearchBarProps } from '../../types/search-bar-types.ts';
 
 const SearchBar: React.FC<SearchBarProps> = ({

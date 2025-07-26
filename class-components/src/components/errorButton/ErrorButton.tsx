@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './error-button.css';
 
 const ErrorButton: React.FC = () => {
   const [throwError, setThrowError] = useState(false);
