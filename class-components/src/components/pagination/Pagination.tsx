@@ -1,11 +1,5 @@
 import type { FC } from 'react';
-
-type PaginationProps = {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  loading: boolean;
-};
+import type { PaginationProps } from '../../types/pagination-types';
 
 const Pagination: FC<PaginationProps> = ({
   currentPage,

@@ -4,12 +4,11 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react';
-import '../../assets/styles/index';
 import { Link } from 'react-router-dom';
 import research from '../../assets/research.ico';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
+  { name: 'Library', href: '/', current: true },
   { name: 'About Us', href: '/about', current: false },
 ];
 

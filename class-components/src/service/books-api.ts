@@ -47,3 +47,46 @@ export async function fetchBooks(
     }
   }
 }
+
+export async function fetchBookDetail(
+  bookKey: string
+): Promise<{ resultData: Book | null; error: string | null }> {
+  try {
+    const response = await fetch(`https://openlibrary.org${bookKey}.json`);
+    if (!response.ok) {
+      throw new Error(
+        `ERROR: Failed to fetch detail ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    let description: string | undefined = undefined;
+    if ('description' in data) {
+      if (typeof data.description === 'string') {
+        description = data.description;
+      } else if (
+        typeof data.description === 'object' &&
+        data.description !== null &&
+        'value' in data.description
+      ) {
+        description = (data.description as { value: string }).value;
+      }
+    }
+
+    const book: Book = {
+      key: bookKey,
+      title: data.title,
+      author_name: data.author_name,
+      description,
+    };
+
+    return { resultData: book, error: null };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { resultData: null, error: error.message };
+    } else {
+      return { resultData: null, error: 'Unknown error' };
+    }
+  }
+}

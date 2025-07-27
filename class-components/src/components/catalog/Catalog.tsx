@@ -3,7 +3,7 @@ import type { Book } from '../../types/books-app-types';
 import type { CatalogProps } from '../../types/catalog-types';
 
 export default function Catalog(props: CatalogProps): ReactNode {
-  const { resultData, loading, error } = props;
+  const { resultData, loading, error, onSelectItem } = props;
   return (
     <div className="catalog">
       {loading && (
@@ -19,7 +19,7 @@ export default function Catalog(props: CatalogProps): ReactNode {
         <div className="catalog">
           <ul>
             {resultData.map((book: Book) => (
-              <li key={book.key}>
+              <li key={book.key} onClick={() => onSelectItem(book.key)}>
                 <strong>{book.title}</strong>
                 {book.author_name && (
                   <p>Author(s): {book.author_name.join(', ')}</p>

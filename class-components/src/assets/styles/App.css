@@ -9,6 +9,8 @@
 .app-wrapper{
   display: flex;
   flex-direction: column;
+  margin-top: 10vh;
+  position: relative;
   gap: 7vh;
 }
 
@@ -18,4 +20,12 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.catalog-detail-wrapper{
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 5vw;
+  align-items: center;
+  justify-content: center;
 }

@@ -16,3 +16,8 @@ export interface Book {
   author_name?: string[];
   description?: string;
 }
+
+export type BookCardProps = {
+  bookKey: string;
+  onClose: () => void;
+};
