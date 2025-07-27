@@ -29,6 +29,11 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
 
     fetchDetail();
   }, [bookKey]);
+
+  if (error) {
+    return <h1>error loading details</h1>;
+  }
+
   if (!book) return null;
 
   return (
@@ -53,7 +58,6 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
       >
         Close
       </button>
-      {error && <h1>error loading details</h1>}
     </div>
   );
 };

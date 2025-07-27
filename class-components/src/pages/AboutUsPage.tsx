@@ -47,13 +47,12 @@ const AboutUs: React.FC = () => {
             <a href="https://github.com/Margarita-bron" target="_blank">
               Student, Project Owner — Margarita Savonevskaya
             </a>{' '}
-            <p></p>
           </p>
         </div>
         <div className="about-page">
           {' '}
           <img
-            alt="student`s photo"
+            alt="mentor`s photo"
             src={mentor}
             width="100vw"
             className="inline-block rounded-full ring-2 ring-white"
@@ -62,12 +61,11 @@ const AboutUs: React.FC = () => {
             <a href="https://github.com/sergikenergy" target="_blank">
               Mentor — Sergei Kustov
             </a>{' '}
-            <p></p>
           </p>
         </div>
         <div className="about-page">
           <img
-            alt="student`s photo"
+            alt="school`s photo"
             src={school}
             width="100vw"
             className="inline-block rounded-full ring-2 ring-white"

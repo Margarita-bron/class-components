@@ -7,10 +7,11 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { SearchBar } from '../SearchBar';
 import App from '../../../App';
 import { fetchBooks } from '../../../service/books-api';
 import type { MockInstance } from 'vitest';
+import SearchBar from '../SearchBar';
+import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('../../../service/books-api');
 
@@ -24,7 +25,11 @@ describe('SearchBar Tests', () => {
       setItemMock = vi
         .spyOn(Storage.prototype, 'setItem')
         .mockImplementation(() => {});
-      render(<App />);
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      );
       input = (await screen.findByPlaceholderText(
         /Search.../i
       )) as HTMLInputElement;
@@ -39,6 +44,7 @@ describe('SearchBar Tests', () => {
 
     it('should update input value after user types', async () => {
       const newValue = 'test input';
+      await userEvent.clear(input);
       await userEvent.type(input, newValue);
       expect(input).toHaveValue(newValue);
     });
@@ -49,7 +55,10 @@ describe('SearchBar Tests', () => {
       await userEvent.type(input, newValue);
       await userEvent.click(button);
 
-      expect(setItemMock).toHaveBeenCalledWith('searchQuery', newValue);
+      expect(setItemMock).toHaveBeenCalledWith(
+        'searchQuery',
+        JSON.stringify(newValue)
+      );
     });
 
     it('should trigger search callback with correct parameters (trims whitespace from search input before saving)', async () => {
@@ -58,7 +67,7 @@ describe('SearchBar Tests', () => {
       await userEvent.click(button);
 
       await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith('query with whitespace');
+        expect(fetchBooks).toHaveBeenCalledWith('query with whitespace', 1);
       });
     });
 
@@ -83,22 +92,30 @@ describe('SearchBar Tests', () => {
 
     it('should retrieve saved search term on component mount from localStorage', async () => {
       const newValue = 'saved query';
-      getItemMock.mockReturnValueOnce(newValue);
+      getItemMock.mockReturnValueOnce(JSON.stringify(newValue));
 
-      render(<App />);
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      );
       expect(await screen.findByPlaceholderText(/Search.../i)).toHaveValue(
         newValue
       );
 
       await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith(newValue);
+        expect(fetchBooks).toHaveBeenCalledWith(newValue, 1);
       });
     });
 
     it('should overwrite existing localStorage value when new search is performed', async () => {
-      getItemMock.mockReturnValueOnce('old query');
+      getItemMock.mockReturnValueOnce(JSON.stringify('old query'));
 
-      render(<App />);
+      render(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      );
       const inputAfterMock = (await screen.findByPlaceholderText(
         /Search.../i
       )) as HTMLInputElement;
@@ -109,9 +126,12 @@ describe('SearchBar Tests', () => {
       await userEvent.type(inputAfterMock, newValue);
       await userEvent.click(buttonAfterMock);
 
-      expect(setItemMock).toHaveBeenCalledWith('searchQuery', newValue);
+      expect(setItemMock).toHaveBeenCalledWith(
+        'searchQuery',
+        JSON.stringify(newValue)
+      );
       await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith(newValue);
+        expect(fetchBooks).toHaveBeenCalledWith(newValue, 1);
       });
     });
 
@@ -126,7 +146,9 @@ describe('SearchBar Tests', () => {
     it('should save search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
       const mockHandle = vi.fn();
       render(
-        <SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />
+        <MemoryRouter>
+          <SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />
+        </MemoryRouter>
       );
 
       const input = screen.getByPlaceholderText(

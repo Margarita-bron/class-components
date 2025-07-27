@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Catalog } from '../Catalog';
 import {
   mockData,
   mockDataWithDescription,
   mockDataWithoutDescription,
 } from '../__mocks__/mockData';
+import Catalog from '../Catalog';
 
 type mockTypeWithoutDescription = {
   key: string;
@@ -29,7 +29,14 @@ function testBooks<T extends { title: string }>(
 
 describe('Card/Item Component Tests', () => {
   it('should display item name, authors and description correctly', async () => {
-    render(<Catalog resultData={mockData} loading={false} error={null} />);
+    render(
+      <Catalog
+        resultData={mockData}
+        loading={false}
+        error={null}
+        onSelectItem={() => {}}
+      />
+    );
     for (const book of mockData) {
       const listItem = screen.getByText(book.title).closest('li');
       expect(listItem).toBeInTheDocument();
@@ -46,6 +53,7 @@ describe('Card/Item Component Tests', () => {
         resultData={mockDataWithDescription}
         loading={false}
         error={null}
+        onSelectItem={() => {}}
       />
     );
 
@@ -63,6 +71,7 @@ describe('Card/Item Component Tests', () => {
         resultData={mockDataWithoutDescription}
         loading={false}
         error={null}
+        onSelectItem={() => {}}
       />
     );
 
@@ -80,6 +89,7 @@ describe('Card/Item Component Tests', () => {
         resultData={mockDataWithoutDescription}
         loading={false}
         error={null}
+        onSelectItem={() => {}}
       />
     );
 
@@ -96,6 +106,7 @@ describe('Card/Item Component Tests', () => {
         resultData={mockDataWithDescription}
         loading={false}
         error={null}
+        onSelectItem={() => {}}
       />
     );
 
