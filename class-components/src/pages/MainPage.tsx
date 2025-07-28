@@ -9,15 +9,18 @@ import { fetchBooks } from '../service/books-api.ts';
 import type { Book } from '../types/books-app-types.ts';
 
 const MainPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [currentQuery, setCurrentQuery] = useLocalStorage<string>(
     'searchQuery',
     'book'
   );
+  const queryFromUrl = searchParams.get('query') || 'book';
+
   const [resultData, setResultData] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = Number(searchParams.get('page') || '1');
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
@@ -25,6 +28,12 @@ const MainPage: React.FC = () => {
   const [selectedDetail, setSelectedDetail] = useState<string | null>(
     detailsKey
   );
+
+  useEffect(() => {
+    if (queryFromUrl !== currentQuery) {
+      setCurrentQuery(queryFromUrl);
+    }
+  }, [queryFromUrl]);
 
   useEffect(() => {
     if (pageFromUrl !== currentPage) {
