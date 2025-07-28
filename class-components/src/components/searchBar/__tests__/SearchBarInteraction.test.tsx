@@ -7,11 +7,11 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import App from '../../../App';
 import { fetchBooks } from '../../../service/books-api';
 import type { MockInstance } from 'vitest';
 import SearchBar from '../SearchBar';
 import { MemoryRouter } from 'react-router-dom';
+import MainPage from '../../../pages/MainPage';
 
 vi.mock('../../../service/books-api');
 
@@ -27,7 +27,7 @@ describe('SearchBar Tests', () => {
         .mockImplementation(() => {});
       render(
         <MemoryRouter>
-          <App />
+          <MainPage />
         </MemoryRouter>
       );
       input = (await screen.findByPlaceholderText(
@@ -96,7 +96,7 @@ describe('SearchBar Tests', () => {
 
       render(
         <MemoryRouter>
-          <App />
+          <MainPage />
         </MemoryRouter>
       );
       expect(await screen.findByPlaceholderText(/Search.../i)).toHaveValue(
@@ -113,7 +113,7 @@ describe('SearchBar Tests', () => {
 
       render(
         <MemoryRouter>
-          <App />
+          <MainPage />
         </MemoryRouter>
       );
       const inputAfterMock = (await screen.findByPlaceholderText(

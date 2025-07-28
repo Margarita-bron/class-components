@@ -15,7 +15,7 @@ const MainPage: React.FC = () => {
     'searchQuery',
     'book'
   );
-  const queryFromUrl = searchParams.get('query') || 'book';
+  const queryFromUrl = searchParams.get('query') || currentQuery;
 
   const [resultData, setResultData] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const MainPage: React.FC = () => {
   );
 
   useEffect(() => {
-    if (queryFromUrl !== currentQuery) {
+    if (searchParams.get('query') !== currentQuery) {
       setCurrentQuery(queryFromUrl);
     }
   }, [queryFromUrl]);
