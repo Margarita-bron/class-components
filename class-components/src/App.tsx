@@ -1,13 +1,15 @@
 import React from 'react';
 import Header from './components/header/Header';
 import './assets/styles/index.ts';
-import MainPage from './pages/MainPage.tsx';
+import { Outlet } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
     <>
       <Header />
-      <MainPage />
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 };

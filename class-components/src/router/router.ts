@@ -2,15 +2,19 @@ import { createBrowserRouter } from 'react-router-dom';
 import NotFound from '../pages/ErrorPage';
 import AboutUs from '../pages/AboutUsPage';
 import App from '../App';
+import MainPage from '../pages/MainPage';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     Component: App,
-  },
-  {
-    path: '/about',
-    Component: AboutUs,
+    children: [
+      { index: true, Component: MainPage },
+      {
+        path: '/about',
+        Component: AboutUs,
+      },
+    ],
   },
   {
     path: '*',

@@ -60,40 +60,41 @@ const MainPage: React.FC = () => {
   );
 
   const pageUrlParams = (
-    urlPage: URLSearchParams,
+    url: URLSearchParams,
     currentPage: number
   ): URLSearchParams => {
-    const params = new URLSearchParams(urlPage.toString());
+    const params = new URLSearchParams();
     params.set('query', currentQuery);
-    if (currentPage === 1) {
-      params.delete('page');
-    } else {
+    if (currentPage !== 1) {
       params.set('page', currentPage.toString());
+    }
+    const details = url.get('details');
+    if (details) {
+      params.set('details', details);
     }
 
     return params;
   };
 
   useEffect(() => {
-    if (currentQuery) {
-      handleFetchBooks(currentQuery, currentPage);
-      setSearchParams((urlPage) => {
-        return pageUrlParams(urlPage, currentPage);
-      });
-    }
-  }, [currentQuery, currentPage]);
+    if (!currentQuery) return;
+    handleFetchBooks(currentQuery, currentPage);
+    setSearchParams((url) => {
+      return pageUrlParams(url, currentPage);
+    });
+  }, [currentQuery, currentPage, selectedDetail, setSearchParams]);
 
   const openDetails = (key: string): void => {
-    setSearchParams((urlPage) => {
-      urlPage.set('details', key);
-      return pageUrlParams(urlPage, currentPage);
+    setSearchParams((url) => {
+      url.set('details', key);
+      return pageUrlParams(url, currentPage);
     });
   };
 
   const closeDetails = (): void => {
-    setSearchParams((urlPage) => {
-      urlPage.delete('details');
-      return pageUrlParams(urlPage, currentPage);
+    setSearchParams((url) => {
+      url.delete('details');
+      return pageUrlParams(url, currentPage);
     });
   };
 
