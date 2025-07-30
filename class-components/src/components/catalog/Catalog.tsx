@@ -5,7 +5,7 @@ import type { CatalogProps } from '../../types/catalog-types';
 export default function Catalog(props: CatalogProps): ReactNode {
   const { resultData, loading, error, onSelectItem } = props;
   return (
-    <div className="catalog">
+    <div className="catalog-wrapper">
       {loading && (
         <div className="flex items-center justify-center">
           <div
@@ -16,23 +16,48 @@ export default function Catalog(props: CatalogProps): ReactNode {
         </div>
       )}
       {resultData.length > 0 && loading === false && (
-        <div className="catalog">
-          <ul>
-            {resultData.map((book: Book) => (
-              <li key={book.key} onClick={() => onSelectItem(book.key)}>
-                <strong>{book.title}</strong>
-                {book.author_name && (
-                  <p>Author(s): {book.author_name.join(', ')}</p>
+        <ul>
+          {resultData.map((book: Book) => {
+            const coverUrl = book.cover_i
+              ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+              : undefined;
+            return (
+              <li
+                key={book.key}
+                className="catalog-item"
+                role="listitem"
+                onClick={() => onSelectItem(book.key)}
+              >
+                {coverUrl ? (
+                  <img
+                    src={coverUrl}
+                    alt={`Cover for ${book.title}`}
+                    className="h-auto w-20 flex-shrink-0 rounded object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    className="flex h-28 w-20 items-center justify-center rounded bg-gray-200 text-gray-400"
+                    aria-label="No cover available"
+                  >
+                    No Image
+                  </div>
                 )}
-                {book.description && (
-                  <p>
-                    <em>Description:</em> {book.description}
-                  </p>
-                )}
+                <div className="catalog-item_content">
+                  <strong>{book.title}</strong>
+                  {book.author_name && (
+                    <p>Author(s): {book.author_name.join(', ')}</p>
+                  )}
+                  {book.description && (
+                    <p>
+                      <em>Description:</em> {book.description}
+                    </p>
+                  )}
+                </div>
               </li>
-            ))}
-          </ul>
-        </div>
+            );
+          })}
+        </ul>
       )}
       {resultData.length === 0 && loading === false && <h1>data is empty</h1>}
       {error && <h1>error</h1>}

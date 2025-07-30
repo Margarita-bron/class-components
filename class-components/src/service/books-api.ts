@@ -19,6 +19,7 @@ export async function fetchBooks(
     const data = await response.json();
     const books: Book[] = data.docs.map((doc: Book) => {
       let description: string | undefined = undefined;
+      let cover_i: number | undefined = undefined;
       if ('description' in doc) {
         if (typeof doc.description === 'string') {
           description = doc.description;
@@ -30,11 +31,15 @@ export async function fetchBooks(
           description = (doc.description as { value: string }).value;
         }
       }
+      if ('cover_i' in doc) {
+        cover_i = doc.cover_i;
+      }
       return {
         key: doc.key,
         title: doc.title,
         author_name: doc.author_name,
         description,
+        cover_i,
       };
     });
 
@@ -62,6 +67,7 @@ export async function fetchBookDetail(
     const data = await response.json();
 
     let description: string | undefined = undefined;
+    let cover_i: number | undefined = undefined;
     if ('description' in data) {
       if (typeof data.description === 'string') {
         description = data.description;
@@ -73,12 +79,16 @@ export async function fetchBookDetail(
         description = (data.description as { value: string }).value;
       }
     }
+    if ('cover_i' in data) {
+      cover_i = data.cover_i;
+    }
 
     const book: Book = {
       key: bookKey,
       title: data.title,
       author_name: data.author_name,
       description,
+      cover_i,
     };
 
     return { resultData: book, error: null };

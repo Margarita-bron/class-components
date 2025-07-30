@@ -113,6 +113,12 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      closeDetails();
+    }
+  };
+
   const handleChangeSearchQuery = async (query: string): Promise<void> => {
     setCurrentQuery(query);
     setCurrentPage(1);
@@ -120,7 +126,10 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      <div className="app-wrapper">
+      <div
+        className="app-wrapper"
+        onClick={selectedDetail ? handleOutsideClick : undefined}
+      >
         <SearchBar
           currentQuery={currentQuery}
           handleChangeSearchQuery={handleChangeSearchQuery}

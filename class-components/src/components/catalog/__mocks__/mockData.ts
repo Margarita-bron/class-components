@@ -2,6 +2,7 @@ const mockData = [
   {
     author_key: ['OL18053A'],
     author_name: ['Edith Nesbit'],
+    cover_i: 324242,
     first_publish_year: 1973,
     key: '/works/OL99529W',
     language: ['spa', 'fre', 'eng'],
@@ -11,6 +12,7 @@ const mockData = [
   {
     author_key: ['OL1425869A'],
     author_name: ['Markus Zusak', 'ftgnjxfh'],
+    cover_i: 329242,
     first_publish_year: 1998,
     key: '/works/OL5819456W',
     language: [
@@ -37,6 +39,7 @@ const mockData = [
   {
     author_key: ['OL24461A'],
     author_name: ['Rudyard Kipling'],
+    cover_i: 324872,
     first_publish_year: 1893,
     key: '/works/OL19870W',
     language: ['rus', 'ger', 'fre', 'eng', 'chi', 'ita', 'spa', 'urd'],
@@ -46,6 +49,7 @@ const mockData = [
   {
     author_key: ['OL840964A'],
     author_name: ['Okakura Kakuzo'],
+    cover_i: 323545,
     first_publish_year: 1900,
     key: '/works/OL7095112W',
     language: ['jpn', 'vie', 'chi', 'fre', 'ger', 'epo', 'spa', 'gre', 'eng'],
@@ -57,6 +61,7 @@ const mockData = [
 export const mockBookDetailsData = {
   author_key: ['OL18053A'],
   author_name: ['Edith Nesbit'],
+  cover_i: 324242,
   first_publish_year: 1973,
   key: '/works/OL99529W',
   language: ['spa', 'fre', 'eng'],
@@ -67,6 +72,7 @@ export const mockBookDetailsData = {
 export type mockDataType = {
   author_key: string[];
   author_name: string[];
+  cover_i: number;
   first_publish_year: number;
   key: string;
   language: string[];

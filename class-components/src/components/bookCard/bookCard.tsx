@@ -30,10 +30,6 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
     fetchDetail();
   }, [bookKey]);
 
-  if (error) {
-    return <h1>error loading details</h1>;
-  }
-
   if (!book) return null;
 
   return (
@@ -47,17 +43,31 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
           ></div>
         </div>
       )}
-      <h2>{book.title}</h2>
-      <p>
-        <strong>Authors:</strong> {book.author_name?.join(', ')}
-      </p>
-      <p>{book.description}</p>
-      <button
-        onClick={onClose}
-        className="mb-4 text-indigo-600 hover:text-indigo-900"
-      >
-        Close
-      </button>
+      {!loading && error && <h1>error loading details</h1>}
+
+      {!loading && !error && book && (
+        <>
+          {book.cover_i && (
+            <img
+              src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
+              alt={`Cover for ${book.title}`}
+              className="h-auto w-20 flex-shrink-0 rounded object-cover"
+              loading="lazy"
+            />
+          )}
+          <h2>{book.title}</h2>
+          <p>
+            <strong>Authors:</strong> {book.author_name?.join(', ')}
+          </p>
+          <p>{book.description}</p>
+          <button
+            onClick={onClose}
+            className="mb-4 text-indigo-600 hover:text-indigo-900"
+          >
+            Close
+          </button>
+        </>
+      )}
     </div>
   );
 };
