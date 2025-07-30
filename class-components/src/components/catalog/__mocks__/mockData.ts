@@ -32,6 +32,7 @@ const mockData = [
       'chi',
     ],
     title: 'The Book Thief',
+    description: 'dtyghujkhgtfdedrtgyhujewf',
   },
   {
     author_key: ['OL24461A'],
@@ -40,6 +41,7 @@ const mockData = [
     key: '/works/OL19870W',
     language: ['rus', 'ger', 'fre', 'eng', 'chi', 'ita', 'spa', 'urd'],
     title: 'The Jungle Book',
+    description: 'dtyghujkhgdscetfdedrtgyhujewf',
   },
   {
     author_key: ['OL840964A'],
@@ -51,6 +53,26 @@ const mockData = [
     description: 'dtyghujkhgtfdeegrdrtgyhuj',
   },
 ];
+
+export const mockBookDetailsData = {
+  author_key: ['OL18053A'],
+  author_name: ['Edith Nesbit'],
+  first_publish_year: 1973,
+  key: '/works/OL99529W',
+  language: ['spa', 'fre', 'eng'],
+  title: 'The Book of Dragons',
+  description: 'dtyghujkhgtfdedrtgyhuj',
+};
+
+export type mockDataType = {
+  author_key: string[];
+  author_name: string[];
+  first_publish_year: number;
+  key: string;
+  language: string[];
+  title: string;
+  description: string;
+};
 
 const mockDataWithDescription = [
   {
