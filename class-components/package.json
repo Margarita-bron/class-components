@@ -14,11 +14,14 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.6",
     "@tailwindcss/vite": "^4.1.11",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router": "^7.7.1",
+    "react-router-dom": "^7.7.1",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {

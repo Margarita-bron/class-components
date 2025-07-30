@@ -24,12 +24,17 @@ export default tseslint.config([
         version: 'detect',
       },
     },
+    env: {
+      node: true,
+      browser: true,
+      vitest: true,
+    },
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.jest,
+        ...globals.vitest,
       },
       parser: tseslint.parser,
       parserOptions: {

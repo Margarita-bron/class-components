@@ -1,13 +1,15 @@
 import type { Book, FetchBooksResponse } from '../types/books-app-types.ts';
 
-export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
+export async function fetchBooks(
+  query: string,
+  page: number
+): Promise<FetchBooksResponse> {
   try {
-    console.log(query.length);
+    const limit = 10;
     const url =
       query.length > 0
-        ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10&page=1`
-        : 'https://openlibrary.org/search.json?q=book&limit=10&page=1';
-    //doesn`t have a request for all elements
+        ? `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page=${page}`
+        : `https://openlibrary.org/search.json?q=book&limit=${limit}&page=${page}`;
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -17,6 +19,7 @@ export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
     const data = await response.json();
     const books: Book[] = data.docs.map((doc: Book) => {
       let description: string | undefined = undefined;
+      let cover_i: number | undefined = undefined;
       if ('description' in doc) {
         if (typeof doc.description === 'string') {
           description = doc.description;
@@ -28,11 +31,15 @@ export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
           description = (doc.description as { value: string }).value;
         }
       }
+      if ('cover_i' in doc) {
+        cover_i = doc.cover_i;
+      }
       return {
         key: doc.key,
         title: doc.title,
         author_name: doc.author_name,
         description,
+        cover_i,
       };
     });
 
@@ -42,6 +49,54 @@ export async function fetchBooks(query: string): Promise<FetchBooksResponse> {
       return { resultData: [], error: error.message };
     } else {
       return { resultData: [], error: 'Unknown error' };
+    }
+  }
+}
+
+export async function fetchBookDetail(
+  bookKey: string
+): Promise<{ resultData: Book | null; error: string | null }> {
+  try {
+    const response = await fetch(`https://openlibrary.org${bookKey}.json`);
+    if (!response.ok) {
+      throw new Error(
+        `ERROR: Failed to fetch detail ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    let description: string | undefined = undefined;
+    let cover_i: number | undefined = undefined;
+    if ('description' in data) {
+      if (typeof data.description === 'string') {
+        description = data.description;
+      } else if (
+        typeof data.description === 'object' &&
+        data.description !== null &&
+        'value' in data.description
+      ) {
+        description = (data.description as { value: string }).value;
+      }
+    }
+    if ('cover_i' in data) {
+      cover_i = data.cover_i;
+    }
+
+    const book: Book = {
+      key: bookKey,
+      title: data.title,
+      author_name: data.author_name,
+      description,
+      cover_i,
+    };
+
+    return { resultData: book, error: null };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { resultData: null, error: error.message };
+    } else {
+      return { resultData: null, error: 'Unknown error' };
     }
   }
 }

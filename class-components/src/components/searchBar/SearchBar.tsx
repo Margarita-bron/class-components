@@ -1,48 +1,40 @@
-import { Component, type ChangeEvent, type ReactNode } from 'react';
-import './search-bar.css';
-import type {
-  SearchBarProps,
-  SearchBarState,
-} from '../../types/search-bar-types.ts';
+import React, { useEffect, useState, type ChangeEvent } from 'react';
+import type { SearchBarProps } from '../../types/search-bar-types.ts';
 
-export class SearchBar extends Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.state = {
-      query: props.currentQuery,
-    };
-  }
+const SearchBar: React.FC<SearchBarProps> = ({
+  currentQuery,
+  handleChangeSearchQuery,
+}) => {
+  const [query, setQuery] = useState(currentQuery);
 
-  componentDidUpdate(prevProps: SearchBarProps): void {
-    if (prevProps.currentQuery !== this.props.currentQuery) {
-      this.setState({ query: this.props.currentQuery });
-    }
-  }
+  useEffect(() => {
+    setQuery(currentQuery);
+  }, [currentQuery]);
 
-  handleQuery = (e: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ query: e.target.value });
+  const handleQuery = (e: ChangeEvent<HTMLInputElement>): void => {
+    setQuery(e.target.value);
   };
 
-  handleSearchButton = (): void => {
-    const pureQuery = this.state.query.trim();
-    this.props.handleChangeSearchQuery(pureQuery);
+  const handleSearchButton = (): void => {
+    const pureQuery = query.trim();
+    handleChangeSearchQuery(pureQuery);
   };
 
-  render(): ReactNode {
-    return (
-      <div className="search-wrapper">
-        <input
-          className="search-input"
-          name="Search Books Input"
-          type="text"
-          placeholder="Search..."
-          value={this.state.query}
-          onChange={this.handleQuery}
-        />
-        <button className="search-button" onClick={this.handleSearchButton}>
-          Search
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="search-wrapper">
+      <input
+        className="search-input"
+        name="Search Books Input"
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={handleQuery}
+      />
+      <button className="search-button" onClick={handleSearchButton}>
+        Search
+      </button>
+    </div>
+  );
+};
+
+export default SearchBar;

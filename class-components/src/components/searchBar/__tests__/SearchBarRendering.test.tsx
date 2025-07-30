@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { SearchBar } from '../SearchBar';
+import SearchBar from '../SearchBar';
 
-describe('SearchBar', () => {
+describe('SearchBar Tests', () => {
   it('renders search input and search button', () => {
     render(<SearchBar currentQuery="" handleChangeSearchQuery={() => {}} />);
     expect(screen.getByPlaceholderText(/Search.../i)).toBeInTheDocument();

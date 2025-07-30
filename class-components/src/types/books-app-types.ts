@@ -15,4 +15,10 @@ export interface Book {
   title: string;
   author_name?: string[];
   description?: string;
+  cover_i?: number;
 }
+
+export type BookCardProps = {
+  bookKey: string;
+  onClose: () => void;
+};

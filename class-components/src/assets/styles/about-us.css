@@ -1,0 +1,18 @@
+.about-page{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3vw;
+}
+
+.about-us-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+
+.about-description{
+  text-align: start;
+}
