@@ -1,6 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import research from '../../assets/research.ico';
+import './header.css';
 
 const navigation = [
   { name: 'Library', href: '/', current: true },
@@ -11,7 +11,7 @@ function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-const Header: React.FC = () => {
+export const Header = () => {
   return (
     <div className="header bg-gray-700">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -46,4 +46,3 @@ const Header: React.FC = () => {
     </div>
   );
 };
-export default Header;

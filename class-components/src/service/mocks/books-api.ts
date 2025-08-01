@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { mockDataType } from '../../components/catalog/__mocks__/mockData';
+import type { mockDataType } from '../../components/catalog/mocks/mockData';
 
 export const fetchBooks = vi.fn(() =>
   Promise.resolve({ resultData: ['book1', 'book2'] })

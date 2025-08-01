@@ -1,23 +1,24 @@
 import { createBrowserRouter } from 'react-router-dom';
-import NotFound from '../pages/NotFoundPage';
-import AboutUs from '../pages/AboutUsPage';
-import App from '../App';
-import MainPage from '../pages/MainPage';
+import { AboutUsPage } from '../pages/about-us/AboutUsPage';
+import { MainPage } from '../pages/MainPage';
+import { NotFoundPage } from '../pages/NotFoundPage';
+import { BaseLayout } from '../layout/base-layout';
+import { Paths } from './pathes';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    Component: App,
+    path: Paths.ROOT,
+    Component: BaseLayout,
     children: [
       { index: true, Component: MainPage },
       {
-        path: '/about',
-        Component: AboutUs,
+        path: Paths.ABOUT_US,
+        Component: AboutUsPage,
       },
     ],
   },
   {
-    path: '*',
-    Component: NotFound,
+    path: Paths.OTHERS_ROOT,
+    Component: NotFoundPage,
   },
 ]);

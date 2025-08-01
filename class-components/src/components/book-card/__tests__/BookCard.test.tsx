@@ -6,9 +6,9 @@ vi.mock('../../../service/books-api', () => ({
 import { fetchBookDetail } from '../../../service/books-api';
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { mockData } from '../../catalog/__mocks__/mockData';
-import type { Book } from '../../../types/books-app-types';
-import BookCard from '../bookCard';
+import { mockData } from '../../catalog/mocks/mockData';
+import type { Book } from '../../../types/book';
+import { BookCard } from '../bookCard';
 
 describe('BookCard component Tests', () => {
   const mockBookKey = '/works/OL99529W';
@@ -53,7 +53,7 @@ describe('BookCard component Tests', () => {
     fetchBookDetailMock.mockResolvedValue({ resultData: null, error: null });
 
     const { container } = render(
-      <BookCard bookKey={mockBookKey} onClose={mockOnClose} />
+      <BookCard bookKey={''} onClose={mockOnClose} />
     );
 
     expect(container.firstChild).toBeNull();

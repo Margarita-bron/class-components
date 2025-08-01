@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { mockData } from '../__mocks__/mockData';
-import Catalog from '../Catalog';
+import { mockData } from '../mocks/mockData';
+import { Catalog } from '../Catalog';
 
 describe('Results/CardList Component Tests', () => {
   describe('Error Handling Tests', () => {

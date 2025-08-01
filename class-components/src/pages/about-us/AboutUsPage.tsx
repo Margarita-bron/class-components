@@ -1,11 +1,10 @@
-import type React from 'react';
-import avatar from '../assets/images/author.jpg';
-import school from '../assets/images/school.svg';
-import mentor from '../assets/images/mentor.jpg';
-import '../assets/styles/index';
+import author from './images/author.jpg';
+import school from './images/school.svg';
+import mentor from './images/mentor.jpg';
 import { useNavigate } from 'react-router-dom';
+import './about-us.css';
 
-const AboutUs: React.FC = () => {
+export const AboutUsPage = () => {
   const navigate = useNavigate();
   const handleClick = (): void => {
     navigate('/');
@@ -39,7 +38,7 @@ const AboutUs: React.FC = () => {
           {' '}
           <img
             alt="student`s photo"
-            src={avatar}
+            src={author}
             width="100vw"
             className="inline-block rounded-full ring-2 ring-white"
           />
@@ -90,5 +89,3 @@ const AboutUs: React.FC = () => {
     </div>
   );
 };
-
-export default AboutUs;

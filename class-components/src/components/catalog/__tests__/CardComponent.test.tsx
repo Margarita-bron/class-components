@@ -3,8 +3,8 @@ import {
   mockData,
   mockDataWithDescription,
   mockDataWithoutDescription,
-} from '../__mocks__/mockData';
-import Catalog from '../Catalog';
+} from '../mocks/mockData';
+import { Catalog } from '../Catalog';
 
 type mockTypeWithoutDescription = {
   key: string;

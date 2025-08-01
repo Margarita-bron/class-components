@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Catalog from '../Catalog';
+import { Catalog } from '../Catalog';
 
 describe('Loading component tests', () => {
   it('should render loading indicator', () => {

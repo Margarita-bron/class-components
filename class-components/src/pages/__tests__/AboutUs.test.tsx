@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import AboutUs from '../AboutUsPage';
+import { AboutUsPage } from '../about-us/AboutUsPage';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const mockedNavigate = vi.fn();
@@ -13,7 +13,7 @@ describe('AboutUs component Tests', () => {
     mockedNavigate.mockClear();
     render(
       <MemoryRouter>
-        <AboutUs />
+        <AboutUsPage />
       </MemoryRouter>
     );
   });

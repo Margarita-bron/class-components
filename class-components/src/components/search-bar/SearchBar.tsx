@@ -1,10 +1,19 @@
-import React, { useEffect, useState, type ChangeEvent } from 'react';
-import type { SearchBarProps } from '../../types/search-bar-types.ts';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import './search-bar.css';
 
-const SearchBar: React.FC<SearchBarProps> = ({
+export type SearchBarProps = {
+  currentQuery: string;
+  handleChangeSearchQuery: (_query: string) => void;
+};
+
+export type SearchBarState = {
+  query: string;
+};
+
+export const SearchBar = ({
   currentQuery,
   handleChangeSearchQuery,
-}) => {
+}: SearchBarProps) => {
   const [query, setQuery] = useState(currentQuery);
 
   useEffect(() => {
@@ -36,5 +45,3 @@ const SearchBar: React.FC<SearchBarProps> = ({
     </div>
   );
 };
-
-export default SearchBar;

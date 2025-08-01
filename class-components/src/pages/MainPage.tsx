@@ -1,21 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useLocalStorage } from '../__hooks__/useLocalStorage.ts';
-import BookCard from '../components/bookCard/bookCard.tsx';
-import Catalog from '../components/catalog/Catalog.tsx';
-import Pagination from '../components/pagination/Pagination.tsx';
-import SearchBar from '../components/searchBar/SearchBar.tsx';
+import { useLocalStorage } from '../hooks/use-local-storage.ts';
+import { BookCard } from '../components/book-card/bookCard.tsx';
+import { Pagination } from '../components/pagination/Pagination.tsx';
+import { SearchBar } from '../components/search-bar/SearchBar.tsx';
 import { fetchBooks } from '../service/books-api.ts';
-import type { Book } from '../types/books-app-types.ts';
+import type { Book } from '../types/book.ts';
+import { Catalog } from '../components/catalog/Catalog.tsx';
+import { getInitialValueFromLocalStorage } from '../hooks/utils/get-initial-value-from-local-storage.ts';
 
-const MainPage: React.FC = () => {
+export const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const initialValue = getInitialValueFromLocalStorage('searchQuery', 'book');
   const [currentQuery, setCurrentQuery] = useLocalStorage<string>(
     'searchQuery',
-    'book'
+    initialValue
   );
-  const queryFromUrl = searchParams.get('query') || currentQuery;
+  const queryFromUrl = searchParams.get('query') || initialValue;
 
   const [resultData, setResultData] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
@@ -28,12 +30,6 @@ const MainPage: React.FC = () => {
   const [selectedDetail, setSelectedDetail] = useState<string | null>(
     detailsKey
   );
-
-  useEffect(() => {
-    if (searchParams.get('query') !== currentQuery) {
-      setCurrentQuery(queryFromUrl);
-    }
-  }, [queryFromUrl]);
 
   useEffect(() => {
     if (pageFromUrl !== currentPage) {
@@ -54,13 +50,10 @@ const MainPage: React.FC = () => {
       try {
         const response = await fetchBooks(query, page);
         setResultData(response.resultData);
-        setError(null);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
+        error instanceof Error
+          ? setError(error.message)
+          : setError(String(error));
       } finally {
         setLoading(false);
       }
@@ -91,7 +84,7 @@ const MainPage: React.FC = () => {
     setSearchParams((url) => {
       return pageUrlParams(url, currentPage);
     });
-  }, [currentQuery, currentPage, selectedDetail, setSearchParams]);
+  }, [currentQuery, currentPage, setSearchParams]);
 
   const openDetails = (key: string): void => {
     setSearchParams((url) => {
@@ -147,15 +140,14 @@ const MainPage: React.FC = () => {
           )}
         </div>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={10}
-          onPageChange={onPageChange}
-          loading={loading}
-        />
+        {!loading && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={10}
+            onPageChange={onPageChange}
+          />
+        )}
       </div>
     </>
   );
 };
-
-export default MainPage;

@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import type { Book, BookCardProps } from '../../types/books-app-types';
+import { useEffect, useState } from 'react';
+import type { Book } from '../../types/book';
 import { fetchBookDetail } from '../../service/books-api';
+import { ErrorElement } from '../../ui/ErrorElement';
+import { Loading } from '../../ui/Loading';
 
-const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
+export type BookCardProps = {
+  bookKey: string;
+  onClose: () => void;
+};
+
+export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,13 +22,8 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
       try {
         const response = await fetchBookDetail(bookKey);
         setBook(response.resultData);
-        setError(null);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
+        setError(error instanceof Error ? error.message : String(error));
       } finally {
         setLoading(false);
       }
@@ -30,20 +32,12 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
     fetchDetail();
   }, [bookKey]);
 
-  if (!book) return null;
+  if (!book && !error) return null;
 
   return (
     <div className="detail-panel w-1/3 border-l border-gray-300 p-4">
-      {loading && (
-        <div className="flex items-center justify-center">
-          <div
-            role="status"
-            aria-label="loading"
-            className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"
-          ></div>
-        </div>
-      )}
-      {!loading && error && <h1>error loading details</h1>}
+      {loading && <Loading />}
+      {!loading && error && <ErrorElement errorContext="details" />}
 
       {!loading && !error && book && (
         <>
@@ -71,5 +65,3 @@ const BookCard: React.FC<BookCardProps> = ({ bookKey, onClose }) => {
     </div>
   );
 };
-
-export default BookCard;

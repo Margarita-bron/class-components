@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
-import NotFound from '../NotFoundPage';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NotFoundPage } from '../NotFoundPage';
 
 const mockedNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
@@ -14,7 +14,7 @@ describe('Error Page Tests', () => {
     mockedNavigate.mockClear();
     render(
       <MemoryRouter>
-        <NotFound />
+        <NotFoundPage />
       </MemoryRouter>
     );
   });
