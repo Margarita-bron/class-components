@@ -4,7 +4,7 @@ ul{
   gap: 5px;
 }
 
-.catalog-item{
+.catalog-item-wrapper{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -12,6 +12,9 @@ ul{
 
   border: 1px solid black;
   border-radius: 5px;
+
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .catalog-item_content{
@@ -28,4 +31,24 @@ ul{
 .catalog-item__theme-dark{
   background-color: oklch(0.31 0.05 264.72);
   color:#e0e4e7;
+}
+
+.catalog-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3%;
+}
+
+.book-item-checkbox{
+  width: 15px;
+  height: 15px;
+
+  accent-color: #2b67ea; 
+  cursor: pointer;
+}
+
+.book-item-checkbox:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); 
 }

@@ -32,6 +32,13 @@ export const MainPage = () => {
   );
 
   useEffect(() => {
+    if (queryFromUrl !== currentQuery) {
+      setCurrentQuery(queryFromUrl);
+      setCurrentPage(1);
+    }
+  }, [queryFromUrl]);
+
+  useEffect(() => {
     if (pageFromUrl !== currentPage) {
       setCurrentPage(pageFromUrl);
     }
@@ -84,7 +91,7 @@ export const MainPage = () => {
     setSearchParams((url) => {
       return pageUrlParams(url, currentPage);
     });
-  }, [currentQuery, currentPage, setSearchParams]);
+  }, [currentQuery, currentPage]);
 
   const openDetails = (key: string): void => {
     setSearchParams((url) => {

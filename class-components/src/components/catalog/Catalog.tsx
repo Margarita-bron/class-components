@@ -17,7 +17,7 @@ export type CatalogProps = {
 
 export const Catalog = (props: CatalogProps): ReactNode => {
   const { resultData, loading, error, onSelectItem } = props;
-  const { themeStyle, toggleTheme } = useContext(ThemeContext);
+  const { themeStyle } = useContext(ThemeContext);
   return (
     <div className="catalog-wrapper">
       {loading && <Loading />}
@@ -28,13 +28,12 @@ export const Catalog = (props: CatalogProps): ReactNode => {
               <li
                 key={book.key}
                 className={classes(
-                  'catalog-item',
+                  'catalog-item-wrapper',
                   themeStyle == 'light'
                     ? 'catalog-item__theme-light bg-gray-200'
                     : 'catalog-item__theme-dark'
                 )}
                 role="listitem"
-                onClick={() => onSelectItem(book.key)}
               >
                 <BookItem book={book} onSelectItem={onSelectItem} />
               </li>
