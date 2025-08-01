@@ -20,3 +20,12 @@ ul{
   justify-content: flex-start;
   align-items: flex-start;
 }
+
+.catalog-item__theme-light{
+  color:#212529
+}
+
+.catalog-item__theme-dark{
+  background-color: oklch(0.31 0.05 264.72);
+  color:#e0e4e7;
+}

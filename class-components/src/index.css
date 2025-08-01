@@ -65,3 +65,14 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.body-container__theme-light{
+  background-color: #f8f9fa;
+  color:#212529
+}
+
+.body-container__theme-dark{
+  background-color: #27293d;
+  color:#e0e4e7;
+}
+

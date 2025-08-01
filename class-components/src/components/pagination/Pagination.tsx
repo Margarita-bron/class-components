@@ -1,4 +1,8 @@
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/theme-context';
 import { SwitchButton } from './ui/switch-button';
+import classes from 'classnames';
+import '../../index.css';
 
 export type PaginationProps = {
   currentPage: number;
@@ -19,11 +23,26 @@ export const Pagination = ({
   totalPages,
   onPageChange,
 }: PaginationProps) => {
+  const { themeStyle } = useContext(ThemeContext);
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div
+      className={classes(
+        'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6',
+        themeStyle == 'light'
+          ? 'body-container__theme-light'
+          : 'body-container__theme-dark'
+      )}
+    >
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm text-gray-700">
+          <p
+            className={classes(
+              'text-gray-700" text-sm',
+              themeStyle == 'light'
+                ? 'body-container__theme-light'
+                : 'body-container__theme-dark'
+            )}
+          >
             Showing{' '}
             <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
             <span className="font-medium">
@@ -41,8 +60,7 @@ export const Pagination = ({
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              &#8592;
-              <span className="sr-only">Previous</span>
+              &#8592; Previous
             </SwitchButton>
 
             {setPageArray(totalPages).map((page) => (
@@ -50,11 +68,15 @@ export const Pagination = ({
                 key={page}
                 onClick={() => onPageChange(page)}
                 aria-current={page === currentPage ? 'page' : undefined}
-                className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:outline-offset-0 ${
+                className={classes(
+                  'relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:outline-offset-0',
                   page === currentPage
                     ? 'z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                    : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20'
-                }`}
+                    : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20',
+                  themeStyle == 'light'
+                    ? 'body-container__theme-light'
+                    : 'body-container__theme-dark'
+                )}
               >
                 {page}
               </button>
@@ -65,8 +87,7 @@ export const Pagination = ({
               disabled={currentPage === totalPages}
               classes="ml-3"
             >
-              <span className="sr-only">Next</span>
-              &#8594;
+              Next &#8594;
             </SwitchButton>
           </nav>
         </div>

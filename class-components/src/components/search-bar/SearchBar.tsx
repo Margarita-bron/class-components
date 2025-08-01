@@ -1,5 +1,8 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useContext, useEffect, useState, type ChangeEvent } from 'react';
 import './search-bar.css';
+import { ThemeContext } from '../../context/theme-context';
+import classes from 'classnames';
+import '../../index.css';
 
 export type SearchBarProps = {
   currentQuery: string;
@@ -15,6 +18,7 @@ export const SearchBar = ({
   handleChangeSearchQuery,
 }: SearchBarProps) => {
   const [query, setQuery] = useState(currentQuery);
+  const { themeStyle } = useContext(ThemeContext);
 
   useEffect(() => {
     setQuery(currentQuery);
@@ -30,7 +34,14 @@ export const SearchBar = ({
   };
 
   return (
-    <div className="search-wrapper">
+    <div
+      className={classes(
+        'search-wrapper',
+        themeStyle === 'light'
+          ? 'search-wrapper__theme-light'
+          : 'search-wrapper__theme-dark'
+      )}
+    >
       <input
         className="search-input"
         name="Search Books Input"

@@ -3,14 +3,23 @@ import school from './images/school.svg';
 import mentor from './images/mentor.jpg';
 import { useNavigate } from 'react-router-dom';
 import './about-us.css';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/theme-context';
+import classes from 'classnames';
 
 export const AboutUsPage = () => {
   const navigate = useNavigate();
   const handleClick = (): void => {
     navigate('/');
   };
+  const { themeStyle } = useContext(ThemeContext);
   return (
-    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div
+      className={classes(
+        'relative isolate px-6 py-24 sm:py-32 lg:px-8',
+        themeStyle == 'light' ? 'bg-white' : 'bg-black'
+      )}
+    >
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"
@@ -25,11 +34,21 @@ export const AboutUsPage = () => {
       </div>
       <div className="mx-auto max-w-4xl text-center">
         <h2 className="text-base/7 font-semibold text-indigo-600">About Us</h2>
-        <p className="mt-2 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl">
+        <p
+          className={classes(
+            'mt-2 text-6xl font-semibold tracking-tight text-balance sm:text-6xl',
+            themeStyle == 'light' ? 'text-gray-900' : 'text-gray-400'
+          )}
+        >
           Our Collaboration
         </p>
       </div>
-      <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-gray-600 sm:text-xl/8">
+      <p
+        className={classes(
+          'mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty sm:text-xl/8',
+          themeStyle == 'light' ? 'text-gray-600' : 'text-gray-500'
+        )}
+      >
         This project is aimed at introducing the basics of React to students,
         through the development of weekly sprints
       </p>
@@ -69,7 +88,12 @@ export const AboutUsPage = () => {
             width="100vw"
             className="inline-block rounded-full ring-2 ring-white"
           />
-          <p className="about-description">
+          <p
+            className={classes(
+              'about-description',
+              themeStyle == 'light' ? 'text-gray-900' : 'text-gray-500'
+            )}
+          >
             <a href="https://rs.school/" target="_blank">
               RSSchool (The Rolling Scopes School)
             </a>{' '}

@@ -1,19 +1,25 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import research from '../../assets/research.ico';
 import './header.css';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/theme-context';
+import classes from 'classnames';
+import { ChangeThemeIcon } from './ui/change-theme-icon';
 
 const navigation = [
-  { name: 'Library', href: '/', current: true },
-  { name: 'About Us', href: '/about', current: false },
+  { name: 'Library', href: '/' },
+  { name: 'About Us', href: '/about' },
 ];
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
-
 export const Header = () => {
+  const { themeStyle } = useContext(ThemeContext);
   return (
-    <div className="header bg-gray-700">
+    <div
+      className={classes(
+        'header',
+        themeStyle == 'light' ? 'bg-gray-200' : 'bg-gray-900'
+      )}
+    >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
@@ -24,22 +30,24 @@ export const Header = () => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <Link
+                  <NavLink
                     key={item.name}
                     to={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium'
-                    )}
+                    className={({ isActive }) =>
+                      classes(
+                        isActive
+                          ? `${themeStyle == 'light' ? 'active__theme-light' : 'active__theme-dark'}`
+                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'rounded-md px-3 py-2 text-sm font-medium'
+                      )
+                    }
                   >
                     {item.name}
-                  </Link>
+                  </NavLink>
                 ))}
               </div>
             </div>
+            <ChangeThemeIcon />
           </div>
         </div>
       </div>

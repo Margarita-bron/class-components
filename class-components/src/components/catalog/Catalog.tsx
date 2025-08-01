@@ -1,10 +1,12 @@
-import { type ReactNode } from 'react';
+import { useContext, type ReactNode } from 'react';
 import type { Book } from '../../types/book';
 import { ErrorElement } from '../../ui/ErrorElement';
 import type { Nullable } from 'vitest';
 import { Loading } from '../../ui/Loading';
 import { BookItem } from './ui/BookItem';
 import './catalog.css';
+import { ThemeContext } from '../../context/theme-context';
+import classes from 'classnames';
 
 export type CatalogProps = {
   resultData: Book[];
@@ -15,6 +17,7 @@ export type CatalogProps = {
 
 export const Catalog = (props: CatalogProps): ReactNode => {
   const { resultData, loading, error, onSelectItem } = props;
+  const { themeStyle, toggleTheme } = useContext(ThemeContext);
   return (
     <div className="catalog-wrapper">
       {loading && <Loading />}
@@ -24,7 +27,12 @@ export const Catalog = (props: CatalogProps): ReactNode => {
             return (
               <li
                 key={book.key}
-                className="catalog-item"
+                className={classes(
+                  'catalog-item',
+                  themeStyle == 'light'
+                    ? 'catalog-item__theme-light bg-gray-200'
+                    : 'catalog-item__theme-dark'
+                )}
                 role="listitem"
                 onClick={() => onSelectItem(book.key)}
               >

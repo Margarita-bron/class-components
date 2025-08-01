@@ -6,12 +6,18 @@
   text-align: center;
 }
 
+.page-container{
+  padding-top: 64px;
+  box-sizing: content-box;
+  
+}
+
 .app-wrapper{
   display: flex;
   flex-direction: column;
-  margin-top: 10vh;
   position: relative;
-  gap: 7vh;
+  gap: 3vh;
+  padding: 2% 0;
 }
 
 .card {
@@ -29,3 +35,4 @@
   align-items: center;
   justify-content: center;
 }
+

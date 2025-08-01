@@ -1,8 +1,23 @@
-
-.header{
+.header {
   position: fixed;
   z-index: 8;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
+  height: 64px;
+}
+
+.bg-gray-900 {
+  background-color: oklch(0.31 0.05 264.72);
+}
+
+.bg-gray-200 {
+    background-color: oklch(0.96 0.01 275.67);
+}
+
+.active__theme-dark{
+  background-color: oklch(40.091% 0.06655 264.771);
+}
+.active__theme-light{
+background-color: oklch(0.84 0.03 266.54);
 }
