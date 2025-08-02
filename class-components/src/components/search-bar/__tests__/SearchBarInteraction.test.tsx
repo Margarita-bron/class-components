@@ -11,7 +11,7 @@ import { fetchBooks } from '../../../service/books-api';
 import type { MockInstance } from 'vitest';
 import { SearchBar } from '../SearchBar';
 import { MemoryRouter } from 'react-router-dom';
-import { MainPage } from '../../../pages/MainPage';
+import { MainPage } from '../../../pages/main-page/MainPage';
 
 vi.mock('../../../service/books-api');
 

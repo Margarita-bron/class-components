@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/use-local-storage.ts';
-import { BookCard } from '../components/book-card/bookCard.tsx';
-import { Pagination } from '../components/pagination/Pagination.tsx';
-import { SearchBar } from '../components/search-bar/SearchBar.tsx';
-import { fetchBooks } from '../service/books-api.ts';
-import type { Book } from '../types/book.ts';
-import { Catalog } from '../components/catalog/Catalog.tsx';
-import { getInitialValueFromLocalStorage } from '../hooks/utils/get-initial-value-from-local-storage.ts';
+import { useLocalStorage } from '../../hooks/use-local-storage.ts';
+import { BookCard } from '../../components/book-card/bookCard.tsx';
+import { Pagination } from '../../components/pagination/Pagination.tsx';
+import { SearchBar } from '../../components/search-bar/SearchBar.tsx';
+import { fetchBooks } from '../../service/books-api.ts';
+import type { Book } from '../../types/book.ts';
+import { Catalog } from '../../components/catalog/Catalog.tsx';
+import { getInitialValueFromLocalStorage } from '../../hooks/utils/get-initial-value-from-local-storage.ts';
+import { Modal } from './components/modal/Modal.tsx';
 
 export const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -154,6 +155,7 @@ export const MainPage = () => {
             onPageChange={onPageChange}
           />
         )}
+        <Modal />
       </div>
     </>
   );
