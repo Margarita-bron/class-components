@@ -10,6 +10,8 @@ ul{
   align-items: center;
   gap: 3%;
 
+  width: 90%;
+
   border: 1px solid black;
   border-radius: 5px;
 
@@ -38,6 +40,7 @@ ul{
   flex-direction: row;
   align-items: center;
   gap: 3%;
+  width: 100%;
 }
 
 .book-item-checkbox{
@@ -51,4 +54,14 @@ ul{
 .book-item-checkbox:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); 
+}
+.catalog-wrapper{
+  width: 90%;
+
+}
+
+ul{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

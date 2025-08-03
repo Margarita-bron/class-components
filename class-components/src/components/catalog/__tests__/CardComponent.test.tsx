@@ -5,6 +5,8 @@ import {
   mockDataWithoutDescription,
 } from '../mocks/mockData';
 import { Catalog } from '../Catalog';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 type mockTypeWithoutDescription = {
   key: string;
@@ -30,12 +32,15 @@ function testBooks<T extends { title: string }>(
 describe('Card/Item Component Tests', () => {
   it('should display item name, authors and description correctly', async () => {
     render(
-      <Catalog
-        resultData={mockData}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Provider store={store}>
+        {' '}
+        <Catalog
+          resultData={mockData}
+          loading={false}
+          error={null}
+          onSelectItem={() => {}}
+        />
+      </Provider>
     );
     for (const book of mockData) {
       const listItem = screen.getByText(book.title).closest('li');
@@ -49,12 +54,15 @@ describe('Card/Item Component Tests', () => {
   });
   it('should render books with description', () => {
     render(
-      <Catalog
-        resultData={mockDataWithDescription}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Provider store={store}>
+        {' '}
+        <Catalog
+          resultData={mockDataWithDescription}
+          loading={false}
+          error={null}
+          onSelectItem={() => {}}
+        />
+      </Provider>
     );
 
     testBooks<mockTypeWithDescription>(
@@ -67,12 +75,14 @@ describe('Card/Item Component Tests', () => {
 
   it('must render books without description', () => {
     render(
-      <Catalog
-        resultData={mockDataWithoutDescription}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Provider store={store}>
+        <Catalog
+          resultData={mockDataWithoutDescription}
+          loading={false}
+          error={null}
+          onSelectItem={() => {}}
+        />
+      </Provider>
     );
 
     testBooks<mockTypeWithoutDescription>(
@@ -85,12 +95,14 @@ describe('Card/Item Component Tests', () => {
 
   it('should render books with authors', () => {
     render(
-      <Catalog
-        resultData={mockDataWithoutDescription}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Provider store={store}>
+        <Catalog
+          resultData={mockDataWithoutDescription}
+          loading={false}
+          error={null}
+          onSelectItem={() => {}}
+        />
+      </Provider>
     );
 
     testBooks<mockTypeWithoutDescription>(
@@ -102,12 +114,14 @@ describe('Card/Item Component Tests', () => {
   });
   it('must renders books without authors', () => {
     render(
-      <Catalog
-        resultData={mockDataWithDescription}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Provider store={store}>
+        <Catalog
+          resultData={mockDataWithDescription}
+          loading={false}
+          error={null}
+          onSelectItem={() => {}}
+        />
+      </Provider>
     );
 
     testBooks<mockTypeWithDescription>(

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { AboutUsPage } from '../pages/about-us/AboutUsPage';
 import { MainPage } from '../pages/main-page/MainPage';
-import { NotFoundPage } from '../pages/NotFoundPage';
+import { NotFoundPage } from '../pages/not-found-page/NotFoundPage';
 import { BaseLayout } from '../layout/base-layout';
 import { Paths } from './pathes';
 

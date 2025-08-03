@@ -136,7 +136,11 @@ export const MainPage = () => {
           handleChangeSearchQuery={handleChangeSearchQuery}
         />
 
-        <div className={selectedDetail ? 'catalog-detail-wrapper' : ''}>
+        <div
+          className={
+            selectedDetail ? 'catalog-detail-wrapper' : 'catalog-main-wrapper'
+          }
+        >
           <Catalog
             resultData={resultData}
             loading={loading}

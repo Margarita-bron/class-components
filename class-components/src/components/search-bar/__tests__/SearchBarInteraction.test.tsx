@@ -12,6 +12,8 @@ import type { MockInstance } from 'vitest';
 import { SearchBar } from '../SearchBar';
 import { MemoryRouter } from 'react-router-dom';
 import { MainPage } from '../../../pages/main-page/MainPage';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 vi.mock('../../../service/books-api');
 
@@ -26,9 +28,11 @@ describe('SearchBar Tests', () => {
         .spyOn(Storage.prototype, 'setItem')
         .mockImplementation(() => {});
       render(
-        <MemoryRouter>
-          <MainPage />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <MainPage />
+          </MemoryRouter>
+        </Provider>
       );
       input = (await screen.findByPlaceholderText(
         /Search.../i
@@ -95,9 +99,11 @@ describe('SearchBar Tests', () => {
       getItemMock.mockReturnValueOnce(JSON.stringify(newValue));
 
       render(
-        <MemoryRouter>
-          <MainPage />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter initialEntries={['/?query=saved query']}>
+            <MainPage />
+          </MemoryRouter>
+        </Provider>
       );
       expect(await screen.findByPlaceholderText(/Search.../i)).toHaveValue(
         newValue
@@ -112,9 +118,11 @@ describe('SearchBar Tests', () => {
       getItemMock.mockReturnValueOnce(JSON.stringify('old query'));
 
       render(
-        <MemoryRouter>
-          <MainPage />
-        </MemoryRouter>
+        <Provider store={store}>
+          <MemoryRouter>
+            <MainPage />
+          </MemoryRouter>
+        </Provider>
       );
       const inputAfterMock = (await screen.findByPlaceholderText(
         /Search.../i

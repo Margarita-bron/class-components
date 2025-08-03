@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { Book } from '../../../types/book';
 import type { RootState } from '../../../store/store';
 import { toggleItem } from '../../../store/selectedBooksSlice';
+import './book-item.css';
 
 const setCoverUrl = (book: Book) => {
   const coverUrl = book.cover_i
@@ -14,6 +15,7 @@ type Props = {
   book: Book;
   onSelectItem: (key: string) => void;
 };
+
 export const BookItem = ({ book, onSelectItem }: Props) => {
   const dispatch = useDispatch();
   const selectedItems = useSelector(
@@ -33,7 +35,7 @@ export const BookItem = ({ book, onSelectItem }: Props) => {
   };
   const coverUrl = setCoverUrl(book);
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className="book-item">
       <input
         type="checkbox"
         className="book-item-checkbox"

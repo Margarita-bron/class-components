@@ -1,0 +1,11 @@
+.catalog-item_content-title{
+  font-size: 1.17em;
+  font-weight: 500;
+}
+
+.book-item{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  min-width: 100%;
+}

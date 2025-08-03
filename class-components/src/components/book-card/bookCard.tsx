@@ -3,10 +3,21 @@ import type { Book } from '../../types/book';
 import { fetchBookDetail } from '../../service/books-api';
 import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
+import './book-card.css';
 
 export type BookCardProps = {
   bookKey: string;
   onClose: () => void;
+};
+
+export const accessibleDescription = (description: string | undefined) => {
+  if (description != undefined) {
+    const descArray = description.trim().split(/\s+/);
+    if (descArray.length <= 60) {
+      return description;
+    }
+    return `${descArray.slice(0, 60).join(' ')}...`;
+  }
 };
 
 export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
@@ -31,11 +42,12 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
 
     fetchDetail();
   }, [bookKey]);
+  console.log(book);
 
   if (!book && !error) return null;
 
   return (
-    <div className="detail-panel w-1/3 border-l border-gray-300 p-4">
+    <div className="detail-panel border-l border-gray-300 p-4">
       {loading && <Loading />}
       {!loading && error && <ErrorElement errorContext="details" />}
 
@@ -49,11 +61,11 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
               loading="lazy"
             />
           )}
-          <h2>{book.title}</h2>
-          <p>
-            <strong>Authors:</strong> {book.author_name?.join(', ')}
-          </p>
-          <p>{book.description}</p>
+          <h2 className="book-card-title">{book.title}</h2>
+
+          {book.author_name && <p>Author(s): {book.author_name.join(', ')}</p>}
+
+          <p>{accessibleDescription(book.description)}</p>
           <button
             onClick={onClose}
             className="mb-4 text-indigo-600 hover:text-indigo-900"

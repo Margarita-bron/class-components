@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { NotFoundPage } from '../NotFoundPage';
+import { NotFoundPage } from '../not-found-page/NotFoundPage';
 
 const mockedNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({

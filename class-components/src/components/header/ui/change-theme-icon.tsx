@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../../context/theme-context';
+import './change-theme-icon.css';
 
 export const ChangeThemeIcon = () => {
   const { themeStyle, toggleTheme } = useContext(ThemeContext);
   return (
-    <div onClick={toggleTheme}>
+    <div className="change-theme-icon" onClick={toggleTheme}>
       <svg
         viewBox="64 64 896 896"
         focusable="false"
