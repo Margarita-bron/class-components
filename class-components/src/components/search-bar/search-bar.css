@@ -1,0 +1,30 @@
+.search-wrapper{
+  align-self: center;
+  width: 50vw;
+}
+
+.search-input{
+  width: 15vw;
+  border-radius: 10px;
+  height: 50px;
+  padding: 20px;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+}
+
+.search-button{
+  height: 50px;
+  border-left-color: #dadadf;
+  border-top-left-radius: 0%;
+  border-bottom-left-radius: 0%;
+}
+
+.search-wrapper__theme-light > *{
+  background-color: #e1eaf4;
+  color:#212529
+}
+
+.search-wrapper__theme-dark > *{
+  background-color: #5c5f88;
+  color:#e0e4e7;
+}

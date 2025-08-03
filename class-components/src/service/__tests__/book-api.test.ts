@@ -4,11 +4,11 @@ import {
   mockFetchFailure,
   mockFetchReject,
   mockFetchSuccess,
-} from '../__mocks__/books-api';
+} from '../mocks/books-api';
 import {
   mockBookDetailsData,
   mockData,
-} from '../../components/catalog/__mocks__/mockData';
+} from '../../components/catalog/mocks/mockData';
 import { fetchBookDetail, fetchBooks } from '../books-api';
 
 describe('fetchBooks Tests', () => {

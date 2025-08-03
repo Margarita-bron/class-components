@@ -1,4 +1,10 @@
-import type { Book, FetchBooksResponse } from '../types/books-app-types.ts';
+import type { Nullable } from 'vitest';
+import type { Book } from '../types/book.ts';
+
+export type FetchBooksResponse = {
+  resultData: Book[];
+  error: Nullable<string>;
+};
 
 export async function fetchBooks(
   query: string,

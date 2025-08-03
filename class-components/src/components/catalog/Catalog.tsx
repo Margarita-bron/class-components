@@ -1,66 +1,48 @@
-import { type ReactNode } from 'react';
-import type { Book } from '../../types/books-app-types';
-import type { CatalogProps } from '../../types/catalog-types';
+import { useContext, type ReactNode } from 'react';
+import type { Book } from '../../types/book';
+import { ErrorElement } from '../../ui/ErrorElement';
+import type { Nullable } from 'vitest';
+import { Loading } from '../../ui/Loading';
+import { BookItem } from './ui/BookItem';
+import './catalog.css';
+import { ThemeContext } from '../../context/theme-context';
+import classes from 'classnames';
 
-export default function Catalog(props: CatalogProps): ReactNode {
+export type CatalogProps = {
+  resultData: Book[];
+  loading: boolean;
+  error: Nullable<string>;
+  onSelectItem: (key: string) => void;
+};
+
+export const Catalog = (props: CatalogProps): ReactNode => {
   const { resultData, loading, error, onSelectItem } = props;
+  const { themeStyle } = useContext(ThemeContext);
   return (
     <div className="catalog-wrapper">
-      {loading && (
-        <div className="flex items-center justify-center">
-          <div
-            role="status"
-            aria-label="loading"
-            className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"
-          ></div>
-        </div>
-      )}
-      {resultData.length > 0 && loading === false && (
+      {loading && <Loading />}
+      {resultData.length > 0 && !loading && (
         <ul>
           {resultData.map((book: Book) => {
-            const coverUrl = book.cover_i
-              ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-              : undefined;
             return (
               <li
                 key={book.key}
-                className="catalog-item"
-                role="listitem"
-                onClick={() => onSelectItem(book.key)}
-              >
-                {coverUrl ? (
-                  <img
-                    src={coverUrl}
-                    alt={`Cover for ${book.title}`}
-                    className="h-auto w-20 flex-shrink-0 rounded object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div
-                    className="flex h-28 w-20 items-center justify-center rounded bg-gray-200 text-gray-400"
-                    aria-label="No cover available"
-                  >
-                    No Image
-                  </div>
+                className={classes(
+                  'catalog-item-wrapper',
+                  themeStyle == 'light'
+                    ? 'catalog-item__theme-light bg-gray-200'
+                    : 'catalog-item__theme-dark'
                 )}
-                <div className="catalog-item_content">
-                  <strong>{book.title}</strong>
-                  {book.author_name && (
-                    <p>Author(s): {book.author_name.join(', ')}</p>
-                  )}
-                  {book.description && (
-                    <p>
-                      <em>Description:</em> {book.description}
-                    </p>
-                  )}
-                </div>
+                role="listitem"
+              >
+                <BookItem book={book} onSelectItem={onSelectItem} />
               </li>
             );
           })}
         </ul>
       )}
-      {resultData.length === 0 && loading === false && <h1>data is empty</h1>}
-      {error && <h1>error</h1>}
+      {resultData.length === 0 && !loading && <h1>data is empty</h1>}
+      {error && <ErrorElement />}
     </div>
   );
-}
+};

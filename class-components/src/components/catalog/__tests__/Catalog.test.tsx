@@ -1,17 +1,21 @@
 import { render, screen } from '@testing-library/react';
-import { mockData } from '../__mocks__/mockData';
-import Catalog from '../Catalog';
+import { mockData } from '../mocks/mockData';
+import { Catalog } from '../Catalog';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 describe('Results/CardList Component Tests', () => {
   describe('Error Handling Tests', () => {
     it('should display error message when API call fails', async () => {
       render(
-        <Catalog
-          resultData={[]}
-          loading={false}
-          error="error"
-          onSelectItem={() => {}}
-        />
+        <Provider store={store}>
+          <Catalog
+            resultData={[]}
+            loading={false}
+            error="error"
+            onSelectItem={() => {}}
+          />
+        </Provider>
       );
       expect(screen.getByText(/error/i)).toBeInTheDocument();
     });
@@ -19,36 +23,42 @@ describe('Results/CardList Component Tests', () => {
   describe('Rendering Tests', () => {
     it('should render list of items with predefined length', () => {
       render(
-        <Catalog
-          resultData={mockData}
-          loading={false}
-          error={null}
-          onSelectItem={() => {}}
-        />
+        <Provider store={store}>
+          <Catalog
+            resultData={mockData}
+            loading={false}
+            error={null}
+            onSelectItem={() => {}}
+          />
+        </Provider>
       );
       const items = screen.getAllByRole('listitem');
       expect(items.length).toBe(mockData.length);
     });
     it('need to display a phrase indicating an empty list', async () => {
       render(
-        <Catalog
-          resultData={[]}
-          loading={false}
-          error={null}
-          onSelectItem={() => {}}
-        />
+        <Provider store={store}>
+          <Catalog
+            resultData={[]}
+            loading={false}
+            error={null}
+            onSelectItem={() => {}}
+          />
+        </Provider>
       );
       expect(screen.getByText(/data is empty/i)).toBeInTheDocument();
     });
 
     it('must show loading spinner while fetching data', () => {
       render(
-        <Catalog
-          resultData={[]}
-          loading={true}
-          error={null}
-          onSelectItem={() => {}}
-        />
+        <Provider store={store}>
+          <Catalog
+            resultData={[]}
+            loading={true}
+            error={null}
+            onSelectItem={() => {}}
+          />
+        </Provider>
       );
       expect(screen.getByRole('status')).toBeInTheDocument();
     });

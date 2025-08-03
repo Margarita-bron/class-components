@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import Header from '../Header';
+import { Header } from '../Header';
 import research from '../../../assets/research.ico';
 import { MemoryRouter } from 'react-router-dom';
-import { mockNavigation } from '../__mocks__/mockNavigation';
+import { mockNavigation } from '../mocks/mockNavigation';
 
 describe('Header Tests', () => {
   beforeEach(() => {
