@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../../context/theme-context';
+import { Theme, ThemeContext } from '../../context/theme-context';
 import { SwitchButton } from './ui/switch-button';
 import classes from 'classnames';
 import '../../index.css';
@@ -28,20 +28,19 @@ export const Pagination = ({
     <div
       className={classes(
         'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6',
-        themeStyle == 'light'
-          ? 'body-container__theme-light'
-          : 'body-container__theme-dark'
+        {
+          'body-container__theme-light': themeStyle == Theme.Light,
+          'body-container__theme-dark': themeStyle == Theme.Dark,
+        }
       )}
     >
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p
-            className={classes(
-              'text-gray-700" text-sm',
-              themeStyle == 'light'
-                ? 'body-container__theme-light'
-                : 'body-container__theme-dark'
-            )}
+            className={classes('text-gray-700" text-sm', {
+              'body-container__theme-light': themeStyle == Theme.Light,
+              'body-container__theme-dark': themeStyle == Theme.Dark,
+            })}
           >
             Showing{' '}
             <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
@@ -73,9 +72,10 @@ export const Pagination = ({
                   page === currentPage
                     ? 'z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                     : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20',
-                  themeStyle == 'light'
-                    ? 'body-container__theme-light'
-                    : 'body-container__theme-dark'
+                  {
+                    'body-container__theme-light': themeStyle == Theme.Light,
+                    'body-container__theme-dark': themeStyle == Theme.Dark,
+                  }
                 )}
               >
                 {page}

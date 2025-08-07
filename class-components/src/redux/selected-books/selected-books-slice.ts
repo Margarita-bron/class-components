@@ -34,4 +34,4 @@ const selectedBooksSlice = createSlice({
 });
 
 export const { toggleItem, clearAll } = selectedBooksSlice.actions;
-export default selectedBooksSlice.reducer;
+export const selectedBooksReducer = selectedBooksSlice.reducer;

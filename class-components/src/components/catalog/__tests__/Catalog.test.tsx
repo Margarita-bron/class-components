@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { mockData } from '../mocks/mockData';
 import { Catalog } from '../Catalog';
 import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
+import { store } from '../../../redux/store';
 
 describe('Results/CardList Component Tests', () => {
   describe('Error Handling Tests', () => {

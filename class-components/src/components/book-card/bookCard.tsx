@@ -4,6 +4,7 @@ import { fetchBookDetail } from '../../service/books-api';
 import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
 import './book-card.css';
+import type { Nullable } from '../../types/common';
 
 export type BookCardProps = {
   bookKey: string;
@@ -11,19 +12,18 @@ export type BookCardProps = {
 };
 
 export const accessibleDescription = (description: string | undefined) => {
-  if (description != undefined) {
-    const descArray = description.trim().split(/\s+/);
-    if (descArray.length <= 60) {
-      return description;
-    }
-    return `${descArray.slice(0, 60).join(' ')}...`;
-  }
+  if (!description) return;
+  const DESCRIPTION_LIMIT = 60;
+  const descArray = description.trim().split(/\s+/);
+  return descArray.length <= DESCRIPTION_LIMIT
+    ? description
+    : `${descArray.slice(0, 60).join(' ')}...`;
 };
 
 export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
-  const [book, setBook] = useState<Book | null>(null);
+  const [book, setBook] = useState<Nullable<Book>>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<Nullable<string>>(null);
 
   useEffect(() => {
     const fetchDetail = async (): Promise<void> => {
@@ -32,7 +32,7 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
 
       try {
         const response = await fetchBookDetail(bookKey);
-        setBook(response.resultData);
+        setBook(response.resultData ?? null);
       } catch (error) {
         setError(error instanceof Error ? error.message : String(error));
       } finally {

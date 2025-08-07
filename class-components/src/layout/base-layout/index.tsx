@@ -1,7 +1,7 @@
 import { Header } from '../../components/header/Header';
 import './App.css';
 import '../../index.css';
-import { ThemeProvider, ThemeContext } from '../../context/theme-context';
+import { ThemeProvider, ThemeContext, Theme } from '../../context/theme-context';
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import classes from 'classnames';
@@ -11,12 +11,10 @@ const Content = () => {
 
   return (
     <div
-      className={classes(
-        'page-container',
-        themeStyle === 'light'
-          ? 'body-container__theme-light'
-          : 'body-container__theme-dark'
-      )}
+      className={classes('page-container', {
+        'body-container__theme-light': themeStyle === Theme.Light,
+        'body-container__theme-dark': themeStyle === Theme.Dark,
+      })}
     >
       <Header />
       <main>

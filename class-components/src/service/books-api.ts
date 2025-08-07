@@ -61,7 +61,7 @@ export async function fetchBooks(
 
 export async function fetchBookDetail(
   bookKey: string
-): Promise<{ resultData: Book | null; error: string | null }> {
+): Promise<{ resultData: Nullable<Book>; error: Nullable<string> }> {
   try {
     const response = await fetch(`https://openlibrary.org${bookKey}.json`);
     if (!response.ok) {

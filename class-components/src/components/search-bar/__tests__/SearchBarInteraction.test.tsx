@@ -13,7 +13,8 @@ import { SearchBar } from '../SearchBar';
 import { MemoryRouter } from 'react-router-dom';
 import { MainPage } from '../../../pages/main-page/MainPage';
 import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
+import { store } from '../../../redux/store';
+import type { Nullable } from '../../../types/common';
 
 vi.mock('../../../service/books-api');
 
@@ -82,7 +83,7 @@ describe('SearchBar Tests', () => {
     });
   });
   describe('SearchBar Tests: LocalStorage Integration', () => {
-    let getItemMock: MockInstance<(key: string) => string | null>;
+    let getItemMock: MockInstance<(key: string) => Nullable<string>>;
     let setItemMock: ReturnType<typeof vi.spyOn>;
 
     beforeEach(async () => {

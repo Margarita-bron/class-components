@@ -9,6 +9,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { mockData } from '../../catalog/mocks/mockData';
 import type { Book } from '../../../types/book';
 import { BookCard } from '../bookCard';
+import type { Nullable } from '../../../types/common';
 
 describe('BookCard component Tests', () => {
   const mockBookKey = '/works/OL99529W';
@@ -16,7 +17,7 @@ describe('BookCard component Tests', () => {
   const fetchBookDetailMock = fetchBookDetail as Mock<
     (
       bookKey: string
-    ) => Promise<{ resultData: Book | null; error: string | null }>
+    ) => Promise<{ resultData: Nullable<Book>; error: Nullable<string> }>
   >;
 
   beforeEach(() => {
