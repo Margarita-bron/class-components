@@ -13,6 +13,7 @@ export type CatalogProps = {
   loading: boolean;
   error: Nullable<string>;
   onSelectItem: (key: string) => void;
+  isFetching: boolean;
 };
 
 export const Catalog = ({
@@ -20,12 +21,14 @@ export const Catalog = ({
   loading,
   error,
   onSelectItem,
+  isFetching,
 }: CatalogProps): ReactNode => {
   const { themeStyle } = useContext(ThemeContext);
   return (
     <div className="catalog-wrapper">
       {loading && <Loading />}
-      {resultData.length > 0 && !loading && (
+      {isFetching && !loading && <Loading />}
+      {resultData.length > 0 && !loading && !isFetching && (
         <ul>
           {resultData.map((book: Book) => {
             return (

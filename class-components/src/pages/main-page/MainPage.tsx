@@ -33,6 +33,7 @@ export const MainPage = () => {
     data: books = [],
     error,
     isLoading,
+    isFetching,
     refetch,
   } = useGetBooksQuery({ query: currentQuery, limit, page: currentPage });
 
@@ -104,7 +105,11 @@ export const MainPage = () => {
           currentQuery={currentQuery}
           handleChangeSearchQuery={handleChangeSearchQuery}
         />
-
+        {!isFetching && !isLoading && (
+          <button onClick={() => refetch()} disabled={isLoading}>
+            <p>Update data...</p>
+          </button>
+        )}
         <div
           className={
             selectedDetail ? 'catalog-detail-wrapper' : 'catalog-main-wrapper'
@@ -115,6 +120,7 @@ export const MainPage = () => {
             loading={isLoading}
             error={error ? String(error) : null}
             onSelectItem={openDetails}
+            isFetching={isFetching}
           />
           {selectedDetail && (
             <BookCard bookKey={selectedDetail} onClose={closeDetails} />
