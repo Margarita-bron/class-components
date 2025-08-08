@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
-import type { Book } from '../../types/book';
-import { fetchBookDetail } from '../../service/books-api';
 import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
 import './book-card.css';
-import type { Nullable } from '../../types/common';
+import { useGetBookDetailQuery } from '../../redux/services/bookApi';
 
 export type BookCardProps = {
   bookKey: string;
@@ -21,37 +18,21 @@ export const accessibleDescription = (description: string | undefined) => {
 };
 
 export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
-  const [book, setBook] = useState<Nullable<Book>>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Nullable<string>>(null);
-
-  useEffect(() => {
-    const fetchDetail = async (): Promise<void> => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response = await fetchBookDetail(bookKey);
-        setBook(response.resultData ?? null);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : String(error));
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetail();
-  }, [bookKey]);
-  console.log(book);
+  const {
+    data: book,
+    error,
+    isLoading,
+    refetch,
+  } = useGetBookDetailQuery(bookKey);
 
   if (!book && !error) return null;
 
   return (
     <div className="detail-panel border-l border-gray-300 p-4">
-      {loading && <Loading />}
-      {!loading && error && <ErrorElement errorContext="details" />}
+      {isLoading && <Loading />}
+      {!isLoading && error && <ErrorElement errorContext="details" />}
 
-      {!loading && !error && book && (
+      {!isLoading && !error && book && (
         <>
           {book.cover_i && (
             <img
