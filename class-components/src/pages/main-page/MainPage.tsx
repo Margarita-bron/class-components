@@ -112,7 +112,9 @@ export const MainPage = () => {
         )}
         <div
           className={
-            selectedDetail ? 'catalog-detail-wrapper' : 'catalog-main-wrapper'
+            selectedDetail && !error
+              ? 'catalog-detail-wrapper'
+              : 'catalog-main-wrapper'
           }
         >
           <Catalog
@@ -122,7 +124,7 @@ export const MainPage = () => {
             onSelectItem={openDetails}
             isFetching={isFetching}
           />
-          {selectedDetail && (
+          {selectedDetail && !error && (
             <BookCard bookKey={selectedDetail} onClose={closeDetails} />
           )}
         </div>

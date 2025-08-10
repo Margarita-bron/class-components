@@ -3,7 +3,9 @@ export const Loading = () => (
     <div
       role="status"
       aria-label="loading"
+      data-testid="loading-indicator"
       className="h-10 w-10 animate-spin rounded-full border-b-2 border-gray-900"
     ></div>
   </div>
 );
+

@@ -12,7 +12,11 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={false}
-            error="error"
+            error={{
+              status: 500,
+              data: 'Internal Server Error',
+            }}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -27,7 +31,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={mockData}
             loading={false}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -41,7 +46,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={false}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -55,7 +61,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={true}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>

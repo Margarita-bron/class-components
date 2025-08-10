@@ -11,6 +11,7 @@ export const bookApi = createApi({
     getBooks: builder.query({
       query: ({ query, limit, page }) =>
         `/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page=${page}`,
+      keepUnusedDataFor: 60 * 2,
       transformResponse: (response): Book[] =>
         response.docs.map((doc: Book) => ({
           key: doc.key,
@@ -33,7 +34,7 @@ export const bookApi = createApi({
           : [{ type: 'Book', id: 'LIST' }],
     }),
     getBookDetail: builder.query({
-      query: (bookKey) => `cfdsd${bookKey}.json`,
+      query: (bookKey) => `${bookKey}.json`,
       transformResponse: (response): Book => ({
         key: response.key,
         title: response.title,
