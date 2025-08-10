@@ -105,7 +105,7 @@ export const MainPage = () => {
           currentQuery={currentQuery}
           handleChangeSearchQuery={handleChangeSearchQuery}
         />
-        {!isFetching && !isLoading && (
+        {!isFetching && !isLoading && !error && (
           <button onClick={() => refetch()} disabled={isLoading}>
             <p>Update data...</p>
           </button>
@@ -118,7 +118,7 @@ export const MainPage = () => {
           <Catalog
             resultData={books}
             loading={isLoading}
-            error={error ? String(error) : null}
+            error={error}
             onSelectItem={openDetails}
             isFetching={isFetching}
           />
@@ -127,7 +127,7 @@ export const MainPage = () => {
           )}
         </div>
 
-        {!isLoading && (
+        {!isLoading && !error && !isFetching && (
           <Pagination
             currentPage={currentPage}
             totalPages={10}

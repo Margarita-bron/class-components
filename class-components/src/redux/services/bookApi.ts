@@ -5,6 +5,7 @@ export const bookApi = createApi({
   reducerPath: 'bookApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://openlibrary.org' }),
   tagTypes: ['Book'],
+  refetchOnFocus: true,
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     getBooks: builder.query({
@@ -32,7 +33,7 @@ export const bookApi = createApi({
           : [{ type: 'Book', id: 'LIST' }],
     }),
     getBookDetail: builder.query({
-      query: (bookKey) => `${bookKey}.json`,
+      query: (bookKey) => `cfdsd${bookKey}.json`,
       transformResponse: (response): Book => ({
         key: response.key,
         title: response.title,

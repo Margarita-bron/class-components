@@ -1,17 +1,18 @@
 import { useContext, type ReactNode } from 'react';
 import type { Book } from '../../types/book';
 import { ErrorElement } from '../../ui/ErrorElement';
-import type { Nullable } from 'vitest';
 import { Loading } from '../../ui/Loading';
 import { BookItem } from './components/BookItem';
 import './catalog.css';
 import { Theme, ThemeContext } from '../../context/theme-context';
 import classes from 'classnames';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+import type { SerializedError } from '@reduxjs/toolkit/react';
 
 export type CatalogProps = {
   resultData: Book[];
   loading: boolean;
-  error: Nullable<string>;
+  error: FetchBaseQueryError | SerializedError | undefined;
   onSelectItem: (key: string) => void;
   isFetching: boolean;
 };
@@ -28,7 +29,7 @@ export const Catalog = ({
     <div className="catalog-wrapper">
       {loading && <Loading />}
       {isFetching && !loading && <Loading />}
-      {resultData.length > 0 && !loading && !isFetching && (
+      {resultData.length > 0 && !loading && !isFetching && !error && (
         <ul>
           {resultData.map((book: Book) => {
             return (
@@ -47,8 +48,12 @@ export const Catalog = ({
           })}
         </ul>
       )}
-      {resultData.length === 0 && !loading && <h1>data is empty</h1>}
-      {error && <ErrorElement />}
+      {resultData.length === 0 && !loading && !isFetching && !error && (
+        <h1>data is empty</h1>
+      )}
+      {error && !isFetching && (
+        <ErrorElement error={error} errorContext="catalog" />
+      )}
     </div>
   );
 };

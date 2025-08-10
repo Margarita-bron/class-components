@@ -30,7 +30,9 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
   return (
     <div className="detail-panel border-l border-gray-300 p-4">
       {isLoading && <Loading />}
-      {!isLoading && error && <ErrorElement errorContext="details" />}
+      {!isLoading && error && (
+        <ErrorElement error={error} errorContext="book details" />
+      )}
 
       {!isLoading && !error && book && (
         <>

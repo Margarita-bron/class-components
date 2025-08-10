@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { createPortal } from 'react-dom';
 import './modal.css';
 import { clearAll } from '../../../../redux/selected-books/selected-books-slice';
-import { selectedBooksSelector } from '../../../../redux/selected-books/selected-books-selector';
+import { useSelectedBooksSelector } from '../../../../redux/selectors/selected-books-selector';
+import { useAppDispatch } from '../../../../hooks/typed-react-redux-hooks';
 
 export const Modal = () => {
-  const dispatch = useDispatch();
-  const selectedItems = useSelector(selectedBooksSelector);
+  const dispatch = useAppDispatch();
+  const selectedItems = useSelectedBooksSelector();
 
   if (selectedItems.length === 0) return null;
   const handleClearAll = () => {
