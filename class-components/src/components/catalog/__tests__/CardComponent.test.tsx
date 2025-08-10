@@ -6,7 +6,7 @@ import {
 } from '../mocks/mockData';
 import { Catalog } from '../Catalog';
 import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
+import { store } from '../../../redux/store';
 
 type mockTypeWithoutDescription = {
   key: string;

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { mockData } from '../mocks/mockData';
 import { Catalog } from '../Catalog';
 import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
+import { store } from '../../../redux/store';
 
 describe('Results/CardList Component Tests', () => {
   describe('Error Handling Tests', () => {
@@ -12,7 +12,11 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={false}
-            error="error"
+            error={{
+              status: 500,
+              data: 'Internal Server Error',
+            }}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -27,7 +31,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={mockData}
             loading={false}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -41,7 +46,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={false}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>
@@ -55,7 +61,8 @@ describe('Results/CardList Component Tests', () => {
           <Catalog
             resultData={[]}
             loading={true}
-            error={null}
+            error={undefined}
+            isFetching={false}
             onSelectItem={() => {}}
           />
         </Provider>

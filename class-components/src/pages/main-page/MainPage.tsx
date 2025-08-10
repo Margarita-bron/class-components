@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/use-local-storage.ts';
 import { BookCard } from '../../components/book-card/bookCard.tsx';
 import { Pagination } from '../../components/pagination/Pagination.tsx';
 import { SearchBar } from '../../components/search-bar/SearchBar.tsx';
-import { fetchBooks } from '../../service/books-api.ts';
-import type { Book } from '../../types/book.ts';
 import { Catalog } from '../../components/catalog/Catalog.tsx';
 import { getInitialValueFromLocalStorage } from '../../hooks/utils/get-initial-value-from-local-storage.ts';
 import { Modal } from './components/modal/Modal.tsx';
+import type { Nullable } from '../../types/common.ts';
+import { useGetBooksQuery } from '../../redux/services/bookApi.ts';
 
 export const MainPage = () => {
+  const limit = 10;
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialValue = getInitialValueFromLocalStorage('searchQuery', 'book');
@@ -20,17 +22,20 @@ export const MainPage = () => {
   );
   const queryFromUrl = searchParams.get('query') || initialValue;
 
-  const [resultData, setResultData] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const pageFromUrl = Number(searchParams.get('page') || '1');
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
   const detailsKey = searchParams.get('details') || null;
-  const [selectedDetail, setSelectedDetail] = useState<string | null>(
-    detailsKey
-  );
+  const [selectedDetail, setSelectedDetail] =
+    useState<Nullable<string>>(detailsKey);
+
+  const {
+    data: books = [],
+    error,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetBooksQuery({ query: currentQuery, limit, page: currentPage });
 
   useEffect(() => {
     if (queryFromUrl !== currentQuery) {
@@ -51,73 +56,38 @@ export const MainPage = () => {
     }
   }, [detailsKey]);
 
-  const handleFetchBooks = useCallback(
-    async (query: string, page: number): Promise<void> => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetchBooks(query, page);
-        setResultData(response.resultData);
-      } catch (error) {
-        error instanceof Error
-          ? setError(error.message)
-          : setError(String(error));
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
-
-  const pageUrlParams = (
-    url: URLSearchParams,
-    currentPage: number
-  ): URLSearchParams => {
+  const pageUrlParams = (currentPage: number): URLSearchParams => {
     const params = new URLSearchParams();
     params.set('query', currentQuery);
     if (currentPage !== 1) {
       params.set('page', currentPage.toString());
     }
-    const details = url.get('details');
-    if (details) {
-      params.set('details', details);
-    }
-
+    if (selectedDetail) params.set('details', selectedDetail);
+    setSearchParams(params, { replace: true });
     return params;
   };
 
   useEffect(() => {
     if (!currentQuery) return;
-    handleFetchBooks(currentQuery, currentPage);
-    setSearchParams((url) => {
-      return pageUrlParams(url, currentPage);
-    });
+    pageUrlParams(currentPage);
   }, [currentQuery, currentPage]);
 
   const openDetails = (key: string): void => {
-    setSearchParams((url) => {
-      url.set('details', key);
-      return pageUrlParams(url, currentPage);
-    });
+    setSelectedDetail(key);
+    pageUrlParams(currentPage);
   };
 
   const closeDetails = (): void => {
-    setSearchParams((url) => {
-      url.delete('details');
-      return pageUrlParams(url, currentPage);
-    });
+    setSelectedDetail('');
+    pageUrlParams(currentPage);
   };
 
   const onPageChange = (page: number): void => {
-    if (page >= 1) {
-      setCurrentPage(page);
-    }
+    if (page >= 1) setCurrentPage(page);
   };
 
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      closeDetails();
-    }
+    if (e.target === e.currentTarget) closeDetails();
   };
 
   const handleChangeSearchQuery = async (query: string): Promise<void> => {
@@ -135,24 +105,31 @@ export const MainPage = () => {
           currentQuery={currentQuery}
           handleChangeSearchQuery={handleChangeSearchQuery}
         />
-
+        {!isFetching && !isLoading && !error && (
+          <button onClick={() => refetch()} disabled={isLoading}>
+            <p>Update data...</p>
+          </button>
+        )}
         <div
           className={
-            selectedDetail ? 'catalog-detail-wrapper' : 'catalog-main-wrapper'
+            selectedDetail && !error
+              ? 'catalog-detail-wrapper'
+              : 'catalog-main-wrapper'
           }
         >
           <Catalog
-            resultData={resultData}
-            loading={loading}
+            resultData={books}
+            loading={isLoading}
             error={error}
             onSelectItem={openDetails}
+            isFetching={isFetching}
           />
-          {selectedDetail && (
+          {selectedDetail && !error && (
             <BookCard bookKey={selectedDetail} onClose={closeDetails} />
           )}
         </div>
 
-        {!loading && (
+        {!isLoading && !error && !isFetching && (
           <Pagination
             currentPage={currentPage}
             totalPages={10}

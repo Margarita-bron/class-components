@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, type ChangeEvent } from 'react';
 import './search-bar.css';
-import { ThemeContext } from '../../context/theme-context';
+import { Theme, ThemeContext } from '../../context/theme-context';
 import classes from 'classnames';
 import '../../index.css';
 
@@ -35,12 +35,10 @@ export const SearchBar = ({
 
   return (
     <div
-      className={classes(
-        'search-wrapper',
-        themeStyle === 'light'
-          ? 'search-wrapper__theme-light'
-          : 'search-wrapper__theme-dark'
-      )}
+      className={classes('search-wrapper', {
+        'search-wrapper__theme-light': themeStyle === Theme.Light,
+        'search-wrapper__theme-dark': themeStyle === Theme.Dark,
+      })}
     >
       <input
         className="search-input"
