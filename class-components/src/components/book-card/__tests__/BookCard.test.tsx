@@ -1,17 +1,13 @@
-import { vi, type Mock } from 'vitest';
-
-import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import { mockData } from '../../catalog/mocks/mockData';
-import type { Book } from '../../../types/book';
 import { BookCard } from '../bookCard';
-import type { Nullable } from '../../../types/common';
 import { wrapper } from '../../../redux/mocks/store';
 import { bookApi } from '../../../redux/services/bookApi';
 
 describe('BookCard component Tests', () => {
   const mockBookKey = '/works/OL99529W';
   const mockOnClose = vi.fn();
-  const refetchMock = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();

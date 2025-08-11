@@ -4,7 +4,6 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { bookApi } from '../services/bookApi';
 import { wrapper } from '../mocks/store';
 import { mockData } from '../../components/catalog/mocks/mockData';
-import { http, HttpResponse } from 'msw';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

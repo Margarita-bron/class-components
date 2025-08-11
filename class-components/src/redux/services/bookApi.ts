@@ -1,10 +1,5 @@
-import {
-  createApi,
-  fetchBaseQuery,
-  type FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Book } from '../../types/book';
-import type { SerializedError } from 'vitest';
 
 export const bookApi = createApi({
   reducerPath: 'bookApi',
@@ -84,7 +79,7 @@ export const bookApi = createApi({
           description: data?.description || '',
         };
       },
-      providesTags: (result, error, bookKey) => [{ type: 'Book', id: bookKey }],
+      providesTags: (__, _, bookKey) => [{ type: 'Book', id: bookKey }],
     }),
   }),
 });

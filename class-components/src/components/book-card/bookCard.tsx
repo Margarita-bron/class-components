@@ -18,12 +18,7 @@ export const accessibleDescription = (description: string | undefined) => {
 };
 
 export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
-  const {
-    data: book,
-    error,
-    isLoading,
-    refetch,
-  } = useGetBookDetailQuery(bookKey);
+  const { data: book, error, isLoading } = useGetBookDetailQuery(bookKey);
 
   if (!book && !error) return null;
 
