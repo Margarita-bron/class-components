@@ -115,7 +115,6 @@ describe('SearchBar Tests', () => {
   });
 
   it('applies correct theme class based on ThemeContext value', () => {
-    // Проверка для света
     const { container, rerender } = render(
       <ThemeProviderWrapper theme={Theme.Light}>
         <SearchBar
@@ -126,7 +125,6 @@ describe('SearchBar Tests', () => {
     );
     expect(container.firstChild).toHaveClass('search-wrapper__theme-light');
 
-    // Проверка для темной темы
     rerender(
       <ThemeProviderWrapper theme={Theme.Dark}>
         <SearchBar

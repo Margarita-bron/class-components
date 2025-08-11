@@ -1,9 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  createApi,
+  fetchBaseQuery,
+  type FetchBaseQueryError,
+} from '@reduxjs/toolkit/query/react';
 import type { Book } from '../../types/book';
+import type { SerializedError } from 'vitest';
 
 export const bookApi = createApi({
   reducerPath: 'bookApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://openlibrary.org' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://oopenlibrary.org' }),
   tagTypes: ['Book'],
   refetchOnFocus: true,
   refetchOnReconnect: true,
@@ -25,6 +30,20 @@ export const bookApi = createApi({
                 : undefined,
           cover_i: doc.cover_i,
         })),
+      transformErrorResponse: (response: {
+        status?: number | string;
+        data?: any;
+        error?: string;
+        statusText?: string;
+      }) => ({
+        status: response.status,
+        statusText: response.statusText,
+        message: response.data?.message || response.error || 'Unknown error',
+        description:
+          response.status === 489
+            ? 'Books already exists'
+            : response.data?.description || '',
+      }),
       providesTags: (books) =>
         books
           ? [
@@ -46,6 +65,17 @@ export const bookApi = createApi({
               ? (response.description as { value: string }).value
               : undefined,
         cover_i: response.cover_i,
+      }),
+      transformErrorResponse: (response: {
+        status?: number | string;
+        data?: any;
+        error?: string;
+        statusText?: string;
+      }) => ({
+        status: response.status,
+        statusText: response.statusText,
+        message: response.data?.message || response.error || 'Unknown error',
+        description: '',
       }),
       providesTags: (result, error, bookKey) => [{ type: 'Book', id: bookKey }],
     }),
