@@ -18,14 +18,16 @@ export const ErrorElement = ({ error, errorContext }: ErrorElementProps) => {
       <p>Oops... Problem with {errorContext}</p>
 
       {error.status && (
-        <h1 className="text-base font-semibold text-indigo-600">
+        <h1 className="text-base font-bold text-indigo-600">
           {typeof error.status == 'string'
             ? `Error Type: ${error.status}`
             : `Status: ${error.status}`}
         </h1>
       )}
       {error.statusText && <p>{error.statusText}</p>}
-      {error.message && <p>{error.message}</p>}
+      {error.message && (
+        <p className="text-base font-semibold">{error.message}</p>
+      )}
       {error.description && (
         <p>
           <em>{error.description}</em>

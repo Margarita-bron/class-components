@@ -32,18 +32,20 @@ export const bookApi = createApi({
         })),
       transformErrorResponse: (response: {
         status?: number | string;
-        data?: any;
+        data?: unknown;
         error?: string;
         statusText?: string;
-      }) => ({
-        status: response.status,
-        statusText: response.statusText,
-        message: response.data?.message || response.error || 'Unknown error',
-        description:
-          response.status === 489
-            ? 'Books already exists'
-            : response.data?.description || '',
-      }),
+      }) => {
+        const data = response.data as
+          | { message?: string; description?: string }
+          | undefined;
+        return {
+          status: response.status,
+          statusText: response.statusText,
+          message: data?.message || response.error || 'Unknown error',
+          description: data?.description || '',
+        };
+      },
       providesTags: (books) =>
         books
           ? [
@@ -68,15 +70,20 @@ export const bookApi = createApi({
       }),
       transformErrorResponse: (response: {
         status?: number | string;
-        data?: any;
+        data?: unknown;
         error?: string;
         statusText?: string;
-      }) => ({
-        status: response.status,
-        statusText: response.statusText,
-        message: response.data?.message || response.error || 'Unknown error',
-        description: '',
-      }),
+      }) => {
+        const data = response.data as
+          | { message?: string; description?: string }
+          | undefined;
+        return {
+          status: response.status,
+          statusText: response.statusText,
+          message: data?.message || response.error || 'Unknown error',
+          description: data?.description || '',
+        };
+      },
       providesTags: (result, error, bookKey) => [{ type: 'Book', id: bookKey }],
     }),
   }),
