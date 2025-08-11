@@ -37,7 +37,8 @@ describe('Card/Item Component Tests', () => {
         <Catalog
           resultData={mockData}
           loading={false}
-          error={null}
+          error={undefined}
+          isFetching={false}
           onSelectItem={() => {}}
         />
       </Provider>
@@ -59,7 +60,8 @@ describe('Card/Item Component Tests', () => {
         <Catalog
           resultData={mockDataWithDescription}
           loading={false}
-          error={null}
+          error={undefined}
+          isFetching={false}
           onSelectItem={() => {}}
         />
       </Provider>
@@ -79,7 +81,8 @@ describe('Card/Item Component Tests', () => {
         <Catalog
           resultData={mockDataWithoutDescription}
           loading={false}
-          error={null}
+          error={undefined}
+          isFetching={false}
           onSelectItem={() => {}}
         />
       </Provider>
@@ -99,7 +102,8 @@ describe('Card/Item Component Tests', () => {
         <Catalog
           resultData={mockDataWithoutDescription}
           loading={false}
-          error={null}
+          error={undefined}
+          isFetching={false}
           onSelectItem={() => {}}
         />
       </Provider>
@@ -118,7 +122,8 @@ describe('Card/Item Component Tests', () => {
         <Catalog
           resultData={mockDataWithDescription}
           loading={false}
-          error={null}
+          error={undefined}
+          isFetching={false}
           onSelectItem={() => {}}
         />
       </Provider>

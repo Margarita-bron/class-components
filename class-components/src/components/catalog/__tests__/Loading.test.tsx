@@ -7,7 +7,8 @@ describe('Loading component tests', () => {
       <Catalog
         resultData={[]}
         loading={true}
-        error={null}
+        error={undefined}
+        isFetching={true}
         onSelectItem={() => {}}
       />
     );
@@ -19,7 +20,8 @@ describe('Loading component tests', () => {
       <Catalog
         resultData={[]}
         loading={false}
-        error={null}
+        error={undefined}
+        isFetching={false}
         onSelectItem={() => {}}
       />
     );
@@ -31,7 +33,8 @@ describe('Loading component tests', () => {
       <Catalog
         resultData={[]}
         loading={true}
-        error={null}
+        error={undefined}
+        isFetching={true}
         onSelectItem={() => {}}
       />
     );
