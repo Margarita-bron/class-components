@@ -12,7 +12,7 @@ export const ChangeThemeIcon = () => {
         data-icon="sun"
         width="1em"
         height="1em"
-        fill={themeStyle == Theme.Light ? 'black' : 'white'}
+        fill={themeStyle === Theme.Light ? 'black' : 'white'}
         aria-hidden="true"
         cursor="pointer"
       >

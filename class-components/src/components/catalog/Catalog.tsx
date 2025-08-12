@@ -11,18 +11,18 @@ import type { SerializedError } from '@reduxjs/toolkit/react';
 
 export type CatalogProps = {
   resultData: Book[];
-  loading: boolean;
-  error: FetchBaseQueryError | SerializedError | undefined;
+  loading?: boolean;
+  error?: FetchBaseQueryError | SerializedError;
   onSelectItem: (key: string) => void;
-  isFetching: boolean;
+  isFetching?: boolean;
 };
 
 export const Catalog = ({
   resultData,
-  loading,
+  loading = false,
   error,
   onSelectItem,
-  isFetching,
+  isFetching = false,
 }: CatalogProps): ReactNode => {
   const { themeStyle } = useContext(ThemeContext);
   return (

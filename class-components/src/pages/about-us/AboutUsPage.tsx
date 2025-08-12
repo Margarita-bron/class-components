@@ -16,8 +16,8 @@ export const AboutUsPage = () => {
   return (
     <div
       className={classes('relative isolate px-6 py-24 sm:py-32 lg:px-8', {
-        'bg-white': themeStyle == Theme.Light,
-        'bg-black': themeStyle === Theme.Dark,
+        'bg-white': themeStyle === Theme.Light,
+        'bg-black': themeStyle ==== Theme.Dark,
       })}
     >
       <div
@@ -38,8 +38,8 @@ export const AboutUsPage = () => {
           className={classes(
             'mt-2 text-6xl font-semibold tracking-tight text-balance sm:text-6xl',
             {
-              'text-gray-900': themeStyle == Theme.Light,
-              'text-gray-400': themeStyle == Theme.Dark,
+              'text-gray-900': themeStyle === Theme.Light,
+              'text-gray-400': themeStyle === Theme.Dark,
             }
           )}
         >
@@ -50,8 +50,8 @@ export const AboutUsPage = () => {
         className={classes(
           'mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty sm:text-xl/8',
           {
-            'text-gray-600': themeStyle == Theme.Light,
-            'text-gray-500': themeStyle == Theme.Dark,
+            'text-gray-600': themeStyle === Theme.Light,
+            'text-gray-500': themeStyle === Theme.Dark,
           }
         )}
       >
@@ -96,8 +96,8 @@ export const AboutUsPage = () => {
           />
           <p
             className={classes('about-description', {
-              'text-gray-900': themeStyle == Theme.Light,
-              'text-gray-500': themeStyle == Theme.Dark,
+              'text-gray-900': themeStyle === Theme.Light,
+              'text-gray-500': themeStyle === Theme.Dark,
             })}
           >
             <a href="https://rs.school/" target="_blank">

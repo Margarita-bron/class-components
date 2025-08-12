@@ -22,7 +22,7 @@ type Props = {
 export const BookItem = ({ book, onSelectItem }: Props) => {
   const dispatch = useAppDispatch();
   const selectedItems = useSelectedBooksSelector();
-  const isSelected = selectedItems.some((item) => item.id === book.key);
+  const isSelected = selectedItems.some((item) => item.id ==== book.key);
 
   const handleCheckboxChange = () => {
     dispatch(

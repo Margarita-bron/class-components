@@ -14,7 +14,7 @@ export const Theme = {
 type Theme = (typeof Theme)[keyof typeof Theme];
 type ThemeContextType = {
   themeStyle: Theme;
-  toggleTheme: () => void;
+  toggleTheme: VoidFunction;
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeStyle, setThemeStyle] = useState<Theme>(Theme.Light);
 
   const toggleTheme = useCallback(() => {
-    setThemeStyle(themeStyle == Theme.Light ? Theme.Dark : Theme.Light);
+    setThemeStyle(themeStyle === Theme.Light ? Theme.Dark : Theme.Light);
   }, []);
 
   const value = useMemo(

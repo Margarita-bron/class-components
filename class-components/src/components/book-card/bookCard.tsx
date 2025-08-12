@@ -2,19 +2,19 @@ import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
 import './book-card.css';
 import { useGetBookDetailQuery } from '../../redux/services/bookApi';
+import { DESCRIPTION_LIMIT } from '../../constants/book-constants';
 
 export type BookCardProps = {
   bookKey: string;
   onClose: () => void;
 };
 
-export const accessibleDescription = (description: string | undefined) => {
+export const accessibleDescription = (description?: string) => {
   if (!description) return;
-  const DESCRIPTION_LIMIT = 60;
   const descArray = description.trim().split(/\s+/);
   return descArray.length <= DESCRIPTION_LIMIT
     ? description
-    : `${descArray.slice(0, 60).join(' ')}...`;
+    : `${descArray.slice(0, DESCRIPTION_LIMIT).join(' ')}...`;
 };
 
 export const BookCard = ({ bookKey, onClose }: BookCardProps) => {

@@ -13,18 +13,20 @@ export const bookApi = createApi({
         `/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page=${page}`,
       keepUnusedDataFor: 60 * 2,
       transformResponse: (response): Book[] =>
-        response.docs.map((doc: Book) => ({
-          key: doc.key,
-          title: doc.title,
-          author_name: doc.author_name,
-          description:
-            typeof doc.description === 'string'
-              ? doc.description
-              : typeof doc.description === 'object'
-                ? (doc.description as { value: string }).value
-                : undefined,
-          cover_i: doc.cover_i,
-        })),
+        response.docs.map(
+          ({ key, title, author_name, description, cover_i }: Book) => ({
+            key: key,
+            title: title,
+            author_name: author_name,
+            description:
+              typeof description === 'string'
+                ? description
+                : typeof description === 'object'
+                  ? (description as { value: string }).value
+                  : undefined,
+            cover_i: cover_i,
+          })
+        ),
       transformErrorResponse: (response: {
         status?: number | string;
         data?: unknown;

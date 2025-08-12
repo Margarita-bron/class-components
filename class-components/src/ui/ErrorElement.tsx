@@ -19,7 +19,7 @@ export const ErrorElement = ({ error, errorContext }: ErrorElementProps) => {
 
       {error.status && (
         <h1 className="text-base font-bold text-indigo-600">
-          {typeof error.status == 'string'
+          {typeof error.status === 'string'
             ? `Error Type: ${error.status}`
             : `Status: ${error.status}`}
         </h1>

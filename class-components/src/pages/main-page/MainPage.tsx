@@ -11,8 +11,6 @@ import type { Nullable } from '../../types/common.ts';
 import { useGetBooksQuery } from '../../redux/services/bookApi.ts';
 
 export const MainPage = () => {
-  const limit = 10;
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialValue = getInitialValueFromLocalStorage('searchQuery', 'book');
