@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeStyle, setThemeStyle] = useState<Theme>(Theme.Light);
 
   const toggleTheme = useCallback(() => {
-    setThemeStyle(themeStyle === Theme.Light ? Theme.Dark : Theme.Light);
+    setThemeStyle(prevTheme=> prevTheme === Theme.Light ? Theme.Dark : Theme.Light);
   }, []);
 
   const value = useMemo(

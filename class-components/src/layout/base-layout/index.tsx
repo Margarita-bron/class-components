@@ -12,8 +12,8 @@ const Content = () => {
   return (
     <div
       className={classes('page-container', {
-        'body-container__theme-light': themeStyle ==== Theme.Light,
-        'body-container__theme-dark': themeStyle ==== Theme.Dark,
+        'body-container__theme-light': themeStyle === Theme.Light,
+        'body-container__theme-dark': themeStyle === Theme.Dark,
       })}
     >
       <Header />

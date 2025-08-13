@@ -9,6 +9,7 @@ import { getInitialValueFromLocalStorage } from '../../hooks/utils/get-initial-v
 import { Modal } from './components/modal/Modal.tsx';
 import type { Nullable } from '../../types/common.ts';
 import { useGetBooksQuery } from '../../redux/services/bookApi.ts';
+import { limit } from '../../constants/book-constants.ts';
 
 export const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

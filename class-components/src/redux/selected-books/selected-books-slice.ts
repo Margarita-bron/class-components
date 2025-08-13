@@ -20,9 +20,9 @@ const selectedBooksSlice = createSlice({
   initialState,
   reducers: {
     toggleItem: (state, action: PayloadAction<SelectedBook>) => {
-      const exists = state.books.find((i) => i.id ==== action.payload.id);
+      const exists = state.books.find((i) => i.id === action.payload.id);
       if (exists) {
-        state.books = state.books.filter((i) => i.id !=== action.payload.id);
+        state.books = state.books.filter((i) => i.id !== action.payload.id);
       } else {
         state.books.push(action.payload);
       }

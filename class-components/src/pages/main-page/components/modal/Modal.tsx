@@ -8,7 +8,7 @@ export const Modal = () => {
   const dispatch = useAppDispatch();
   const selectedItems = useSelectedBooksSelector();
 
-  if (selectedItems.length ==== 0) return null;
+  if (selectedItems.length === 0) return null;
   const handleClearAll = () => {
     dispatch(clearAll());
   };

@@ -17,7 +17,7 @@ export const AboutUsPage = () => {
     <div
       className={classes('relative isolate px-6 py-24 sm:py-32 lg:px-8', {
         'bg-white': themeStyle === Theme.Light,
-        'bg-black': themeStyle ==== Theme.Dark,
+        'bg-black': themeStyle === Theme.Dark,
       })}
     >
       <div

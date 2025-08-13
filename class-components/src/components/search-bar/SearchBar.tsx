@@ -36,8 +36,8 @@ export const SearchBar = ({
   return (
     <div
       className={classes('search-wrapper', {
-        'search-wrapper__theme-light': themeStyle ==== Theme.Light,
-        'search-wrapper__theme-dark': themeStyle ==== Theme.Dark,
+        'search-wrapper__theme-light': themeStyle === Theme.Light,
+        'search-wrapper__theme-dark': themeStyle === Theme.Dark,
       })}
     >
       <input

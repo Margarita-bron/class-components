@@ -29,8 +29,8 @@ export const Pagination = ({
       className={classes(
         'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6',
         {
-          'body-container__theme-light': themeStyle == Theme.Light,
-          'body-container__theme-dark': themeStyle == Theme.Dark,
+          'body-container__theme-light': themeStyle === Theme.Light,
+          'body-container__theme-dark': themeStyle === Theme.Dark,
         }
       )}
     >
@@ -38,8 +38,8 @@ export const Pagination = ({
         <div>
           <p
             className={classes('text-gray-700" text-sm', {
-              'body-container__theme-light': themeStyle == Theme.Light,
-              'body-container__theme-dark': themeStyle == Theme.Dark,
+              'body-container__theme-light': themeStyle === Theme.Light,
+              'body-container__theme-dark': themeStyle === Theme.Dark,
             })}
           >
             Showing{' '}
@@ -73,8 +73,8 @@ export const Pagination = ({
                     ? 'z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                     : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20',
                   {
-                    'body-container__theme-light': themeStyle == Theme.Light,
-                    'body-container__theme-dark': themeStyle == Theme.Dark,
+                    'body-container__theme-light': themeStyle === Theme.Light,
+                    'body-container__theme-dark': themeStyle === Theme.Dark,
                   }
                 )}
               >

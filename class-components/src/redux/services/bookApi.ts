@@ -3,7 +3,7 @@ import type { Book } from '../../types/book';
 
 export const bookApi = createApi({
   reducerPath: 'bookApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://oopenlibrary.org' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://openlibrary.org' }),
   tagTypes: ['Book'],
   refetchOnFocus: true,
   refetchOnReconnect: true,

@@ -1,2 +1,2 @@
 export const DESCRIPTION_LIMIT = 60;
-const limit = 10;
+export const limit = 10;
