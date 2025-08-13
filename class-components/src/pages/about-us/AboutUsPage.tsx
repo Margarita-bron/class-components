@@ -4,7 +4,7 @@ import mentor from './images/mentor.jpg';
 import { useNavigate } from 'react-router-dom';
 import './about-us.css';
 import { useContext } from 'react';
-import { ThemeContext } from '../../context/theme-context';
+import { Theme, ThemeContext } from '../../context/theme-context';
 import classes from 'classnames';
 
 export const AboutUsPage = () => {
@@ -15,10 +15,10 @@ export const AboutUsPage = () => {
   const { themeStyle } = useContext(ThemeContext);
   return (
     <div
-      className={classes(
-        'relative isolate px-6 py-24 sm:py-32 lg:px-8',
-        themeStyle == 'light' ? 'bg-white' : 'bg-black'
-      )}
+      className={classes('relative isolate px-6 py-24 sm:py-32 lg:px-8', {
+        'bg-white': themeStyle === Theme.Light,
+        'bg-black': themeStyle === Theme.Dark,
+      })}
     >
       <div
         aria-hidden="true"
@@ -37,7 +37,10 @@ export const AboutUsPage = () => {
         <p
           className={classes(
             'mt-2 text-6xl font-semibold tracking-tight text-balance sm:text-6xl',
-            themeStyle == 'light' ? 'text-gray-900' : 'text-gray-400'
+            {
+              'text-gray-900': themeStyle === Theme.Light,
+              'text-gray-400': themeStyle === Theme.Dark,
+            }
           )}
         >
           Our Collaboration
@@ -46,7 +49,10 @@ export const AboutUsPage = () => {
       <p
         className={classes(
           'mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty sm:text-xl/8',
-          themeStyle == 'light' ? 'text-gray-600' : 'text-gray-500'
+          {
+            'text-gray-600': themeStyle === Theme.Light,
+            'text-gray-500': themeStyle === Theme.Dark,
+          }
         )}
       >
         This project is aimed at introducing the basics of React to students,
@@ -89,10 +95,10 @@ export const AboutUsPage = () => {
             className="inline-block rounded-full ring-2 ring-white"
           />
           <p
-            className={classes(
-              'about-description',
-              themeStyle == 'light' ? 'text-gray-900' : 'text-gray-500'
-            )}
+            className={classes('about-description', {
+              'text-gray-900': themeStyle === Theme.Light,
+              'text-gray-500': themeStyle === Theme.Dark,
+            })}
           >
             <a href="https://rs.school/" target="_blank">
               RSSchool (The Rolling Scopes School)

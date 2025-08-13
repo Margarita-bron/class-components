@@ -1,3 +1,1 @@
-export const EmptyData = () => {
-  return <h1>data is empty</h1>;
-};
+export const EmptyData = () => <h1>data is empty</h1>;

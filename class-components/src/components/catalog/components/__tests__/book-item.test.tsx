@@ -1,14 +1,14 @@
 import { Provider } from 'react-redux';
-import { store } from '../../../../store/store';
+import { store } from '../../../../redux/store';
 import { render, screen } from '@testing-library/react';
 import { BookItem } from '../BookItem';
 import { mockData } from '../../mocks/mockData';
 import { configureStore } from '@reduxjs/toolkit';
 import {
+  selectedBooksReducer,
   toggleItem,
   type SelectedBook,
-} from '../../../../store/selectedBooksSlice';
-import selectedBooksReducer from '../../../../store/selectedBooksSlice';
+} from '../../../../redux/selected-books/selected-books-slice';
 
 const book: SelectedBook = {
   id: 'book1',

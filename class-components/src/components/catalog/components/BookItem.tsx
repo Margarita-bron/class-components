@@ -1,14 +1,17 @@
-import { useDispatch, useSelector } from 'react-redux';
 import type { Book } from '../../../types/book';
-import type { RootState } from '../../../store/store';
-import { toggleItem } from '../../../store/selectedBooksSlice';
+import { toggleItem } from '../../../redux/selected-books/selected-books-slice';
 import './book-item.css';
+import { useSelectedBooksSelector } from '../../../redux/selectors/selected-books-selector';
+import { useAppDispatch } from '../../../hooks/typed-react-redux-hooks';
 
 const setCoverUrl = (book: Book) => {
-  const coverUrl = book.cover_i
-    ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-    : undefined;
-  return coverUrl;
+  try {
+    return book.cover_i
+      ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+      : undefined;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 type Props = {
@@ -17,10 +20,8 @@ type Props = {
 };
 
 export const BookItem = ({ book, onSelectItem }: Props) => {
-  const dispatch = useDispatch();
-  const selectedItems = useSelector(
-    (state: RootState) => state.selectedBooks.books
-  );
+  const dispatch = useAppDispatch();
+  const selectedItems = useSelectedBooksSelector();
   const isSelected = selectedItems.some((item) => item.id === book.key);
 
   const handleCheckboxChange = () => {

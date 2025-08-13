@@ -7,7 +7,7 @@ describe('Loading component tests', () => {
       <Catalog
         resultData={[]}
         loading={true}
-        error={null}
+        isFetching={true}
         onSelectItem={() => {}}
       />
     );
@@ -16,12 +16,7 @@ describe('Loading component tests', () => {
   });
   it('should hide loading indicator', () => {
     render(
-      <Catalog
-        resultData={[]}
-        loading={false}
-        error={null}
-        onSelectItem={() => {}}
-      />
+      <Catalog resultData={[]} error={undefined} onSelectItem={() => {}} />
     );
     const spinner = screen.queryByRole('status', { hidden: true });
     expect(spinner).not.toBeInTheDocument();
@@ -31,7 +26,7 @@ describe('Loading component tests', () => {
       <Catalog
         resultData={[]}
         loading={true}
-        error={null}
+        isFetching={true}
         onSelectItem={() => {}}
       />
     );

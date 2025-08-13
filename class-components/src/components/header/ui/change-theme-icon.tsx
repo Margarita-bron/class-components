@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from '../../../context/theme-context';
+import { Theme, ThemeContext } from '../../../context/theme-context';
 import './change-theme-icon.css';
 
 export const ChangeThemeIcon = () => {
@@ -12,7 +12,7 @@ export const ChangeThemeIcon = () => {
         data-icon="sun"
         width="1em"
         height="1em"
-        fill={themeStyle == 'light' ? 'black' : 'white'}
+        fill={themeStyle === Theme.Light ? 'black' : 'white'}
         aria-hidden="true"
         cursor="pointer"
       >

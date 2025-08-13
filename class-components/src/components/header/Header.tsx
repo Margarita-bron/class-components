@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import research from '../../assets/research.ico';
 import './header.css';
 import { useContext } from 'react';
-import { ThemeContext } from '../../context/theme-context';
+import { Theme, ThemeContext } from '../../context/theme-context';
 import classes from 'classnames';
 import { ChangeThemeIcon } from './ui/change-theme-icon';
 
@@ -15,10 +15,10 @@ export const Header = () => {
   const { themeStyle } = useContext(ThemeContext);
   return (
     <div
-      className={classes(
-        'header',
-        themeStyle == 'light' ? 'bg-gray-200' : 'bg-gray-900'
-      )}
+      className={classes('header', {
+        'bg-gray-200': themeStyle === Theme.Light,
+        'bg-gray-900': themeStyle === Theme.Dark,
+      })}
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
@@ -36,7 +36,10 @@ export const Header = () => {
                     className={({ isActive }) =>
                       classes(
                         isActive
-                          ? `${themeStyle == 'light' ? 'active__theme-light' : 'active__theme-dark'}`
+                          ? {
+                              'active__theme-light': themeStyle === Theme.Light,
+                              'active__theme-dark': themeStyle === Theme.Dark,
+                            }
                           : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'rounded-md px-3 py-2 text-sm font-medium'
                       )

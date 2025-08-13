@@ -1,178 +1,138 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchBooks } from '../../../service/books-api';
-import type { MockInstance } from 'vitest';
-import { SearchBar } from '../SearchBar';
-import { MemoryRouter } from 'react-router-dom';
-import { MainPage } from '../../../pages/main-page/MainPage';
-import { Provider } from 'react-redux';
-import { store } from '../../../store/store';
 
-vi.mock('../../../service/books-api');
+import { SearchBar } from '../SearchBar';
+import { Theme, ThemeContext } from '../../../context/theme-context';
+import type { ReactNode } from 'react';
+
+const ThemeProviderWrapper = ({
+  children,
+  theme = Theme.Light,
+}: {
+  children: ReactNode;
+  theme?: typeof Theme.Light | typeof Theme.Dark;
+}) => {
+  return (
+    <ThemeContext.Provider value={{ themeStyle: theme, toggleTheme: () => {} }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
 describe('SearchBar Tests', () => {
-  describe('SearchBar Tests: User Interaction Tests', () => {
-    let input: HTMLInputElement;
-    let button: HTMLButtonElement;
-    let setItemMock: ReturnType<typeof vi.spyOn>;
+  let handleChangeSearchQueryMock: ReturnType<typeof vi.fn>;
 
-    beforeEach(async () => {
-      setItemMock = vi
-        .spyOn(Storage.prototype, 'setItem')
-        .mockImplementation(() => {});
-      render(
-        <Provider store={store}>
-          <MemoryRouter>
-            <MainPage />
-          </MemoryRouter>
-        </Provider>
-      );
-      input = (await screen.findByPlaceholderText(
-        /Search.../i
-      )) as HTMLInputElement;
-      button = screen.getByRole('button', { name: /search/i });
-    });
-
-    it('should update input value during user types', () => {
-      const newValue = 'smth';
-      fireEvent.change(input, { target: { value: newValue } });
-      expect(input.value).toBe(newValue);
-    });
-
-    it('should update input value after user types', async () => {
-      const newValue = 'test input';
-      await userEvent.clear(input);
-      await userEvent.type(input, newValue);
-      expect(input).toHaveValue(newValue);
-    });
-
-    it('should save search term to localStorage when search button is clicked (handleChangeSearchQuery)', async () => {
-      const newValue = 'test query';
-      await userEvent.clear(input);
-      await userEvent.type(input, newValue);
-      await userEvent.click(button);
-
-      expect(setItemMock).toHaveBeenCalledWith(
-        'searchQuery',
-        JSON.stringify(newValue)
-      );
-    });
-
-    it('should trigger search callback with correct parameters (trims whitespace from search input before saving)', async () => {
-      await userEvent.clear(input);
-      await userEvent.type(input, '  query with whitespace ');
-      await userEvent.click(button);
-
-      await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith('query with whitespace', 1);
-      });
-    });
-
-    afterEach(() => {
-      cleanup();
-      vi.clearAllMocks();
-      vi.restoreAllMocks();
-    });
-  });
-  describe('SearchBar Tests: LocalStorage Integration', () => {
-    let getItemMock: MockInstance<(key: string) => string | null>;
-    let setItemMock: ReturnType<typeof vi.spyOn>;
-
-    beforeEach(async () => {
-      getItemMock = vi
-        .spyOn(Storage.prototype, 'getItem')
-        .mockImplementation(() => null);
-      setItemMock = vi
-        .spyOn(Storage.prototype, 'setItem')
-        .mockImplementation(() => {});
-    });
-
-    it('should retrieve saved search term on component mount from localStorage', async () => {
-      const newValue = 'saved query';
-      getItemMock.mockReturnValueOnce(JSON.stringify(newValue));
-
-      render(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={['/?query=saved query']}>
-            <MainPage />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(await screen.findByPlaceholderText(/Search.../i)).toHaveValue(
-        newValue
-      );
-
-      await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith(newValue, 1);
-      });
-    });
-
-    it('should overwrite existing localStorage value when new search is performed', async () => {
-      getItemMock.mockReturnValueOnce(JSON.stringify('old query'));
-
-      render(
-        <Provider store={store}>
-          <MemoryRouter>
-            <MainPage />
-          </MemoryRouter>
-        </Provider>
-      );
-      const inputAfterMock = (await screen.findByPlaceholderText(
-        /Search.../i
-      )) as HTMLInputElement;
-      const buttonAfterMock = screen.getByRole('button', { name: /search/i });
-
-      const newValue = 'overwrited query';
-      await userEvent.clear(inputAfterMock);
-      await userEvent.type(inputAfterMock, newValue);
-      await userEvent.click(buttonAfterMock);
-
-      expect(setItemMock).toHaveBeenCalledWith(
-        'searchQuery',
-        JSON.stringify(newValue)
-      );
-      await waitFor(() => {
-        expect(fetchBooks).toHaveBeenCalledWith(newValue, 1);
-      });
-    });
-
-    afterEach(() => {
-      cleanup();
-      vi.clearAllMocks();
-      vi.restoreAllMocks();
-    });
+  beforeEach(() => {
+    handleChangeSearchQueryMock = vi.fn();
   });
 
-  describe('SearchBar Tests: LocalStorage Integration', () => {
-    it('should save search term to localStorage when search button is clicked (handleChangeSearchQuery)', () => {
-      const mockHandle = vi.fn();
-      render(
-        <MemoryRouter>
-          <SearchBar currentQuery="" handleChangeSearchQuery={mockHandle} />
-        </MemoryRouter>
-      );
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-      const input = screen.getByPlaceholderText(
-        'Search...'
-      ) as HTMLInputElement;
-      const button = screen.getByRole('button', { name: /search/i });
+  it('renders the input and button with correct initial value', () => {
+    const initialQuery = 'initial value';
+    render(
+      <ThemeProviderWrapper>
+        <SearchBar
+          currentQuery={initialQuery}
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
 
-      fireEvent.change(input, { target: { value: '  books  ' } });
-      fireEvent.click(button);
+    const input = screen.getByPlaceholderText(/search.../i) as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /search/i });
 
-      expect(mockHandle).toHaveBeenCalledWith('books');
-    });
+    expect(input).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
 
-    afterEach(() => {
-      vi.clearAllMocks();
-      vi.restoreAllMocks();
-    });
+    expect(input.value).toBe(initialQuery);
+  });
+
+  it('updates input value on user typing', async () => {
+    render(
+      <ThemeProviderWrapper>
+        <SearchBar
+          currentQuery=""
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+
+    const input = screen.getByPlaceholderText(/search.../i) as HTMLInputElement;
+
+    await userEvent.clear(input);
+    await userEvent.type(input, '  test query  ');
+
+    expect(input.value).toBe('  test query  ');
+  });
+
+  it('calls handleChangeSearchQuery with trimmed input on button click', async () => {
+    render(
+      <ThemeProviderWrapper>
+        <SearchBar
+          currentQuery=""
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+
+    const input = screen.getByPlaceholderText(/search.../i) as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /search/i });
+
+    await userEvent.type(input, '  books  ');
+    await userEvent.click(button);
+
+    expect(handleChangeSearchQueryMock).toHaveBeenCalledTimes(1);
+    expect(handleChangeSearchQueryMock).toHaveBeenCalledWith('books');
+  });
+
+  it('updates input value when currentQuery prop changes', () => {
+    const { rerender } = render(
+      <ThemeProviderWrapper>
+        <SearchBar
+          currentQuery="initial"
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+
+    const input = screen.getByPlaceholderText(/search.../i) as HTMLInputElement;
+    expect(input.value).toBe('initial');
+
+    rerender(
+      <ThemeProviderWrapper>
+        <SearchBar
+          currentQuery="updated"
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+
+    expect(screen.getByPlaceholderText(/search.../i)).toHaveValue('updated');
+  });
+
+  it('applies correct theme class based on ThemeContext value', () => {
+    const { container, rerender } = render(
+      <ThemeProviderWrapper theme={Theme.Light}>
+        <SearchBar
+          currentQuery=""
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+    expect(container.firstChild).toHaveClass('search-wrapper__theme-light');
+
+    rerender(
+      <ThemeProviderWrapper theme={Theme.Dark}>
+        <SearchBar
+          currentQuery=""
+          handleChangeSearchQuery={handleChangeSearchQueryMock}
+        />
+      </ThemeProviderWrapper>
+    );
+    expect(container.firstChild).toHaveClass('search-wrapper__theme-dark');
   });
 });
