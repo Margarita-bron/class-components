@@ -25,10 +25,12 @@
     "strictNullChecks": true
   },
   "include": [
-    "next-env.d.ts",
-    "./dist/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "./dist/types/**/*.ts",
+    "next-env.d.ts",
+    "tailwind.config.cjs",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

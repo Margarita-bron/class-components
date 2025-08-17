@@ -1,12 +1,13 @@
+'use client'
 import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
-import './book-card.css';
+import styles from './book-card.module.css';
 import { useGetBookDetailQuery } from '../../redux/services/bookApi';
 import { DESCRIPTION_LIMIT } from '../../constants/book-constants';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export type BookCardProps = {
   bookKey: string;
-  onClose: () => void;
 };
 
 export const accessibleDescription = (description?: string) => {
@@ -17,7 +18,16 @@ export const accessibleDescription = (description?: string) => {
     : `${descArray.slice(0, DESCRIPTION_LIMIT).join(' ')}...`;
 };
 
-export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
+export const BookCard = ({ bookKey }: BookCardProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams() as URLSearchParams;
+
+  const closeDetails = (): void => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('details');
+    router.push(`/?${params.toString()}`)
+  };
+  
   const { data: book, error, isLoading } = useGetBookDetailQuery(bookKey);
 
   if (!book && !error) return null;
@@ -39,13 +49,13 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
               loading="lazy"
             />
           )}
-          <h2 className="book-card-title">{book.title}</h2>
+          <h2 className={styles.title}>{book.title}</h2>
 
           {book.author_name && <p>Author(s): {book.author_name.join(', ')}</p>}
 
           <p>{accessibleDescription(book.description)}</p>
           <button
-            onClick={onClose}
+            onClick={() => closeDetails()}
             className="mb-4 text-indigo-600 hover:text-indigo-900"
           >
             Close

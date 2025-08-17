@@ -1,18 +1,17 @@
-import { useContext } from 'react';
-import { Theme, ThemeContext } from '../../context/theme-context';
+'use client'
+
 import { SwitchButton } from './ui/switch-button';
 import classes from 'classnames';
-import '../../index.css';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export type PaginationProps = {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
 };
 
 const setPageArray = (totalPages: number): number[] => {
-  const pages = [];
-  for (let i = 1; i <= totalPages; i++) {
+  const pages:number[] = [];
+  for (let i:number = 1; i <= totalPages; i++) {
     pages.push(i);
   }
   return pages;
@@ -20,27 +19,28 @@ const setPageArray = (totalPages: number): number[] => {
 
 export const Pagination = ({
   currentPage,
-  totalPages,
-  onPageChange,
+  totalPages
 }: PaginationProps) => {
-  const { themeStyle } = useContext(ThemeContext);
+
+  const router = useRouter();
+  const searchParams = useSearchParams() as URLSearchParams;
+  
+  const handlePageChange = (page:number): void => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('page', String(page));
+    router.push(`/?${params.toString()}`)
+  };
+
   return (
     <div
       className={classes(
-        'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6',
-        {
-          'body-container__theme-light': themeStyle === Theme.Light,
-          'body-container__theme-dark': themeStyle === Theme.Dark,
-        }
+        'flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 body-container__theme-light dark:body-container__theme-dark'
       )}
     >
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p
-            className={classes('text-gray-700" text-sm', {
-              'body-container__theme-light': themeStyle === Theme.Light,
-              'body-container__theme-dark': themeStyle === Theme.Dark,
-            })}
+            className={classes('text-gray-700" text-sm body-container__theme-light dark:body-container__theme-dark')}
           >
             Showing{' '}
             <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
@@ -56,7 +56,7 @@ export const Pagination = ({
             className="isolate inline-flex -space-x-px rounded-md shadow-xs"
           >
             <SwitchButton
-              onClick={() => onPageChange(currentPage - 1)}
+              onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
               &#8592; Previous
@@ -65,17 +65,14 @@ export const Pagination = ({
             {setPageArray(totalPages).map((page) => (
               <button
                 key={page}
-                onClick={() => onPageChange(page)}
+                onClick={() => handlePageChange(page)}
                 aria-current={page === currentPage ? 'page' : undefined}
                 className={classes(
                   'relative inline-flex items-center px-4 py-2 text-sm font-semibold focus:outline-offset-0',
                   page === currentPage
                     ? 'z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                    : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20',
-                  {
-                    'body-container__theme-light': themeStyle === Theme.Light,
-                    'body-container__theme-dark': themeStyle === Theme.Dark,
-                  }
+                    : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 body-container__theme-light dark:body-container__theme-dark'
+                  
                 )}
               >
                 {page}
@@ -83,7 +80,7 @@ export const Pagination = ({
             ))}
 
             <SwitchButton
-              onClick={() => onPageChange(currentPage + 1)}
+              onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               classes="ml-3"
             >

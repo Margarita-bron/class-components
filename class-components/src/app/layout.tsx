@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ErrorBoundary } from '../error-boundary/ErrorBoundary';
+import { ErrorBoundary } from '../components/error-boundary/ErrorBoundary';
 import { Header } from '../components/header/Header';
-import { ThemeProviders } from './theme-provider';
+import { ThemeProviders } from '../providers/theme-provider';
+import { Provider } from 'react-redux';
+import { store } from '../redux/store';
+import QueryInitializer from './QueryFromLS';
+import ClientWrapper from '../providers/client-wrapper';
 
 export const metadata: Metadata = {
   title: 'Open Library',
@@ -19,10 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ErrorBoundary>
-          <ThemeProviders>
-            <Header />
-            {children}
-          </ThemeProviders>
+          <ClientWrapper>
+              <Header />
+<QueryInitializer/>
+              {children}
+          </ClientWrapper>
         </ErrorBoundary>
       </body>
     </html>

@@ -1,8 +1,9 @@
+'use client'
 import { createPortal } from 'react-dom';
 import './modal.css';
-import { clearAll } from '../../../../redux/selected-books/selected-books-slice';
-import { useSelectedBooksSelector } from '../../../../redux/selectors/selected-books-selector';
-import { useAppDispatch } from '../../../../hooks/typed-react-redux-hooks';
+import { useAppDispatch } from '../../hooks/typed-react-redux-hooks';
+import { clearAll } from '../../redux/selected-books/selected-books-slice';
+import { useSelectedBooksSelector } from '../../redux/selectors/selected-books-selector';
 
 export const Modal = () => {
   const dispatch = useAppDispatch();
