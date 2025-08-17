@@ -1,44 +1,41 @@
-import { useContext, useEffect, useState, type ChangeEvent } from 'react';
+'use client';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import './search-bar.css';
-import { Theme, ThemeContext } from '../../context/theme-context';
 import classes from 'classnames';
-import '../../index.css';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export type SearchBarProps = {
   currentQuery: string;
-  handleChangeSearchQuery: (_query: string) => void;
 };
 
 export type SearchBarState = {
   query: string;
 };
 
-export const SearchBar = ({
-  currentQuery,
-  handleChangeSearchQuery,
-}: SearchBarProps) => {
-  const [query, setQuery] = useState(currentQuery);
-  const { themeStyle } = useContext(ThemeContext);
+export const SearchBar = ({ currentQuery }: SearchBarProps) => {
+  const t = useTranslations('MainPage');
+  const router = useRouter();
+  const searchParams = useSearchParams() as URLSearchParams;
 
-  useEffect(() => {
-    setQuery(currentQuery);
-  }, [currentQuery]);
+  const [query, setQuery] = useState(currentQuery);
 
   const handleQuery = (e: ChangeEvent<HTMLInputElement>): void => {
     setQuery(e.target.value);
   };
 
   const handleSearchButton = (): void => {
-    const pureQuery = query.trim();
-    handleChangeSearchQuery(pureQuery);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('query', query);
+    params.set('page', '1');
+    router.push(`/?${params.toString()}`);
   };
 
   return (
     <div
-      className={classes('search-wrapper', {
-        'search-wrapper__theme-light': themeStyle === Theme.Light,
-        'search-wrapper__theme-dark': themeStyle === Theme.Dark,
-      })}
+      className={classes(
+        'search-wrapper search-wrapper__theme-light dark:search-wrapper__theme-dark'
+      )}
     >
       <input
         className="search-input"
@@ -49,7 +46,7 @@ export const SearchBar = ({
         onChange={handleQuery}
       />
       <button className="search-button" onClick={handleSearchButton}>
-        Search
+        {t('Search.searchButton')}
       </button>
     </div>
   );

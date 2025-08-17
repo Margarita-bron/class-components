@@ -1,10 +1,9 @@
-import { NavLink } from 'react-router-dom';
-import research from '../../assets/research.ico';
-import './header.css';
-import { useContext } from 'react';
-import { Theme, ThemeContext } from '../../context/theme-context';
+import styles from './header.module.css';
 import classes from 'classnames';
 import { ChangeThemeIcon } from './ui/change-theme-icon';
+import Image from 'next/image';
+import { NavLink } from './ui/nav-link';
+import research from '../../app/[locale]/research.ico';
 
 const navigation = [
   { name: 'Library', href: '/' },
@@ -12,39 +11,29 @@ const navigation = [
 ];
 
 export const Header = () => {
-  const { themeStyle } = useContext(ThemeContext);
   return (
     <div
-      className={classes('header', {
-        'bg-gray-200': themeStyle === Theme.Light,
-        'bg-gray-900': themeStyle === Theme.Dark,
-      })}
+      className={classes(
+        styles.header,
+        'bg-activeThemeLight dark:bg-activeThemeDark'
+      )}
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"></div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img alt="Open Library" src={research} className="h-8 w-auto" />
+              <Image
+                alt="Open Library"
+                src={research}
+                className="h-8 w-auto"
+                priority
+              />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <NavLink
-                    key={item.name}
-                    to={item.href}
-                    className={({ isActive }) =>
-                      classes(
-                        isActive
-                          ? {
-                              'active__theme-light': themeStyle === Theme.Light,
-                              'active__theme-dark': themeStyle === Theme.Dark,
-                            }
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'rounded-md px-3 py-2 text-sm font-medium'
-                      )
-                    }
-                  >
+                  <NavLink key={item.name} href={item.href}>
                     {item.name}
                   </NavLink>
                 ))}

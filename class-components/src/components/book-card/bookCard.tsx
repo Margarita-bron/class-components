@@ -1,35 +1,38 @@
+'use client'
 import { ErrorElement } from '../../ui/ErrorElement';
 import { Loading } from '../../ui/Loading';
-import './book-card.css';
+import styles from './book-card.module.css';
 import { useGetBookDetailQuery } from '../../redux/services/bookApi';
 import { DESCRIPTION_LIMIT } from '../../constants/book-constants';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { Book } from '../../types/book';
 
-export type BookCardProps = {
-  bookKey: string;
-  onClose: () => void;
-};
 
-export const accessibleDescription = (description?: string) => {
+export const accessibleDescription = (description?: string|object) => {
   if (!description) return;
+  typeof description === 'object' ? 
+    description = (description as { value: string }).value : description;
   const descArray = description.trim().split(/\s+/);
   return descArray.length <= DESCRIPTION_LIMIT
     ? description
     : `${descArray.slice(0, DESCRIPTION_LIMIT).join(' ')}...`;
 };
 
-export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
-  const { data: book, error, isLoading } = useGetBookDetailQuery(bookKey);
+export const BookCard = ({ book }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams() as URLSearchParams;
+  const detailsKey = searchParams.get('details') ?? undefined;
 
-  if (!book && !error) return null;
+  const closeDetails = (): void => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('details');
+    router.push(`/?${params.toString()}`)
+  };
 
   return (
     <div className="detail-panel border-l border-gray-300 p-4">
-      {isLoading && <Loading />}
-      {!isLoading && error && (
-        <ErrorElement error={error} errorContext="book details" />
-      )}
 
-      {!isLoading && !error && book && (
         <>
           {book.cover_i && (
             <img
@@ -39,19 +42,18 @@ export const BookCard = ({ bookKey, onClose }: BookCardProps) => {
               loading="lazy"
             />
           )}
-          <h2 className="book-card-title">{book.title}</h2>
+          <h2 className={styles.title}>{book.title}</h2>
 
           {book.author_name && <p>Author(s): {book.author_name.join(', ')}</p>}
 
           <p>{accessibleDescription(book.description)}</p>
           <button
-            onClick={onClose}
+            onClick={() => closeDetails()}
             className="mb-4 text-indigo-600 hover:text-indigo-900"
           >
             Close
           </button>
         </>
-      )}
     </div>
   );
 };

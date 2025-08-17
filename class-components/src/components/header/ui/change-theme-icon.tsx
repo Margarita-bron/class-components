@@ -1,18 +1,24 @@
-import { useContext } from 'react';
-import { Theme, ThemeContext } from '../../../context/theme-context';
+'use client';
+import { Theme } from '../../../context/theme-context';
 import './change-theme-icon.css';
+import { useTheme } from 'next-themes';
 
 export const ChangeThemeIcon = () => {
-  const { themeStyle, toggleTheme } = useContext(ThemeContext);
+  const { resolvedTheme, theme, setTheme } = useTheme();
   return (
-    <div className="change-theme-icon" onClick={toggleTheme}>
+    <div
+      className="change-theme-icon"
+      onClick={() => {
+        setTheme(resolvedTheme === Theme.Light ? Theme.Dark : Theme.Light);
+      }}
+    >
       <svg
         viewBox="64 64 896 896"
         focusable="false"
         data-icon="sun"
         width="1em"
         height="1em"
-        fill={themeStyle === Theme.Light ? 'black' : 'white'}
+        fill={'black dark:white'}
         aria-hidden="true"
         cursor="pointer"
       >

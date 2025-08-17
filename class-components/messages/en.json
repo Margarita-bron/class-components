@@ -1,0 +1,29 @@
+{
+  "MainPage": {
+    "Pagination": {
+      "Next": "Next",
+      "Previous": "Previous"
+    },
+    "Search": {
+      "searchButton": "Search"
+    },
+    "Modal": {
+      "info": "Number of selected items:",
+      "Download": "Download",
+      "Unselect all": "Unselect all"
+    }
+  },
+  "AboutPage": {
+    "name": "About Us",
+    "collab": "Our Collaboration",
+    "description": "This project is aimed at introducing the basics of React to students, through the development of weekly sprints",
+    "student": "Student, Project Owner",
+    "mentor": "Mentor",
+    "school-description": "— is a free, international educational platform focused on learning development, including front-end development using React. It helps students understand React through a structured curriculum, hands-on assignments, mentoring, and community engagement."
+  },
+  "PageNotFound": {
+    "text": "Page not found",
+    "info": "Sorry, we couldn’t find the page you’re looking for.",
+    "backButton": "Go back home"
+  }
+}

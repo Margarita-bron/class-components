@@ -1,3 +1,4 @@
+'use client';
 import { configureStore } from '@reduxjs/toolkit';
 import { bookApi } from './services/bookApi';
 import { selectedBooksReducer } from './selected-books/selected-books-slice';
