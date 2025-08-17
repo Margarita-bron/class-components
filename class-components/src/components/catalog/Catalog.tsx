@@ -24,7 +24,7 @@ export const Catalog = ({ resultData }: CatalogProps): ReactNode => {
               <li
                 key={book.key}
                 className={classes(
-                  'catalog-item-wrapper catalog-item__theme-light dark: catalog-item__theme-dark bg-gray-200'
+                  'catalog-item-wrapper catalog-item__theme-light dark:catalog-item__theme-dark bg-gray-200'
                 )}
                 role="listitem"
               >

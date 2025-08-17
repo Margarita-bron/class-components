@@ -1,11 +1,12 @@
 import { Suspense } from 'react';
-import { BASE_URL, limit } from '../constants/book-constants';
-import { Loading } from '../ui/Loading';
-import { ErrorElement } from '../ui/ErrorElement';
-import { BookCard } from '../components/book-card/bookCard';
-import { Catalog } from '../components/catalog/Catalog';
-import { Pagination } from '../components/pagination/Pagination';
-import { SearchBar } from '../components/search-bar/SearchBar';
+import { BASE_URL, limit } from '../../constants/book-constants';
+import { Loading } from '../../ui/Loading';
+import { ErrorElement } from '../../ui/ErrorElement';
+import { BookCard } from '../../components/book-card/bookCard';
+import { Catalog } from '../../components/catalog/Catalog';
+import { Pagination } from '../../components/pagination/Pagination';
+import { SearchBar } from '../../components/search-bar/SearchBar';
+import { Book } from '../../types/book';
 
 async function fetchBooks(query: string, page: string) {
   const url = `${BASE_URL}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page={page}`;
@@ -74,7 +75,7 @@ export default async function MainPageCatalog({
             <Catalog resultData={books} />
           )}
           {bookDetails && !errorLoadingDetails && (
-            <BookCard bookKey={bookDetails} />
+            <BookCard book={bookDetails} />
           )}
         </div>
 

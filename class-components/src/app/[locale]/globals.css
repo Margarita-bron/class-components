@@ -1,16 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-.page-container{
+.page-container {
   max-width: 100%;
   max-height: 100%;
   padding-top: 64px;
-    overflow: hidden;
+  overflow: hidden;
   box-sizing: content-box;
 }
 
-.app-wrapper{
+.app-wrapper {
+  margin-top: 64px;
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
@@ -28,7 +27,7 @@
   color: #888;
 }
 
-.catalog-detail-wrapper{
+.catalog-detail-wrapper {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 5vw;
@@ -36,12 +35,11 @@
   justify-content: center;
 }
 
-.catalog-main-wrapper{
+.catalog-main-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -72,6 +70,8 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 h1 {
@@ -111,13 +111,12 @@ button:focus-visible {
   }
 }
 
-.body-container__theme-light{
+.body-container__theme-light {
   background-color: #f8f9fa;
-  color:#212529
+  color: #212529;
 }
 
-.body-container__theme-dark{
+.body-container__theme-dark {
   background-color: #27293d;
-  color:#e0e4e7;
+  color: #e0e4e7;
 }
-

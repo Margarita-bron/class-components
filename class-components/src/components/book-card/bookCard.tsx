@@ -5,41 +5,34 @@ import styles from './book-card.module.css';
 import { useGetBookDetailQuery } from '../../redux/services/bookApi';
 import { DESCRIPTION_LIMIT } from '../../constants/book-constants';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { Book } from '../../types/book';
 
-export type BookCardProps = {
-  bookKey: string;
-};
 
-export const accessibleDescription = (description?: string) => {
+export const accessibleDescription = (description?: string|object) => {
   if (!description) return;
+  typeof description === 'object' ? 
+    description = (description as { value: string }).value : description;
   const descArray = description.trim().split(/\s+/);
   return descArray.length <= DESCRIPTION_LIMIT
     ? description
     : `${descArray.slice(0, DESCRIPTION_LIMIT).join(' ')}...`;
 };
 
-export const BookCard = ({ bookKey }: BookCardProps) => {
+export const BookCard = ({ book }) => {
   const router = useRouter();
   const searchParams = useSearchParams() as URLSearchParams;
+  const detailsKey = searchParams.get('details') ?? undefined;
 
   const closeDetails = (): void => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete('details');
     router.push(`/?${params.toString()}`)
   };
-  
-  const { data: book, error, isLoading } = useGetBookDetailQuery(bookKey);
-
-  if (!book && !error) return null;
 
   return (
     <div className="detail-panel border-l border-gray-300 p-4">
-      {isLoading && <Loading />}
-      {!isLoading && error && (
-        <ErrorElement error={error} errorContext="book details" />
-      )}
 
-      {!isLoading && !error && book && (
         <>
           {book.cover_i && (
             <img
@@ -61,7 +54,6 @@ export const BookCard = ({ bookKey }: BookCardProps) => {
             Close
           </button>
         </>
-      )}
     </div>
   );
 };

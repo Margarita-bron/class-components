@@ -3,7 +3,7 @@ import classes from 'classnames';
 import { ChangeThemeIcon } from './ui/change-theme-icon';
 import Image from 'next/image';
 import { NavLink } from './ui/nav-link';
-import research from '../../app/research.ico';
+import research from '../../app/[locale]/research.ico';
 
 const navigation = [
   { name: 'Library', href: '/' },

@@ -33,7 +33,7 @@ export const BookItem = ({ book }: Props) => {
     params.set('details', key);
     router.push(`/?${params.toString()}`)
   };
-
+  
 
   const handleCheckboxChange = () => {
     dispatch(

@@ -1,11 +1,13 @@
-'use client'
+'use client';
 import { createPortal } from 'react-dom';
 import './modal.css';
 import { useAppDispatch } from '../../hooks/typed-react-redux-hooks';
 import { clearAll } from '../../redux/selected-books/selected-books-slice';
 import { useSelectedBooksSelector } from '../../redux/selectors/selected-books-selector';
+import { useTranslations } from 'next-intl';
 
 export const Modal = () => {
+  const t = useTranslations('HomeView');
   const dispatch = useAppDispatch();
   const selectedItems = useSelectedBooksSelector();
 
@@ -41,15 +43,15 @@ export const Modal = () => {
   return createPortal(
     <div className="modal-container">
       <div className="modal-container-info">
-        <span>Number of selected items:</span>
+        <span>{t('Modal.info')}</span>
         <span>{selectedItems.length}</span>
       </div>
       <div className="modal-container-buttons">
         <button className="modal-button" onClick={handleDownload}>
-          Download
+          {t('Modal.Download')}
         </button>
         <button className="modal-button" onClick={handleClearAll}>
-          Unselect all
+          {t('Modal.Unselect all')}
         </button>
       </div>
     </div>,

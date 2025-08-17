@@ -17,3 +17,11 @@
 .about-description{
   text-align: start;
 }
+
+.white{
+  background-color: azure;
+}
+
+.black{
+  background-color: black;
+}
