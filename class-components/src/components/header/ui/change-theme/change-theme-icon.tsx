@@ -1,5 +1,5 @@
 'use client';
-import { Theme } from '../../../context/theme-context';
+import { Theme } from '../../../../context/theme-context';
 import './change-theme-icon.css';
 import { useTheme } from 'next-themes';
 

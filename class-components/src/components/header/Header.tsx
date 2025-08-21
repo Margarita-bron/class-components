@@ -1,9 +1,10 @@
 import styles from './header.module.css';
 import classes from 'classnames';
-import { ChangeThemeIcon } from './ui/change-theme-icon';
+import { ChangeThemeIcon } from './ui/change-theme/change-theme-icon';
 import Image from 'next/image';
 import { NavLink } from './ui/nav-link';
 import research from '../../app/[locale]/research.ico';
+import LocaleSwitcher from './ui/locale-switcher/LocaleSwitcher';
 
 const navigation = [
   { name: 'Library', href: '/' },
@@ -39,7 +40,10 @@ export const Header = () => {
                 ))}
               </div>
             </div>
-            <ChangeThemeIcon />
+            <div className={classes(styles.change)}>
+              <LocaleSwitcher />
+              <ChangeThemeIcon />
+            </div>
           </div>
         </div>
       </div>
