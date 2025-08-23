@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState, useRef, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
 import { Controller, useForm } from 'react-hook-form';
 
 export default function Form() {
@@ -18,7 +18,7 @@ export default function Form() {
 
   const [status, setStatus] = useState('typing');
   const [error, setError] = useState(null);
-  const handleError = useErrorHandler();
+  const { showBoundary } = useErrorBoundary();
 
   const onSubmit = async (formData) => {
     setStatus('submitting');
@@ -37,7 +37,7 @@ export default function Form() {
     } catch (error) {
       setError(error);
       setStatus('typing');
-      handleError(error);
+      showBoundary(error);
     }
   };
 
@@ -168,13 +168,10 @@ export default function Form() {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={answer.length === 0 || status === 'submitting'}
-          ></button>
-          {isPending ? 'Loading...' : state}
+          <button type="submit" disabled={status === 'submitting'}></button>
+          {status === 'submitting' && 'Loading...'}
         </form>
-        {error !== null && <p className="Error">{error.message}</p>}
+        {error !== null && <p className="Error">{error}</p>}
       </>
     </ErrorBoundary>
   );
