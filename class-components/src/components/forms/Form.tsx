@@ -3,6 +3,67 @@
 import { useActionState, useRef, useState } from 'react';
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
 import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+type IFormInput = {
+  name: string;
+  age: number;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  gender: string;
+  acceptTerms: boolean;
+  picture: FileList;
+  country: string;
+};
+
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .matches(/^[A-Z]/, 'First letter must be uppercase')
+    .required('Name is required'),
+  age: yup
+    .number()
+    .typeError('Age must be a number')
+    .positive('Age must be a positive number')
+    .min(6)
+    .integer('Age must be an integer')
+    .required('Age is required'),
+  email: yup
+    .string()
+    .email('Please enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .matches(/[0-9]/, 'The password must contain a number')
+    .matches(/[A-Z]/, 'The password must contain a capital letter')
+    .matches(/[a-z]/, 'The password must contain a lowercase letter')
+    .matches(/[^a-zA-Z0-9]/, 'The password must contain a special character'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), 'Passwords must match'])
+    .required('Confirm your password!!!'),
+  gender: yup
+    .string()
+    .oneOf(
+      ['male', 'female', 'non-binary', 'neither'],
+      'Select a valid gender'
+    ),
+  acceptTerms: yup
+    .bool()
+    .oneOf([true], 'You must accept the terms and conditions'),
+  picture: yup
+    .mixed()
+    .test('fileSize', 'Max 2MB', (value) => !value || value[0]?.size <= 2000000)
+    .test(
+      'fileType',
+      'Allow only PNG/JPEG',
+      (value) => !value || ['image/png', 'image/jpeg'].includes(value?.type)
+    ),
+  country: yup.string(),
+});
 
 export default function Form() {
   const {
@@ -11,7 +72,7 @@ export default function Form() {
     control,
     formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
     reset,
-  } = useForm({
+  } = useForm<IFormInput>({
     resolver: yupResolver(schema),
     mode: 'all',
   });
@@ -20,7 +81,7 @@ export default function Form() {
   const [error, setError] = useState(null);
   const { showBoundary } = useErrorBoundary();
 
-  const onSubmit = async (formData) => {
+  const onSubmitHandler = async (formData) => {
     setStatus('submitting');
     try {
       if (formData.picture && formData.picture.length > 0) {
@@ -58,12 +119,12 @@ export default function Form() {
   return (
     <ErrorBoundary FallbackComponent={FormErrorFallback}>
       <>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div>
             <label htmlFor="name">Name:</label>
             <input
               type="text"
-              {...register('name', { required: 'This field is required' })}
+              {...register('name')}
               placeholder="John"
               disabled={status === 'submitting'}
             />
@@ -73,8 +134,8 @@ export default function Form() {
             <label htmlFor="age">Age:</label>
             <input
               type="number"
-              {...register('age', { required: 'This field is required' })}
-              placeholder="Taylor"
+              {...register('age')}
+              placeholder="45"
               disabled={status === 'submitting'}
             />
             {errors.age && <p>{String(errors.age.message)}</p>}
@@ -83,7 +144,7 @@ export default function Form() {
             <label htmlFor="email">Email:</label>
             <input
               type="email"
-              {...register('email', { required: 'This field is required' })}
+              {...register('email')}
               placeholder="johntaylor@gmail.com"
               disabled={status === 'submitting'}
             />
@@ -93,7 +154,7 @@ export default function Form() {
             <label htmlFor="password">Password:</label>
             <input
               type="password"
-              {...register('password', { required: 'This field is required' })}
+              {...register('password')}
               disabled={status === 'submitting'}
             />
             {errors.password && <p>{String(errors.password.message)}</p>}
@@ -102,9 +163,7 @@ export default function Form() {
             <label htmlFor="confirmPassword">Confirm password:</label>
             <input
               type="password"
-              {...register('confirmPassword', {
-                required: 'This field is required',
-              })}
+              {...register('confirmPassword')}
               disabled={status === 'submitting'}
             />
             {errors.confirmPassword && (
@@ -125,25 +184,15 @@ export default function Form() {
 
           <div>
             <label htmlFor="acceptTerms">
-              <input
-                type="checkbox"
-                {...register('acceptTerms', {
-                  required: 'This field is required',
-                })}
-              />
-              I agree to the terms and conditions as set out by the user
-              agreement
+              <input type="checkbox" {...register('acceptTerms')} />I agree to
+              the terms and conditions as set out by the user agreement
             </label>
             {errors.acceptTerms && <p>{String(errors.acceptTerms.message)}</p>}
           </div>
 
           <div>
             <label htmlFor="picture"></label>
-            <input
-              type="file"
-              accept=".png,.jpeg,.jpg"
-              {...register('picture')}
-            />
+            <input type="file" accept=".png,.jpeg" {...register('picture')} />
             {errors.picture && <p>{String(errors.picture.message)}</p>}
           </div>
 
