@@ -1,47 +1,45 @@
-import { useActionState, useRef } from 'react';
+'use client';
+
+import { useActionState, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Controller, useForm } from 'react-hook-form';
 
 export default function Form() {
-  const [answer, setAnswer] = useState('');
-  const [error, setError] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'all',
+  });
+
   const [status, setStatus] = useState('typing');
-
-  const [state, formAction, isPending] = useActionState();
-  const formRef = useRef();
-  const nameInputRef = useRef();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [error, setError] = useState(null);
   const handleError = useErrorHandler();
-  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
-    messages,
-    (state, newMessage) => [
-      ...state,
-      {
-        text: newMessage,
-        sending: true,
-      },
-    ]
-  );
 
-  function handleChange(e) {
-    setName(e.target.value);
-    setAnswer(e.target.value);
-  }
-
-  async function formAction(formData) {
-    setIsSubmitting(true);
+  const onSubmit = async (formData) => {
+    setStatus('submitting');
     try {
-      addOptimisticMessage(formData.get('message'));
-      formRef.current.reset();
-      nameInputRef.current.focus();
-      setStatus('success');
+      if (formData.picture && formData.picture.length > 0) {
+        const file = formData.picture[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          formData.pictureBase64 = reader.result;
+          reset();
+        };
+        reader.readAsDataURL(file);
+        setStatus('success');
+        reset();
+      }
     } catch (error) {
+      setError(error);
       setStatus('typing');
-      setError(err);
       handleError(error);
-    } finally {
-      setIsSubmitting(false);
     }
-  }
+  };
 
   function FormErrorFallback({ error, resetErrorBoundary }) {
     return (
@@ -53,58 +51,65 @@ export default function Form() {
     );
   }
 
-  if (status === 'success') {
-    return <h1>That's right!</h1>;
+  if (status === 'success' && isSubmitSuccessful) {
+    return <h1>Форма успешно отправлена!</h1>;
   }
 
   return (
     <ErrorBoundary FallbackComponent={FormErrorFallback}>
       <>
-        <form action={formAction} ref={formRef}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label htmlFor="name">Name:</label>
             <input
               type="text"
-              {...register('name')}
+              {...register('name', { required: 'This field is required' })}
+              placeholder="John"
               disabled={status === 'submitting'}
             />
-            {errors.name && <p>{errors.name.message}</p>}
+            {errors.name && <p>{String(errors.name.message)}</p>}
           </div>
           <div>
             <label htmlFor="age">Age:</label>
             <input
               type="number"
-              {...register('age')}
+              {...register('age', { required: 'This field is required' })}
+              placeholder="Taylor"
               disabled={status === 'submitting'}
             />
-            {errors.age && <p>{errors.age.message}</p>}
+            {errors.age && <p>{String(errors.age.message)}</p>}
           </div>
           <div>
             <label htmlFor="email">Email:</label>
             <input
               type="email"
-              {...register('email')}
+              {...register('email', { required: 'This field is required' })}
+              placeholder="johntaylor@gmail.com"
               disabled={status === 'submitting'}
             />
-            {errors.email && <p>{errors.email.message}</p>}
+            {errors.email && <p>{String(errors.email.message)}</p>}
           </div>
           <div>
             <label htmlFor="password">Password:</label>
             <input
               type="password"
-              {...register('password')}
+              {...register('password', { required: 'This field is required' })}
               disabled={status === 'submitting'}
             />
-            {errors.password && <p>{errors.password.message}</p>}
+            {errors.password && <p>{String(errors.password.message)}</p>}
           </div>
           <div>
             <label htmlFor="confirmPassword">Confirm password:</label>
             <input
               type="password"
-              {...register('confirmPassword')}
+              {...register('confirmPassword', {
+                required: 'This field is required',
+              })}
               disabled={status === 'submitting'}
             />
-            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p>{String(errors.confirmPassword.message)}</p>
+            )}
           </div>
           <div>
             <label htmlFor="gender">Gender</label>
@@ -115,15 +120,21 @@ export default function Form() {
               <option value="non-binary">Non-binary</option>
               <option value="neither">I prefer not to say</option>
             </select>
-            {errors.gender && <p>{errors.gender.message}</p>}
+            {errors.gender && <p>{String(errors.gender.message)}</p>}
           </div>
 
           <div>
             <label htmlFor="acceptTerms">
-              <input type="checkbox" {...register('acceptTerms')} />I agree to
-              the terms and conditions as set out by the user agreement
+              <input
+                type="checkbox"
+                {...register('acceptTerms', {
+                  required: 'This field is required',
+                })}
+              />
+              I agree to the terms and conditions as set out by the user
+              agreement
             </label>
-            {errors.acceptTerms && <p>{errors.acceptTerms.message}</p>}
+            {errors.acceptTerms && <p>{String(errors.acceptTerms.message)}</p>}
           </div>
 
           <div>
@@ -133,11 +144,32 @@ export default function Form() {
               accept=".png,.jpeg,.jpg"
               {...register('picture')}
             />
-            {errors.picture && <p>{errors.picture.message}</p>}
+            {errors.picture && <p>{String(errors.picture.message)}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="country">Страна:</label>
+            <Controller
+              name="country"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <select {...field}>
+                  <option value="">Выберите страну</option>
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
           </div>
 
           <button
-            formAction={formAction}
+            type="submit"
             disabled={answer.length === 0 || status === 'submitting'}
           ></button>
           {isPending ? 'Loading...' : state}
