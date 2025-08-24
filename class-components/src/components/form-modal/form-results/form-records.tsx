@@ -46,6 +46,7 @@ export default function FormRecords() {
         </thead>
         <tbody>
           {records.map((entry, index) => (
+            
             <tr
               key={entry.id}
               className={classes(

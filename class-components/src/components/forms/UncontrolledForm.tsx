@@ -109,50 +109,78 @@ export default function UncontrolledForm({ onClose }: FormProps) {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
-      <div>
-        <label>Name:</label>
-        <input name="name" type="text" placeholder="John" required />
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className="border-gray-200p-7 mx-auto max-w-md rounded-lg"
+    >
+      <div className="mb-5">
+        <label htmlFor="name">Name:</label>
+        <input
+          name="name"
+          type="text"
+          placeholder="John"
+          required
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
         {fieldErrors.name && <p style={{ color: 'red' }}>{fieldErrors.name}</p>}
       </div>
 
-      <div>
-        <label>Age:</label>
-        <input name="age" type="number" placeholder="30" required min={13} />
+      <div className="mb-5">
+        <label htmlFor="age">Age:</label>
+        <input
+          name="age"
+          type="number"
+          placeholder="30"
+          required
+          min={13}
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
         {fieldErrors.age && <p style={{ color: 'red' }}>{fieldErrors.age}</p>}
       </div>
 
-      <div>
-        <label>Email:</label>
+      <div className="mb-5">
+        <label htmlFor="email">Email:</label>
         <input
           name="email"
           type="email"
           placeholder="john@example.com"
           required
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
         />
         {fieldErrors.email && (
           <p style={{ color: 'red' }}>{fieldErrors.email}</p>
         )}
       </div>
 
-      <div>
-        <label>Password:</label>
-        <input name="password" type="password" required />
+      <div className="mb-5">
+        <label htmlFor="password">Password:</label>
+        <input
+          name="password"
+          type="password"
+          required
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
         {fieldErrors.password && (
           <p style={{ color: 'red' }}>{fieldErrors.password}</p>
         )}
       </div>
 
-      <div>
-        <label>Confirm Password:</label>
-        <input name="confirmPassword" type="password" required />
+      <div className="mb-5">
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input
+          name="confirmPassword"
+          type="password"
+          required
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
         {fieldErrors.confirmPassword && (
           <p style={{ color: 'red' }}>{fieldErrors.confirmPassword}</p>
         )}
       </div>
 
-      <div>
-        <label>Gender:</label>
+      <div className="mb-5">
+        <label htmlFor="gender">Gender:</label>
         <select name="gender">
           <option value="">Choose gender</option>
           <option value="male">Male</option>
@@ -165,24 +193,30 @@ export default function UncontrolledForm({ onClose }: FormProps) {
         )}
       </div>
 
-      <div>
-        <label>
-          <input name="acceptTerms" type="checkbox" /> I accept terms
+      <div className="mb-5">
+        <label htmlFor="acceptTerms">
+          <input name="acceptTerms" type="checkbox" /> I agree to the terms and
+          conditions as set out by the user agreement
         </label>
         {fieldErrors.acceptTerms && (
           <p style={{ color: 'red' }}>{fieldErrors.acceptTerms}</p>
         )}
       </div>
 
-      <div>
-        <label>Picture:</label>
-        <input name="picture" type="file" accept=".png,.jpeg" />
+      <div className="mb-5">
+        <label htmlFor="picture">Picture:</label>
+        <input
+          name="picture"
+          type="file"
+          accept=".png,.jpeg"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
         {fieldErrors.picture && (
           <p style={{ color: 'red' }}>{fieldErrors.picture}</p>
         )}
       </div>
-      <div>
-        <label>Country:</label>
+      <div className="mb-5">
+        <label htmlFor="country">Country:</label>
         <select name="country">
           <option value="">Choose country</option>
           {countries.map((country) => (
@@ -192,7 +226,11 @@ export default function UncontrolledForm({ onClose }: FormProps) {
           ))}
         </select>
       </div>
-      <button type="submit" disabled={status === 'submitting'}>
+      <button
+        type="submit"
+        disabled={status === 'submitting'}
+        className="mt-4 w-full rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700 disabled:opacity-50"
+      >
         Submit
       </button>
       {status === 'submitting' && <p>Submitting...</p>}

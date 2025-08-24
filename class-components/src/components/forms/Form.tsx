@@ -91,58 +91,66 @@ export default function Form({ onClose }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <div>
+      <form
+        onSubmit={handleSubmit(onSubmitHandler)}
+        className="border-gray-200p-7 mx-auto max-w-md rounded-lg"
+      >
+        <div className="mb-4">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
             {...register('name')}
             placeholder="John"
             disabled={status === 'submitting'}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           />
           {errors.name && <p>{String(errors.name.message)}</p>}
         </div>
-        <div>
+        <div className="mb-4">
           <label htmlFor="age">Age:</label>
           <input
             type="number"
             {...register('age')}
             placeholder="45"
             disabled={status === 'submitting'}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           />
           {errors.age && <p>{String(errors.age.message)}</p>}
         </div>
-        <div>
+        <div className="mb-4">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
             {...register('email')}
             placeholder="johntaylor@gmail.com"
             disabled={status === 'submitting'}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           />
           {errors.email && <p>{String(errors.email.message)}</p>}
         </div>
-        <div>
+        <div className="mb-4">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             {...register('password')}
             disabled={status === 'submitting'}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           />
           {errors.password && <p>{String(errors.password.message)}</p>}
         </div>
-        <div>
+        <div className="mb-4">
           <label htmlFor="confirmPassword">Confirm password:</label>
           <input
             type="password"
             {...register('confirmPassword')}
             disabled={status === 'submitting'}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           />
           {errors.confirmPassword && (
             <p>{String(errors.confirmPassword.message)}</p>
           )}
         </div>
-        <div>
+        <div className="mb-4">
           <label htmlFor="gender">Gender</label>
           <select {...register('gender')}>
             <option value="">Choose gender</option>
@@ -154,7 +162,7 @@ export default function Form({ onClose }) {
           {errors.gender && <p>{String(errors.gender.message)}</p>}
         </div>
 
-        <div>
+        <div className="mb-4">
           <label htmlFor="acceptTerms">
             <input type="checkbox" {...register('acceptTerms')} />I agree to the
             terms and conditions as set out by the user agreement
@@ -162,15 +170,20 @@ export default function Form({ onClose }) {
           {errors.acceptTerms && <p>{String(errors.acceptTerms.message)}</p>}
         </div>
 
-        <div>
+        <div className="mb-4">
           <label htmlFor="picture">
-            <input type="file" accept=".png,.jpeg" {...register('picture')} />
-            Image
+            <input
+              type="file"
+              accept=".png,.jpeg"
+              {...register('picture')}
+              className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+            />
+            Picture:
           </label>
           {errors.picture && <p>{String(errors.picture.message)}</p>}
         </div>
 
-        <div>
+        <div className="mb-4">
           <label htmlFor="country">Country:</label>
           <Controller
             name="country"
@@ -189,7 +202,13 @@ export default function Form({ onClose }) {
           />
         </div>
 
-        <button type="submit" disabled={!isValid || isSubmitting}></button>
+        <button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          className="mt-4 w-full rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700 disabled:opacity-50"
+        >
+          Submit
+        </button>
         {status === 'submitting' && 'Loading...'}
       </form>
     </>
