@@ -1,0 +1,9 @@
+.records {
+  width: 90%;
+  align-self: center;
+}
+
+.highlighted {
+  background-color: #e6ffe6;
+  border-color: #a27ed2;
+}

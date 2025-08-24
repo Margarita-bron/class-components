@@ -1,0 +1,16 @@
+        .test-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #27ae60;
+        }
+        .test-item.failed {
+            border-left-color: #e74c3c;
+        }
+        .test-status {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .passed { color: #27ae60; }
+        .failed { color: #e74c3c; }

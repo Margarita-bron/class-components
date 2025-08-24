@@ -1,25 +1,16 @@
 'use client';
 
+import { v4 as uuidv4 } from 'uuid';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
 import { Controller, Resolver, useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCountriesSelector } from '../../redux/selectors/countries-selector';
 import { fetchCountries } from '../../redux/slices/countries-slice';
 import { useAppDispatch } from '../../hooks/typed-react-redux-hooks';
-
-type IFormInput = {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: 'male' | 'female' | 'non-binary' | 'neither' | null;
-  acceptTerms: boolean;
-  picture?: FileList | null;
-  country?: string | null;
-};
+import { IFormInput } from '../../types/form';
+import { addFormRecord } from '../../redux/slices/form-data-slice';
+import { schema } from '../../yup/schema';
 
 const defaultValues: IFormInput = {
   name: '',
@@ -33,61 +24,7 @@ const defaultValues: IFormInput = {
   country: null,
 };
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .matches(/^[A-Z]/, 'First letter must be uppercase')
-    .required('Name is required'),
-  age: yup
-    .number()
-    .typeError('Age must be a number')
-    .positive('Age must be a positive number')
-    .integer('Age must be an integer')
-    .min(13, 'You must be at least 13 years old')
-    .required('Age is required'),
-  email: yup
-    .string()
-    .email('Please enter a valid email')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'Password must be at least 8 characters')
-    .matches(/[0-9]/, 'The password must contain a number')
-    .matches(/[A-Z]/, 'The password must contain a capital letter')
-    .matches(/[a-z]/, 'The password must contain a lowercase letter')
-    .matches(/[^a-zA-Z0-9]/, 'The password must contain a special character'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), 'Passwords must match'])
-    .required('Confirm your password!!!'),
-  gender: yup
-    .string()
-    .oneOf(['male', 'female', 'non-binary', 'neither'], 'Select a valid gender')
-    .nullable()
-    .notRequired(),
-  acceptTerms: yup
-    .bool()
-    .oneOf([true], 'You must accept the terms and conditions'),
-  picture: yup
-    .mixed()
-    .test(
-      'fileSize',
-      'File too large(max 2MB)',
-      (img) => img && img[0]?.size <= 2000000
-    )
-    .test(
-      'fileType',
-      'Allow only PNG/JPEG',
-      (img) =>
-        img instanceof File && ['image/png', 'image/jpeg'].includes(img.type)
-    )
-    .nullable()
-    .notRequired(),
-  country: yup.string().nullable().notRequired(),
-});
-
-export default function Form() {
+export default function Form({ onClose }) {
   const {
     register,
     handleSubmit,
@@ -116,10 +53,19 @@ export default function Form() {
         const file = formData.picture[0];
         const reader = new FileReader();
         reader.onloadend = () => {
-          formData.pictureBase64 = reader.result;
+          const newRecord = {
+            id: uuidv4(),
+            ...formData,
+            picture: reader.result,
+          };
+          dispatch(addFormRecord(newRecord));
+          setStatus('success');
           reset();
+          onClose();
         };
         reader.readAsDataURL(file);
+      } else {
+        dispatch(addFormRecord(formData));
         setStatus('success');
         reset();
       }
@@ -140,7 +86,7 @@ export default function Form() {
   }
 
   if (status === 'success' && isSubmitSuccessful) {
-    return <h1>Форма успешно отправлена!</h1>;
+    onClose();
   }
 
   return (
@@ -229,6 +175,7 @@ export default function Form() {
           <Controller
             name="country"
             control={control}
+            rules={{ required: false }}
             render={({ field }) => (
               <select {...field} id="country" value={field.value ?? ''}>
                 <option value="">Choose country</option>

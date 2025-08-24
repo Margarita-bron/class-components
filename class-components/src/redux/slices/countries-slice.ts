@@ -12,7 +12,9 @@ const initialState: { list: Country[] } = {
 export const fetchCountries = createAsyncThunk<Country[]>(
   'countries/fetchCountries',
   async () => {
-    const res = await fetch('https://restcountries.com/v3.1/all');
+    const res = await fetch(
+      'https://restcountries.com/v3.1/all?fields=name,cca2'
+    );
     const data = await res.json();
     return data.map((country) => ({
       code: country.cca2,

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Form from '../../forms/Form';
 import { FormModal } from '../controlled-form-modal/form-modal';
+import UncontrolledForm from '../../forms/UncontrolledForm';
 
 export const ModalWrapper = () => {
   const [modalType, setModalType] = useState(null);
@@ -19,7 +20,11 @@ export const ModalWrapper = () => {
       </button>
       {modalType && (
         <FormModal onClose={closeModal}>
-          {modalType === 'RHF' ? <Form /> : <Form />}
+          {modalType === 'RHF' ? (
+            <Form onClose={closeModal} />
+          ) : (
+            <UncontrolledForm onClose={closeModal} />
+          )}
         </FormModal>
       )}
     </>
