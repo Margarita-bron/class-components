@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import type { Book } from '../../../types/book';
-import { toggleItem } from '../../../redux/selected-books/selected-books-slice';
+import { toggleItem } from '../../../redux/slices/selected-books-slice';
 import './book-item.css';
 import { useSelectedBooksSelector } from '../../../redux/selectors/selected-books-selector';
 import { useAppDispatch } from '../../../hooks/typed-react-redux-hooks';
@@ -31,9 +31,8 @@ export const BookItem = ({ book }: Props) => {
   const openDetails = (key: string): void => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('details', key);
-    router.push(`/?${params.toString()}`)
+    router.push(`/?${params.toString()}`);
   };
-  
 
   const handleCheckboxChange = () => {
     dispatch(

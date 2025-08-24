@@ -8,7 +8,7 @@ import {
   selectedBooksReducer,
   toggleItem,
   type SelectedBook,
-} from '../../../../redux/selected-books/selected-books-slice';
+} from '../../../../redux/slices/selected-books-slice';
 
 const book: SelectedBook = {
   id: 'book1',

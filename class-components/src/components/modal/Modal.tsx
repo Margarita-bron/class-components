@@ -2,7 +2,7 @@
 import { createPortal } from 'react-dom';
 import './modal.css';
 import { useAppDispatch } from '../../hooks/typed-react-redux-hooks';
-import { clearAll } from '../../redux/selected-books/selected-books-slice';
+import { clearAll } from '../../redux/slices/selected-books-slice';
 import { useSelectedBooksSelector } from '../../redux/selectors/selected-books-selector';
 import { useTranslations } from 'next-intl';
 import { useRef } from 'react';

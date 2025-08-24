@@ -1,6 +1,6 @@
 'use server';
 
-import { SelectedBook } from '../../redux/selected-books/selected-books-slice';
+import { SelectedBook } from '../../redux/slices/selected-books-slice';
 
 export async function convertToCsv(
   selectedItems: SelectedBook[]
