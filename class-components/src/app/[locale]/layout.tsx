@@ -8,6 +8,7 @@ import StoreProvider from '../../redux/store-provider';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
+import { theme } from '../../../tailwind.config.cjs';
 
 export const metadata: Metadata = {
   title: 'Open Library',
@@ -29,7 +30,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html className="light" style={{ colorScheme: 'light' }}>
       <body>
         <ErrorBoundary>
           <NextIntlClientProvider>

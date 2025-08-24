@@ -6,7 +6,9 @@ import { BookCard } from '../../components/book-card/bookCard';
 import { Catalog } from '../../components/catalog/Catalog';
 import { Pagination } from '../../components/pagination/Pagination';
 import { SearchBar } from '../../components/search-bar/SearchBar';
-import { Book } from '../../types/book';
+import { Modal } from '../../components/modal/Modal';
+import { ModalWrapper } from '../../components/form-modal/modal-wrapper/modal-wrapper';
+import FormRecords from '../../components/form-modal/form-results/form-records';
 
 async function fetchBooks(query: string, page: string) {
   const url = `${BASE_URL}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&page={page}`;
@@ -58,6 +60,8 @@ export default async function MainPageCatalog({
   return (
     <>
       <div className="app-wrapper">
+        <FormRecords />
+        <ModalWrapper />
         <Suspense fallback={<Loading />}>
           <SearchBar currentQuery={queryFromUrl} />
         </Suspense>
@@ -80,6 +84,7 @@ export default async function MainPageCatalog({
         </div>
 
         <Pagination currentPage={Number(pageFromUrl)} totalPages={10} />
+        <Modal />
       </div>
     </>
   );

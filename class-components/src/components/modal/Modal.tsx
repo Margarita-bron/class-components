@@ -2,42 +2,39 @@
 import { createPortal } from 'react-dom';
 import './modal.css';
 import { useAppDispatch } from '../../hooks/typed-react-redux-hooks';
-import { clearAll } from '../../redux/selected-books/selected-books-slice';
+import { clearAll } from '../../redux/slices/selected-books-slice';
 import { useSelectedBooksSelector } from '../../redux/selectors/selected-books-selector';
 import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
+import { convertToCsv } from '../../app/[locale]/exportCsv';
 
 export const Modal = () => {
-  const t = useTranslations('HomeView');
+  const downloadLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const t = useTranslations('MainPage');
   const dispatch = useAppDispatch();
   const selectedItems = useSelectedBooksSelector();
 
   if (selectedItems.length === 0) return null;
+
   const handleClearAll = () => {
     dispatch(clearAll());
   };
 
-  const handleDownload = () => {
-    const headers = ['id', 'name', 'description'];
-    const structuredData = [
-      headers.join(','),
-      ...selectedItems.map((item) =>
-        headers
-          .map((header) => {
-            const val = item[header as keyof typeof item] ?? '';
-            return `"${String(val).replace(/"/g, '""')}"`;
-          })
-          .join(',')
-      ),
-    ];
-    const bookData = structuredData.join('\n');
-    const blob = new Blob([bookData], { type: 'application/json' });
+  const handleDownload = async () => {
+    if (!selectedItems || selectedItems.length === 0) return;
 
+    const csvArray = await convertToCsv(selectedItems);
+    const csvContent = csvArray.join('\n');
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;',
+    });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${selectedItems.length}_items.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+
+    if (downloadLinkRef.current) {
+      downloadLinkRef.current.href = url;
+      downloadLinkRef.current.download = `${selectedItems.length}_items.csv`;
+      downloadLinkRef.current.click();
+    }
   };
 
   return createPortal(
@@ -54,6 +51,7 @@ export const Modal = () => {
           {t('Modal.Unselect all')}
         </button>
       </div>
+      <a ref={downloadLinkRef} style={{ display: 'none' }} />
     </div>,
     document.body
   );

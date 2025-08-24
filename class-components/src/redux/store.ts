@@ -1,13 +1,17 @@
 'use client';
 import { configureStore } from '@reduxjs/toolkit';
 import { bookApi } from './services/bookApi';
-import { selectedBooksReducer } from './selected-books/selected-books-slice';
+import { selectedBooksReducer } from './slices/selected-books-slice';
+import { countriesReducer } from './slices/countries-slice';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { formDataReducer } from './slices/form-data-slice';
 
 export const store = configureStore({
   reducer: {
     [bookApi.reducerPath]: bookApi.reducer,
     selectedBooks: selectedBooksReducer,
+    countries: countriesReducer,
+    formData: formDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(bookApi.middleware),
