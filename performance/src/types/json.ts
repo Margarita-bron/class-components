@@ -1,13 +1,13 @@
 export type CountryObject = {
   iso_code: string;
-  data: YearCO2Stats;
+  data: YearCO2Stats[];
 };
 
 export type CountryData = {
   id: string;
   name: string;
   iso_code: string;
-  data: YearCO2Stats;
+  data: YearCO2Stats[];
 };
 
 export type YearCO2Stats = {

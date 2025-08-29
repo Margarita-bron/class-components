@@ -1,52 +1,61 @@
 import { fetchData } from '../../json/json-parse';
-import type { CountryData } from '../../types/json';
-import { useEffect, useState } from 'react';
 import './table.css';
+import { use } from 'react';
 
-export default function Table() {
-  const [data, setData] = useState<CountryData[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+type TableProps = {
+  query: string;
+};
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data: CountryData[] = (await fetchData()) ?? [];
-        setData(data);
-      } catch (error) {
-        setError(String(error));
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, []);
+const dataPromise = fetchData();
 
-  if (error) return <>error</>;
+export default function Table({ query }: TableProps) {
+  const countries = use(dataPromise);
 
+  const filtered = countries
+    ?.filter((c) => c.name.toLowerCase().includes(query.trim().toLowerCase()))
+    .sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+
+      const startsWithA = nameA.startsWith(query.trim().toLowerCase());
+      const startsWithB = nameB.startsWith(query.trim().toLowerCase());
+
+      if (startsWithA && !startsWithB) return -1;
+      if (!startsWithA && startsWithB) return 1;
+
+      return nameA.localeCompare(nameB);
+    });
   return (
     <table className="table-auto countries-table-wrapper">
       <thead>
         <tr>
-          <th className="">Name</th>
           <th>ISO</th>
+          <th className="">Country</th>
+          <th>Year</th>
           <th>Population</th>
+          <th>CO2</th>
+          <th>CO2 per capita</th>
         </tr>
       </thead>
       <tbody>
-        {loading && <>Loading..</>}
-        {data.length > 0 &&
-          data.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.iso_code}</td>
-              <td>
-                {item.data.length > 0
-                  ? item.data[item.data.length - 1].population
-                  : 'N/A'}
-              </td>
-            </tr>
-          ))}
+        {filtered &&
+          filtered.map((item) => {
+            const latest = item.data.at(-1) ?? null;
+            return (
+              <tr key={item.id}>
+                <td>{item.iso_code}</td>
+                <td>{item.name}</td>
+                {latest !== null && (
+                  <>
+                    <td> {latest.year ?? 'N/A'}</td>
+                    <td>{latest.population ?? 'N/A'}</td>
+                    <td> {latest.cement_co2 ?? 'N/A'}</td>
+                    <td>{latest.cement_co2_per_capita ?? 'N/A'}</td>
+                  </>
+                )}
+              </tr>
+            );
+          })}
       </tbody>
     </table>
   );

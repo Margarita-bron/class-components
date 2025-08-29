@@ -1,10 +1,10 @@
 import './App.css';
-import Table from './components/table/Table';
+import Layout from './layout/Layout';
 
 function App() {
   return (
     <>
-      <Table />
+      <Layout />
     </>
   );
 }
