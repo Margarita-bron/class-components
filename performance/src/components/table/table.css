@@ -1,13 +1,13 @@
-.countries-table-wrapper{
+.countries-table-wrapper {
   width: 100%;
 }
 
-th{
+th {
   border: 1px solid #a7cdef;
   background-color: #d8e8f6;
 }
 
-tr{
+tr {
   border: 1px solid #a7cdef;
   background-color: rgb(244, 248, 250);
 }

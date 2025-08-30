@@ -1,17 +1,13 @@
-import { fetchData } from '../../json/json-parse';
+import type { CountryData } from '../../types/json';
 import './table.css';
-import { use } from 'react';
 
 type TableProps = {
+  data?: CountryData[];
   query: string;
 };
 
-const dataPromise = fetchData();
-
-export default function Table({ query }: TableProps) {
-  const countries = use(dataPromise);
-
-  const filtered = countries
+export default function Table({ data, query }: TableProps) {
+  const filtered = data
     ?.filter((c) => c.name.toLowerCase().includes(query.trim().toLowerCase()))
     .sort((a, b) => {
       const nameA = a.name.toLowerCase();
