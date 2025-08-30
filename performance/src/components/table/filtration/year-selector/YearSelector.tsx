@@ -15,18 +15,24 @@ export default function YearSelector({
   const yearArray: number[] | undefined = getAllYears(data);
 
   return (
-    <select defaultValue={year}>
-      {yearArray ? (
-        <>
-          {yearArray.map((item) => {
-            <option key={item} onChange={() => setYear(item)}>
-              {item}
-            </option>;
-          })}
-        </>
-      ) : (
-        <p>loading..</p>
-      )}
-    </select>
+    <>
+      <span>Choose a year</span>
+      <select value={year} onChange={(e) => setYear(Number(e.target.value))}>
+        <option value="" disabled>
+          year
+        </option>
+        {yearArray ? (
+          <>
+            {yearArray.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </>
+        ) : (
+          <option>loading..</option>
+        )}
+      </select>
+    </>
   );
 }

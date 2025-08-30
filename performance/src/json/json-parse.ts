@@ -1,6 +1,6 @@
 import type { CountryData, CountryObject } from '../types/json';
 
-export async function fetchData() {
+export async function fetchData(): Promise<CountryData[]> {
   try {
     const response = await fetch(
       'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json'
@@ -9,17 +9,17 @@ export async function fetchData() {
       throw new Error('Failed to fetch CO2 data');
     }
     const data = await response.json();
-    const countryData: CountryData[] = Object.entries(
-      data as Record<string, CountryObject>
-    ).map(([name, countryInfo]) => ({
-      id: crypto.randomUUID(),
-      name: name,
-      iso_code: countryInfo.iso_code ?? 'N/A',
-      data: countryInfo.data ?? [],
-    }));
-    return countryData;
+    return Object.entries(data as Record<string, CountryObject>).map(
+      ([name, countryInfo]) => ({
+        id: crypto.randomUUID(),
+        name: name,
+        iso_code: countryInfo.iso_code ?? 'N/A',
+        data: countryInfo.data ?? [],
+      })
+    );
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 

@@ -22,7 +22,9 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
+      'prettier/prettier': 'warn',
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {

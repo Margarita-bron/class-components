@@ -8,6 +8,6 @@ export function getAllYears(countries?: CountryData[]): number[] | undefined {
         if (entry.year !== undefined) allYears.add(entry.year);
       });
     });
-    return Array.from(allYears).sort((a, b) => a - b);
+    return Array.from(allYears).sort((a, b) => b - a);
   }
 }
