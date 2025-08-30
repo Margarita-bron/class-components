@@ -1,4 +1,4 @@
-import type { SortOption } from '../FiltrationNav';
+import type { SortOption } from '../../../../layout/Layout';
 
 type FilterSectionProps = {
   sortOption: SortOption;

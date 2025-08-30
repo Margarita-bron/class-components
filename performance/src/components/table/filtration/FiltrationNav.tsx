@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import type { CountryData } from '../../../types/json';
 import FilterSection from './filter-section/FilterSection';
 import SearchBar from './search-bar/SearchBar';
 import YearSelector from './year-selector/YearSelector';
+import type { SortOption } from '../../../layout/Layout';
 
 type FiltrationNavProps = {
   data: CountryData[] | undefined;
@@ -10,13 +10,9 @@ type FiltrationNavProps = {
   setQuery: (value: string) => void;
   year: number;
   setYear: (value: number) => void;
+  sortOption: SortOption;
+  setSortOption: (value: SortOption) => void;
 };
-
-export type SortOption =
-  | 'name_asc'
-  | 'name_desc'
-  | 'population_asc'
-  | 'population_desc';
 
 export default function FiltrationNav({
   data,
@@ -24,8 +20,9 @@ export default function FiltrationNav({
   setQuery,
   year,
   setYear,
+  sortOption,
+  setSortOption,
 }: FiltrationNavProps) {
-  const [sortOption, setSortOption] = useState<SortOption>('name_asc');
   return (
     <>
       <FilterSection sortOption={sortOption} setSortOption={setSortOption} />

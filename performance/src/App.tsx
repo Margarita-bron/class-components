@@ -10,6 +10,7 @@ function ErrorFallback({
   error: Error;
   resetErrorBoundary: () => void;
 }) {
+  console.error('Caught error:', error);
   return (
     <div role="alert">
       <p>Oops..something went wrong</p>

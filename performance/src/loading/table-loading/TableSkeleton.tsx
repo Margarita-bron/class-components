@@ -3,7 +3,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export default function TableSkeleton() {
   return (
-    <SkeletonTheme baseColor="#222" highlightColor="#444" borderRadius={6}>
+    <SkeletonTheme>
       <table className="table-auto countries-table-wrapper">
         <thead>
           <tr>
