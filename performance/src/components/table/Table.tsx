@@ -94,7 +94,12 @@ export default function Table({
                 </tr>
                 {expandedId === item.id && (
                   <tr>
-                    <AdditionalTable item={item.data} />
+                    <td colSpan={6 + selectedFields.length}>
+                      <AdditionalTable
+                        item={item.data}
+                        selectedFields={selectedFields}
+                      />
+                    </td>
                   </tr>
                 )}
               </React.Fragment>
