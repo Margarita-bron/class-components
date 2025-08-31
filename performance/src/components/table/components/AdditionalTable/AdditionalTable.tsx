@@ -10,6 +10,7 @@ export default function AdditionalTable({
   item,
   selectedFields,
 }: AdditionalTableProps) {
+  const sortByYear = item.sort((a, b) => b.year - a.year);
   return (
     <table>
       <thead>
@@ -26,7 +27,7 @@ export default function AdditionalTable({
         </tr>
       </thead>
       <tbody>
-        {item.map((yearData: YearCO2Stats) => (
+        {sortByYear.map((yearData: YearCO2Stats) => (
           <tr key={yearData.year}>
             <td>{yearData.year}</td>
             <td>{yearData.population ?? 'N/A'}</td>

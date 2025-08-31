@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { CountryData } from '../../types/json';
-import './table.module.css';
+import './table.css';
 import React from 'react';
 import type { SortOption } from '../../layout/Layout';
 import AdditionalTable from './components/AdditionalTable/AdditionalTable';
@@ -23,27 +23,32 @@ export default function Table({
 }: TableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const toggleExpanded = (id: string) => {
+  const toggleExpanded = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
-  };
+  }, []);
 
-  const filtered = data
-    ?.filter((c) => c.name.toLowerCase().startsWith(query.trim().toLowerCase()))
-    .filter((c) => c.data.find((d) => d.year === year))
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .sort((a, b) => {
-      if (sortOption === 'name_asc' || sortOption === 'name_desc') {
-        const nameA = a.name.toLowerCase();
-        const nameB = b.name.toLowerCase();
-        return (
-          nameA.localeCompare(nameB) * (sortOption === 'name_asc' ? 1 : -1)
-        );
-      } else {
-        const popA = a.data.find((d) => d.year === year)?.population ?? 0;
-        const popB = b.data.find((d) => d.year === year)?.population ?? 0;
-        return (popA - popB) * (sortOption === 'population_asc' ? 1 : -1);
-      }
-    });
+  const filtered = useMemo(() => {
+    if (!data) return [];
+    return data
+      ?.filter((c) =>
+        c.name.toLowerCase().startsWith(query.trim().toLowerCase())
+      )
+      .filter((c) => c.data.find((d) => d.year === year))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) => {
+        if (sortOption === 'name_asc' || sortOption === 'name_desc') {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          return (
+            nameA.localeCompare(nameB) * (sortOption === 'name_asc' ? 1 : -1)
+          );
+        } else {
+          const popA = a.data.find((d) => d.year === year)?.population ?? 0;
+          const popB = b.data.find((d) => d.year === year)?.population ?? 0;
+          return (popA - popB) * (sortOption === 'population_asc' ? 1 : -1);
+        }
+      });
+  }, [data, query, year, sortOption]);
 
   return (
     <table className="table-auto table-wrapper">
@@ -95,10 +100,12 @@ export default function Table({
                 {expandedId === item.id && (
                   <tr>
                     <td colSpan={6 + selectedFields.length}>
-                      <AdditionalTable
-                        item={item.data}
-                        selectedFields={selectedFields}
-                      />
+                      <div style={{ maxHeight: '40vh', overflowY: 'auto' }}>
+                        <AdditionalTable
+                          item={item.data}
+                          selectedFields={selectedFields}
+                        />
+                      </div>
                     </td>
                   </tr>
                 )}

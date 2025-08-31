@@ -1,0 +1,66 @@
+.table-wrapper {
+  width: 100%;
+}
+
+th {
+  border: 1px solid #a7cdef;
+  background-color: #d8e8f6;
+}
+
+tr {
+  border: 1px solid #a7cdef;
+  background-color: rgb(244, 248, 250);
+}
+
+td {
+  border: 1px solid #a7cdef;
+  padding: 1.5vw;
+}
+
+.highlight-row {
+  animation: highlightFade 2s ease;
+  background-color: yellow;
+}
+
+@keyframes highlightFade {
+  from { background-color: yellow; }
+  to { background-color: transparent; }
+}
+
+.highlight {
+  background-color: yellow;
+  transition: background-color 1s ease;
+}
+
+.highlight-cell {
+  background-color: #fffae6;
+  transition: background-color 2s ease;
+}
+
+.highlighted-row {
+  animation: highlightAnim 2s ease;
+  background-color: #ffff99; /* светло-жёлтый фон */
+}
+
+@keyframes highlightAnim {
+  0% {
+    background-color: #ffff99;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.highlighted-cell {
+  animation: highlightAnim 2s ease;
+  background-color: #ffff99;
+}
+
+@keyframes highlightAnim {
+  from {
+    background-color: #ffff99;
+  }
+  to {
+    background-color: transparent;
+  }
+}

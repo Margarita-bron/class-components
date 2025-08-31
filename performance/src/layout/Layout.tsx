@@ -3,6 +3,7 @@ import Table from '../components/table/Table';
 import FiltrationNav from '../components/table/filtration/FiltrationNav';
 import { useCountries } from '../hooks/use-countries-hook';
 import Modal from '../components/modal/Modal';
+import React from 'react';
 
 export type SortOption =
   | 'name_asc'
@@ -10,11 +11,15 @@ export type SortOption =
   | 'population_asc'
   | 'population_desc';
 
+const MemoizedTable = React.memo(Table);
+const MemoizedFiltrationNav = React.memo(FiltrationNav);
+const MemoizedModal = React.memo(Modal);
+
 export default function Layout() {
   const { data: countries } = useCountries();
 
   const [query, setQuery] = useState('');
-  const [year, setYear] = useState(2024);
+  const [year, setYear] = useState(2023);
   const [sortOption, setSortOption] = useState<SortOption>('name_asc');
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -22,7 +27,7 @@ export default function Layout() {
 
   return (
     <>
-      <FiltrationNav
+      <MemoizedFiltrationNav
         data={countries}
         query={query}
         setQuery={setQuery}
@@ -32,14 +37,14 @@ export default function Layout() {
         setSortOption={setSortOption}
         setModalOpen={setModalOpen}
       />
-      <Table
+      <MemoizedTable
         data={countries}
         query={query}
         year={year}
         sortOption={sortOption}
         selectedFields={selectedFields}
       />
-      <Modal
+      <MemoizedModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
         selectedFields={selectedFields}
