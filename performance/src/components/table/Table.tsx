@@ -1,22 +1,25 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import type { CountryData } from '../../types/json';
 import './table.module.css';
 import React from 'react';
 import type { SortOption } from '../../layout/Layout';
-import TableSkeleton from '../../loading/table-loading/TableSkeleton';
+import AdditionalTable from './components/AdditionalTable/AdditionalTable';
+import { availableFields } from '../../constants/table';
 
 type TableProps = {
   data?: CountryData[];
   query: string;
   sortOption: SortOption;
   year: number;
+  selectedFields: string[];
 };
 
 export default function Table({
   data,
   query,
   sortOption,
-  year = 2023,
+  year,
+  selectedFields,
 }: TableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -52,10 +55,14 @@ export default function Table({
           <th>Population</th>
           <th>CO2</th>
           <th>CO2 per capita</th>
+          {selectedFields.map((field) => {
+            const label =
+              availableFields.find((f) => f.value === field)?.label ?? field;
+            return <th key={field}>{label}</th>;
+          })}
         </tr>
       </thead>
       <tbody>
-        {!filtered && <Suspense fallback={<TableSkeleton />}></Suspense>}
         {filtered &&
           filtered.map((item) => {
             const displayedYear = year
@@ -72,33 +79,22 @@ export default function Table({
                       <td>{displayedYear.population ?? 'N/A'}</td>
                       <td> {displayedYear.cement_co2 ?? 'N/A'}</td>
                       <td>{displayedYear.cement_co2_per_capita ?? 'N/A'}</td>
+                      {selectedFields &&
+                        selectedFields.map((field) => (
+                          <td key={field}>
+                            {displayedYear
+                              ? (displayedYear[
+                                  field as keyof typeof displayedYear
+                                ] ?? 'N/A')
+                              : 'N/A'}
+                          </td>
+                        ))}
                     </>
                   )}
                 </tr>
-                {expandedId && (
+                {expandedId === item.id && (
                   <tr>
-                    <td colSpan={6}>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Year</th>
-                            <th>Population</th>
-                            <th>CO2</th>
-                            <th>CO2 per capita</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {item.data.map((yearData) => (
-                            <tr key={yearData.year}>
-                              <td>{yearData.year}</td>
-                              <td>{yearData.population ?? 'N/A'}</td>
-                              <td>{yearData.cement_co2 ?? 'N/A'}</td>
-                              <td>{yearData.cement_co2_per_capita ?? 'N/A'}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </td>
+                    <AdditionalTable item={item.data} />
                   </tr>
                 )}
               </React.Fragment>

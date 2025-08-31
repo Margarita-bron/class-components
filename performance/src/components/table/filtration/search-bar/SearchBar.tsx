@@ -13,7 +13,7 @@ export default function SearchBar({ query, setQuery }: SearchBarProps) {
       <input
         id="search"
         type="text"
-        placeholder=""
+        placeholder="enter country name.."
         onChange={(e) => setQuery(e.target.value)}
         defaultValue={query}
       />

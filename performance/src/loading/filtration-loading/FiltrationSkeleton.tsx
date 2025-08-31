@@ -1,32 +1,17 @@
-import { options } from '../../constants/filtration';
+import Skeleton from 'react-loading-skeleton';
 
 export default function FiltrationSkeleton() {
   return (
     <div className="filtration-section">
-      <span>Choose a year</span>
-      <select>
-        <option value="" disabled>
-          Sort
-        </option>
-        <>
-          {options.map((item) => (
-            <option key={item.value} value={item.value}>
-              {item.label}
-            </option>
-          ))}
-        </>
-      </select>
+      <span>Sort by</span>
+      <Skeleton width={100} />
       <div>
         <label htmlFor="search">Search</label>
-        <input id="search" type="text" placeholder="" />
+        <Skeleton width={200} />
       </div>
       <span>Choose a year</span>
-      <select value="year">
-        <option value="" disabled>
-          year
-        </option>
-        <option></option>
-      </select>
+      <Skeleton width={50} />
+      <button disabled>Add additional fields</button>
     </div>
   );
 }

@@ -15,5 +15,11 @@ export type YearCO2Stats = {
   population?: number;
   cement_co2: number;
   cement_co2_per_capita?: number;
-  cumulative_cement_co2: number;
+  cumulative_cement_co2?: number;
+  methane?: number;
+  oil_co2?: number;
+  temperature_change_from_co2?: number;
+  coal_co2?: number;
+  gas_co2?: number;
+  co2_growth_prct?: number;
 };

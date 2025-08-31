@@ -12,13 +12,13 @@ export default function FilterSection({
 }: FilterSectionProps) {
   return (
     <>
-      <span>Choose a year</span>
+      <span>Sort by</span>
       <select
         value={sortOption}
         onChange={(e) => setSortOption(e.target.value as SortOption)}
       >
         <option value="" disabled>
-          Sort
+          Sort by
         </option>
         <>
           {options.map((item) => (

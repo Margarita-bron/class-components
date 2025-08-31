@@ -12,6 +12,7 @@ type FiltrationNavProps = {
   setYear: (value: number) => void;
   sortOption: SortOption;
   setSortOption: (value: SortOption) => void;
+  setModalOpen: (value: boolean) => void;
 };
 
 export default function FiltrationNav({
@@ -22,12 +23,14 @@ export default function FiltrationNav({
   setYear,
   sortOption,
   setSortOption,
+  setModalOpen,
 }: FiltrationNavProps) {
   return (
     <div className="filtration-section">
       <FilterSection sortOption={sortOption} setSortOption={setSortOption} />
       <SearchBar query={query} setQuery={setQuery} />
       <YearSelector data={data} year={year} setYear={setYear} />
+      <button onClick={() => setModalOpen(true)}>Add additional fields</button>
     </div>
   );
 }

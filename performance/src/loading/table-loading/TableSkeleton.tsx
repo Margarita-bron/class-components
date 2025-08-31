@@ -3,7 +3,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 export default function TableSkeleton() {
   return (
-    <SkeletonTheme>
+    <SkeletonTheme baseColor="#e0e0e0" highlightColor="#f5f5f5">
       <table className="skeleton table-auto countries-table-wrapper">
         <thead>
           <tr>
@@ -18,11 +18,24 @@ export default function TableSkeleton() {
         <tbody>
           {Array.from({ length: 10 }).map((_, rowIndex) => (
             <tr key={rowIndex}>
-              {Array.from({ length: 6 }).map((_, colIndex) => (
-                <td key={colIndex}>
-                  <Skeleton height={20} />
-                </td>
-              ))}
+              <th>
+                <Skeleton width={40} />
+              </th>
+              <th>
+                <Skeleton width={100} />
+              </th>
+              <th>
+                <Skeleton width={50} />
+              </th>
+              <th>
+                <Skeleton width={80} />
+              </th>
+              <th>
+                <Skeleton width={60} />
+              </th>
+              <th>
+                <Skeleton width={90} />
+              </th>
             </tr>
           ))}
         </tbody>

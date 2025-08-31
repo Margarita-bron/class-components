@@ -1,15 +1,40 @@
 .skeleton {
+  width: 100%;
+  border-collapse: collapse;
   height: 1rem;
   background: linear-gradient(90deg, #eee, #ddd, #eee);
   animation: pulse 1.5s infinite;
   border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0% {
-    background-position: -200px 0;
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f5f5f5;
   }
   100% {
-    background-position: 200px 0;
+    background-color: #e0e0e0;
   }
+}
+
+th {
+  padding: 10px 8px;
+  border-bottom: 2px solid #ddd;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14;
+  color: #666;
+}
+
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 14;
+}
+
+tr {
+  background-color: #fff;
 }
