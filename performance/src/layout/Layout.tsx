@@ -1,6 +1,5 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import Table from '../components/table/Table';
-import TableSkeleton from '../loading/table-loading/TableSkeleton';
 import FiltrationNav from '../components/table/filtration/FiltrationNav';
 import { useCountries } from '../hooks/use-countries-hook';
 
@@ -18,7 +17,7 @@ export default function Layout() {
   const [sortOption, setSortOption] = useState<SortOption>('name_asc');
 
   return (
-    <div>
+    <>
       <FiltrationNav
         data={countries}
         query={query}
@@ -28,14 +27,12 @@ export default function Layout() {
         sortOption={sortOption}
         setSortOption={setSortOption}
       />
-      <Suspense fallback={<TableSkeleton />}>
-        <Table
-          data={countries}
-          query={query}
-          year={year}
-          sortOption={sortOption}
-        />
-      </Suspense>
-    </div>
+      <Table
+        data={countries}
+        query={query}
+        year={year}
+        sortOption={sortOption}
+      />
+    </>
   );
 }

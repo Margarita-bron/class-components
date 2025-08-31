@@ -1,6 +1,7 @@
 import type { CountryData, CountryObject } from '../types/json';
 
 export async function fetchData(): Promise<CountryData[]> {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const response = await fetch(
       'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json'

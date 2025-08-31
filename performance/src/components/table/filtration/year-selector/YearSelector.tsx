@@ -21,7 +21,7 @@ export default function YearSelector({
         <option value="" disabled>
           year
         </option>
-        {yearArray ? (
+        {yearArray && (
           <>
             {yearArray.map((item) => (
               <option key={item} value={item}>
@@ -29,8 +29,6 @@ export default function YearSelector({
               </option>
             ))}
           </>
-        ) : (
-          <option>loading..</option>
         )}
       </select>
     </>

@@ -1,16 +1,10 @@
+import { options } from '../../../../constants/filtration';
 import type { SortOption } from '../../../../layout/Layout';
 
 type FilterSectionProps = {
   sortOption: SortOption;
   setSortOption: (value: SortOption) => void;
 };
-
-const options: { value: SortOption; label: string }[] = [
-  { value: 'name_asc', label: 'Country Name Asc' },
-  { value: 'name_desc', label: 'Country Name Desc' },
-  { value: 'population_asc', label: 'Population Asc' },
-  { value: 'population_desc', label: 'Population Desc' },
-];
 
 export default function FilterSection({
   sortOption,

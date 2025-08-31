@@ -2,6 +2,9 @@ import { ErrorBoundary } from 'react-error-boundary';
 import './App.css';
 import Layout from './layout/Layout';
 import { queryClient } from './queryClient';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import Loading from './loading/Loading';
 
 function ErrorFallback({
   error,
@@ -22,12 +25,13 @@ function ErrorFallback({
 
 function App() {
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => queryClient.resetQueries()}
-    >
-      <Layout />
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Suspense fallback={<Loading />}>
+          <Layout />
+        </Suspense>
+      </ErrorBoundary>
+    </QueryClientProvider>
   );
 }
 

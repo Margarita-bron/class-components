@@ -1,21 +1,22 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import type { CountryData } from '../../types/json';
 import './table.module.css';
 import React from 'react';
 import type { SortOption } from '../../layout/Layout';
+import TableSkeleton from '../../loading/table-loading/TableSkeleton';
 
 type TableProps = {
   data?: CountryData[];
   query: string;
-  year: number;
   sortOption: SortOption;
+  year: number;
 };
 
 export default function Table({
   data,
   query,
-  year = 2023,
   sortOption,
+  year = 2023,
 }: TableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
@@ -42,7 +43,7 @@ export default function Table({
     });
 
   return (
-    <table className="table-auto countries-table-wrapper">
+    <table className="table-auto table-wrapper">
       <thead>
         <tr>
           <th>ISO</th>
@@ -54,6 +55,7 @@ export default function Table({
         </tr>
       </thead>
       <tbody>
+        {!filtered && <Suspense fallback={<TableSkeleton />}></Suspense>}
         {filtered &&
           filtered.map((item) => {
             const displayedYear = year

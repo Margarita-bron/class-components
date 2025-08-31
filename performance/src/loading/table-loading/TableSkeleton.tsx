@@ -4,7 +4,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 export default function TableSkeleton() {
   return (
     <SkeletonTheme>
-      <table className="table-auto countries-table-wrapper">
+      <table className="skeleton table-auto countries-table-wrapper">
         <thead>
           <tr>
             <th>ISO</th>

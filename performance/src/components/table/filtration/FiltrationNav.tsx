@@ -24,10 +24,10 @@ export default function FiltrationNav({
   setSortOption,
 }: FiltrationNavProps) {
   return (
-    <>
+    <div className="filtration-section">
       <FilterSection sortOption={sortOption} setSortOption={setSortOption} />
       <SearchBar query={query} setQuery={setQuery} />
       <YearSelector data={data} year={year} setYear={setYear} />
-    </>
+    </div>
   );
 }
